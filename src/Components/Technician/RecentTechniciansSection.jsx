@@ -1,4 +1,5 @@
 import { CheckCircle, Plus, Info,Award, Home, ArrowUpRight,SquareArrowOutUpRight} from "lucide-react";
+import ProfileImage from '../../assets/images/profile-image.jpeg';
 
 const technicians = [
   {
@@ -7,7 +8,7 @@ const technicians = [
     title: "With over 12 years in automotive electrical systems, I specialize in creating flawless lighting solutions and wiring layouts for custom builds.",
     followers: 312,
     institute: "NSF",
-    img: "../src/assets/images/profile-image.jpeg",
+    img: `${ProfileImage}`,
   },
   {
     name: "Malsha Fernando",
@@ -15,7 +16,7 @@ const technicians = [
     title: "Passionate about improving ride comfort, I design and install custom suspension systems that balance performance with durability.",
     followers: 420,
     institute: "NRC",
-    img: "../src/assets/images/profile-image.jpeg",
+    img: `${ProfileImage}`,
   },
   {
     name: "Dilan Gunasekara",
@@ -23,7 +24,7 @@ const technicians = [
     title: "From leather stitching to ambient lighting, I transform vehicle interiors into luxurious, personalized spaces for every driver.",
     followers: 287,
     institute: "IIT",
-    img: "../src/assets/images/profile-image.jpeg",
+    img: `${ProfileImage}`,
   },
   {
     name: "Thilina Jayawardena",
@@ -31,7 +32,7 @@ const technicians = [
     title: "Bringing colors to life with custom paints and flawless restoration work that turn ordinary vehicles into head-turning masterpieces.",
     followers: 368,
     institute: "UOC",
-    img: "../src/assets/images/profile-image.jpeg",
+    img: `${ProfileImage}`,
   },
   {
     name: "Pramod Abeywickrama",
@@ -39,7 +40,7 @@ const technicians = [
     title: "Equipped with the latest diagnostic tools, I pinpoint engine and ECU issues to ensure optimal vehicle performance and reliability.",
     followers: 241,
     institute: "USJP",
-    img: "../src/assets/images/profile-image.jpeg",
+    img: `${ProfileImage}`,
   },
   {
     name: "Pubudu Shehan",
@@ -47,7 +48,7 @@ const technicians = [
     title: "From leather stitching to ambient lighting, I transform vehicle interiors into luxurious, personalized spaces for every driver.",
     followers: 395,
     institute: "NSF",
-    img: "../src/assets/images/profile-image.jpeg",
+    img: `${ProfileImage}`,
   },
 ];
 

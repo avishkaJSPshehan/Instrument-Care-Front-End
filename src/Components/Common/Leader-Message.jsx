@@ -1,8 +1,13 @@
 import React, { useRef } from "react";
+import Sudasinghe from '../../assets/images/dg.jpg';
+import nilanthi from '../../assets/images/nilanthi.jpg';
+import ranjith from '../../assets/images/ranjith.jpg';
+import raviraj1 from '../../assets/images/raviraj1.png';
+import vitha from '../../assets/images/vitha.jpg';
 
 const cards = [
   {
-    image: "src/assets/images/dg.jpg",
+    image: `${Sudasinghe}`,
     title1: "Dr. S.R.S.N.Sudasinghe",
     title2: "Director General",
     title3: "National Science Foundation",
@@ -10,7 +15,7 @@ const cards = [
       "To strengthen the manufacturing community. To support new partnerships and to help manufacturers with emerging technology...",
   },
   {
-    image: "src/assets/images/nilanthi.jpg",
+    image: `${nilanthi}`,
     title1: "Prof. Nilanthi de Silva",
     title2: "Vice-Chancellor",
     title3: "University of Kelaniya",
@@ -18,7 +23,7 @@ const cards = [
       "We are very happy that the NSF has taken the initiative to establish a database with details of high-end scientific instruments scattered across Sri Lanka in universities and R&D institutions.",
   },
   {
-    image: "src/assets/images/ranjith.jpg",
+    image: `${ranjith}`,
     title1: "Emeritus Prof. Ranjith Senaratne",
     title2: "Former Vice-Chanceller, University of Ruhuna",
     title3: "Ex-Chair of the National Science Foundation",
@@ -26,7 +31,7 @@ const cards = [
       "Sri Lanka has over 20 state-owned higher education institutions, a comparable number R&D institutions, and several public sector institutions, such as Sri Lanka Atomic Energy Board, Sri Lanka Standard Institute and Board of Investment, which collectively possess  an immense instrument base including high-end equipment",
   },
   {
-    image: "src/assets/images/raviraj1.png",
+    image: `${raviraj1}`,
     title1: "Prof. Ravirajan",
     title2: "Dean and Senior Professor",
     title3: "University of Jaffna",
@@ -34,7 +39,7 @@ const cards = [
       "Even though  the scientific community and funding agencies had recognized the need to develop a Database of the Scientific Instruments available in the Higher Educational Institutions (HEIs) in the country a long time ago, it did not materialise until recently.",
   },
   {
-    image: "src/assets/images/vitha.jpg",
+    image: `${vitha}`,
     title1: "Prof. Meththika Vithanage",
     title2: "Faculty of Applied Sciences",
     title3: "University of Sri Jayewardenepura",

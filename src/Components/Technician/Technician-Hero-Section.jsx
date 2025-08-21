@@ -6,13 +6,16 @@ import {
   Mountain,
 } from "lucide-react";
 
+import TechBg from '../../assets/images/technician-hero-bg-4.jpg';
+import Techinician from '../../assets/images/Technician-image.jpg';
+
 export default function TechnicianHeader() {
   return (
     <section className="relative overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="src/assets/images/technician-hero-bg-4.jpg" // Replace with actual path
+          src={TechBg} // Replace with actual path
           alt="Background"
           className="w-full h-full object-cover"
         />
@@ -55,7 +58,7 @@ export default function TechnicianHeader() {
             <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px]">
               <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl">
                 <img
-                  src="src/assets/images/Technician-image.jpg"
+                  src= {Techinician}
                   alt="Technician"
                   className="object-cover w-full h-full"
                 />

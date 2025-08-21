@@ -1,5 +1,6 @@
 import { FaPhoneAlt } from "react-icons/fa";
 import { Mail } from "lucide-react";
+import Bg from '../../assets/images/about-hero-bg.jpg';
 
 export default function ContactSupport() {
   return (
@@ -8,7 +9,7 @@ export default function ContactSupport() {
       <div
         className="absolute inset-0 bg-cover bg-center blur-xs brightness-75"
         style={{
-          backgroundImage: "url('src/assets/images/about-hero-bg.jpg')", // Replace with your image path
+          backgroundImage: `url(${Bg})`, // Replace with your image path
           zIndex: 0,
         }}
       ></div>
