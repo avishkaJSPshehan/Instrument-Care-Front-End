@@ -5,6 +5,8 @@ import {
   MessageCircle,
   Mountain,
 } from "lucide-react";
+import BG from '../../assets/images/technician-hero-bg-4.jpg';
+import Technician from '../../assets/images/Technician-image.jpg';
 
 export default function TechnicianHeader() {
   return (
@@ -12,7 +14,7 @@ export default function TechnicianHeader() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="../src/assets/images/technician-hero-bg-4.jpg" // Replace with actual path
+          src= {BG} // Replace with actual path
           alt="Background"
           className="w-full h-full object-cover"
         />
@@ -72,7 +74,7 @@ export default function TechnicianHeader() {
             <div className="relative w-80 h-80 md:w-96 md:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px]">
               <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl">
                 <img
-                  src="../src/assets/images/Technician-image.jpg"
+                  src= {Technician}
                   alt="Technician"
                   className="object-cover w-full h-full"
                 />

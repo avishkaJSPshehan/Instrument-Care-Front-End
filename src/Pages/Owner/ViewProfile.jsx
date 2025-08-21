@@ -5,6 +5,7 @@ import Tabs from "../../Components/owner/Tabs";
 import ProfileCard from "../../Components/owner/ProfileCard";
 import DashboardStats from '../../Components/Technician/DashboardStats';
 import JobSummaryTable_UserPage from '../../Components/owner/JobSummery-user-page';
+import BG from '../../assets/images/technician-dashboard-bg-4.jpg'
 
 export default function ViewProfile() {
   return (
@@ -15,7 +16,7 @@ export default function ViewProfile() {
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/src/assets/images/technician-dashboard-bg-4.jpg')",
+          backgroundImage: `url(${BG})`,
         }}
       >
         <div className="w-full  bg-[#ffffff70] p-6 font-poppins rounded-md">

@@ -6,6 +6,7 @@ import ProfileCard from "../../Components/owner/ProfileCard";
 import ServiceRequestForm from "../../Components/owner/ServiceRequestForm";
 import ServiceRequestSuccess from '../../Components/owner/ServiceRequestSuccess';
 import ServiceRequestFail from '../../Components/owner/ServiceRequestFail';
+import BG from '../../assets/images/technician-dashboard-bg-4.jpg'
 
 export default function ServiceRequest() {
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -19,7 +20,7 @@ export default function ServiceRequest() {
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/src/assets/images/technician-dashboard-bg-4.jpg')",
+          backgroundImage: `url(${BG})`,
         }}
       >
         <div className="w-full  bg-[#ffffff70] p-6 font-poppins rounded-md">
