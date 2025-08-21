@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Bg from '../../assets/images/hero-bg-5.jpg';
 
 export default function LoginPage() {
   const [loginData, setLoginData] = useState({
@@ -35,7 +36,7 @@ export default function LoginPage() {
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{
-          backgroundImage: "url('../../src/assets/images/hero-bg-5.jpg')",
+          backgroundImage: `url(${Bg})`,
         }}
       ></div>
 
