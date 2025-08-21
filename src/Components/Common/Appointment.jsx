@@ -1,11 +1,12 @@
 import React from "react";
+import AppointmentBg from '../../assets/images/appointment-bg.jpg';
 
 export default function AppointmentSection() {
   return (
     <section
       className="relative bg-cover bg-center bg-no-repeat py-24 px-6 text-center"
       style={{
-        backgroundImage: `url('src/assets/images/appointment-bg.jpg')`, // Replace with your image path
+        backgroundImage: `url(${AppointmentBg})`, // Replace with your image path
       }}
     >
       <div className="absolute inset-0 bg-white/30 backdrop-blur-xs z-0" />

@@ -1,17 +1,19 @@
 import React from "react";
 import { CheckCircle } from "lucide-react"; // Icon
+import whyUsBg from '../../assets/images/why-us-bg.jpg';
+import techImage from '../../assets/images/hero-image-2.png';
 
 export default function WhyUs() {
   return (
     <section
       className="py-16 px-4 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('src/assets/images/why-us-bg.jpg')" }} // ✅ replace with your path
+      style={{ backgroundImage: `url(${whyUsBg})` }} // ✅ replace with your path
     >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
         {/* Left Image */}
         <div className="flex-1">
           <img
-            src="src/assets/images/hero-image-2.png" // replace with your image path
+            src= {techImage} // replace with your image path
             alt="Technician"
             className="rounded-xl w-full object-cover"
           />

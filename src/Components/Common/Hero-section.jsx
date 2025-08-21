@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import heroBg from "../../assets/images/hero-bg-5.jpg"; // ✅ import image
+
 export default function Hero() {
   return (
     <section
       className="relative bg-cover bg-center bg-no-repeat py-20"
-      style={{ backgroundImage: `url('src/assets/images/hero-bg-5.jpg')` }}
+      style={{ backgroundImage: `url(${heroBg})` }} // ✅ use imported image
     >
       {/* Overlay with blur */}
       {/* <div className="absolute inset-0 bg-white/0 z-0" /> */}

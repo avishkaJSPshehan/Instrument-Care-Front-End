@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import AboutHeroImage from "../../assets/images/about-hero-bg-2.jpg";
 
 export default function AboutHero() {
   return (
@@ -8,7 +9,7 @@ export default function AboutHero() {
       {/* Background Image + Blur */}
       <div className="absolute inset-0">
         <img
-          src="src/assets/images/about-hero-bg-2.jpg"
+          src={AboutHeroImage}
           alt="Background"
           className="w-full h-full object-cover"
         />
