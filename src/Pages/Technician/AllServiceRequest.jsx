@@ -3,6 +3,7 @@ import Navbar from '../../Components/Technician/Navbar'
 import Sidebar from '../../Components/Technician/Sidebar'
 import AllServiceRequestTable from "../../Components/Technician/AllServiceRequest"
 import Footer from '../../Components/Common/Footer'
+import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 
 export default function AllServiceRequestPage() {
   return (
@@ -13,7 +14,7 @@ export default function AllServiceRequestPage() {
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/src/assets/images/technician-dashboard-bg-4.jpg')",
+          backgroundImage: `url(${BG})`,
         }}
       >
         {/* Sidebar */}

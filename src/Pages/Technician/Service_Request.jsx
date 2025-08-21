@@ -4,6 +4,7 @@ import Sidebar from '../../Components/Technician/Sidebar'
 import ServiceRequestTable_Request from "../../Components/Technician/ServiceRequestTable-Request";
 import ServiceRequestDetails from "../../Components/Technician/ServiceRequestDetails";
 import Footer from '../../Components/Common/Footer'
+import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 
 export default function Service_Request() {
     const [selectedRequest, setSelectedRequest] = useState(null);
@@ -117,7 +118,7 @@ export default function Service_Request() {
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/src/assets/images/technician-dashboard-bg-4.jpg')",
+          backgroundImage: `url(${BG})`,
         }}
       >
         {/* Sidebar */}

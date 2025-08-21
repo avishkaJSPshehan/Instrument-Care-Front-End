@@ -9,6 +9,7 @@ import ServiceRequestRejectSuccess from '../../Components/Technician/ServiceRequ
 import ServiceRequestSuccess from '../../Components/Technician/ServiceRequestSuccess';
 import ServiceRequestFailed from '../../Components/Technician/ServiceRequestFaild';
 import ServiceRequestRejectFailed from '../../Components/Technician/ServiceRequestRejectFaild';
+import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 
 export default function Reject_Service_Request() {
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -124,7 +125,7 @@ export default function Reject_Service_Request() {
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/src/assets/images/technician-dashboard-bg-4.jpg')",
+          backgroundImage: `url(${BG})`,
         }}
       >
         {/* Sidebar */}
