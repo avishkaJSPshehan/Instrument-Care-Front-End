@@ -4,10 +4,10 @@ import Bg from '../../assets/images/hero-bg-5.jpg';
 
 export default function TechnicianRegisterPage() {
   const [formData, setFormData] = useState({
-    name: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    phone: "",
-    skills: "",
+    mobile_number: "",
     password: "",
     confirmPassword: "",
   });
@@ -22,7 +22,7 @@ export default function TechnicianRegisterPage() {
   const handleRegister = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8000/api/technician/register",
+        "http://localhost/instrument-care-back-end/public/api/register",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -73,10 +73,17 @@ export default function TechnicianRegisterPage() {
 
           <input
             type="text"
-            placeholder="Full Name"
+            placeholder="first Name"
             className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formData.first_name}
+            onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="last Name"
+            className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
+            value={formData.last_name}
+            onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
           />
           <input
             type="email"
@@ -93,16 +100,7 @@ export default function TechnicianRegisterPage() {
             className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
             value={formData.phone}
             onChange={(e) =>
-              setFormData({ ...formData, phone: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            placeholder="Technical Skills"
-            className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
-            value={formData.skills}
-            onChange={(e) =>
-              setFormData({ ...formData, skills: e.target.value })
+              setFormData({ ...formData, mobile_number: e.target.value })
             }
           />
           <input
