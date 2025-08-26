@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Bg from '../../assets/images/hero-bg-5.jpg';
 
 export default function LoginPage() {
   const [loginData, setLoginData] = useState({
-    email: "", 
+    username: "", 
     password: "",
   });
+  const [error, setError] = useState(""); // 🔹 error state
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -17,16 +20,37 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/login", {
+      const response = await fetch("http://localhost/instrument-care-back-end/public/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),
       });
 
+      console.log("Login data:", loginData);
       const result = await response.json();
       console.log("Login Response:", result);
+
+      if (result.message === "Login successful") {
+        
+        setError(""); // clear error if success
+
+        localStorage.setItem("isLoggedIn", "true");     // ✅ mark logged-in
+        localStorage.setItem("role", String(result.role));
+        
+        if (result.role === 8) {
+          navigate("/user/dashboard");
+        } else if (result.role === 10) {
+          navigate("/tech/dashboard");
+        } else {
+          setError("Unauthorized role!");
+        }
+      } else {
+        setError("Invalid username or password!"); // 🔹 show error
+      }
+
     } catch (err) {
       console.error("Login failed:", err);
+      setError("Something went wrong. Please try again!"); // 🔹 network/server error
     }
   };
 
@@ -35,13 +59,12 @@ export default function LoginPage() {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
-        style={{
-          backgroundImage: `url(${Bg})`,
-        }}
+        style={{ backgroundImage: `url(${Bg})` }}
       ></div>
 
       {/* Main Login Container */}
       <div className="relative z-10 w-full max-w-6xl flex flex-col md:flex-row bg-gray-50 bg-opacity-90 shadow-2xl rounded-none md:rounded-2xl overflow-hidden transform -translate-y-[5vh]">
+        
         {/* Left Panel - Sign In */}
         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 py-6 sm:px-10 md:px-16 md:py-12">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-center md:text-left">
@@ -65,13 +88,20 @@ export default function LoginPage() {
             Please log in to access the Instrument Care System.
           </p>
 
+          {/* 🔹 Error Notification */}
+          {error && (
+            <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded-md text-center">
+              {error}
+            </div>
+          )}
+
           <input
-            type="email"
-            placeholder="Email"
+            type="username"
+            placeholder="username"
             className="w-full mb-4 p-3 sm:p-4 border rounded-md text-md"
-            value={loginData.email}
+            value={loginData.username}
             onChange={(e) =>
-              setLoginData({ ...loginData, email: e.target.value })
+              setLoginData({ ...loginData, username: e.target.value })
             }
           />
           <input
@@ -87,18 +117,16 @@ export default function LoginPage() {
           <p className="text-sm text-right text-blue-600 mb-5 cursor-pointer">
             Forget Your Password?
           </p>
-          
-          <Link to="/user/dashboard">
-            <button
-              className="w-full bg-orange-400 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-500"
-              onClick={handleLogin}
-            >
-              SIGN IN
-            </button>
-          </Link>
+
+          <button
+            className="w-full bg-orange-400 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-500"
+            onClick={handleLogin}
+          >
+            SIGN IN
+          </button>
         </div>
 
-        {/* Right Panel - Technician Join (hidden on mobile) */}
+        {/* Right Panel - Technician Join */}
         <div
           className="hidden md:flex w-1/2 flex-col justify-center items-center px-12 text-white"
           style={{

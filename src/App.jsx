@@ -9,14 +9,17 @@ import Login from './Pages/Auth/login';
 import Technician_Registration from './Pages/Auth/Technician-Registration';
 import Technician_Dashboard from './Pages/Technician/Dashboard';
 import User_Dashboard from './Pages/Owner/Dashboard';
-import Service_Request from './Pages/Technician/Service_Request'
-import Technician_Profile from './Pages/Technician/Profile'
+import Service_Request from './Pages/Technician/Service_Request';
+import Technician_Profile from './Pages/Technician/Profile';
 import AllServiceRequestPage from './Pages/Technician/AllServiceRequest';
-import AllJobSummaryPage from './Pages/Technician/AllJobSummary'
+import AllJobSummaryPage from './Pages/Technician/AllJobSummary';
 import Accept_Service_Request from './Pages/Technician/ServiceRequestAccept';
 import Reject_Service_Request from './Pages/Technician/ServiceRequestReject';
 import ViewProfile from './Pages/Owner/ViewProfile';
 import ServiceRequest from './Pages/Owner/ServiceRequest';
+
+// 🔹 import ProtectedRoute
+import ProtectedRoute from './Components/auth/ProtectedRoute';
 
 export default function App() {
   return (
@@ -33,21 +36,90 @@ export default function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/tech-registration" element={<Technician_Registration />} />
 
-        {/* ===== Technician Routes ===== */}
-        <Route path="/tech/dashboard" element={<Technician_Dashboard />} />
-        <Route path="/tech/service-request" element={<Service_Request />} />
-        <Route path="/tech/profile" element={<Technician_Profile />} />
-        <Route path="/tech/all-service-request" element={<AllServiceRequestPage />} />
-        <Route path="/tech/all-job-summary" element={<AllJobSummaryPage />} />
-        <Route path="/tech/accept-service-request" element={<Accept_Service_Request />} />
-        <Route path="/tech/reject-service-request" element={<Reject_Service_Request />} />
+        {/* ===== Technician Routes (role: 10) ===== */}
+        <Route
+          path="/tech/dashboard"
+          element={
+            <ProtectedRoute allow={[10]}>
+              <Technician_Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tech/service-request"
+          element={
+            <ProtectedRoute allow={[10]}>
+              <Service_Request />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tech/profile"
+          element={
+            <ProtectedRoute allow={[10]}>
+              <Technician_Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tech/all-service-request"
+          element={
+            <ProtectedRoute allow={[10]}>
+              <AllServiceRequestPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tech/all-job-summary"
+          element={
+            <ProtectedRoute allow={[10]}>
+              <AllJobSummaryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tech/accept-service-request"
+          element={
+            <ProtectedRoute allow={[10]}>
+              <Accept_Service_Request />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tech/reject-service-request"
+          element={
+            <ProtectedRoute allow={[10]}>
+              <Reject_Service_Request />
+            </ProtectedRoute>
+          }
+        />
 
+        {/* ===== User Routes (role: 8) ===== */}
+        <Route
+          path="/user/dashboard"
+          element={
+            <ProtectedRoute allow={[8]}>
+              <User_Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/view-profile"
+          element={
+            <ProtectedRoute allow={[8]}>
+              <ViewProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user/service-request"
+          element={
+            <ProtectedRoute allow={[8]}>
+              <ServiceRequest />
+            </ProtectedRoute>
+          }
+        />
 
-
-        {/* ===== User Routes ===== */}
-        <Route path="/user/dashboard" element={<User_Dashboard />} />
-        <Route path="/user/view-profile" element={<ViewProfile />} />
-        <Route path="/user/service-request" element={<ServiceRequest />} />
       </Routes>
     </Router>
   );
