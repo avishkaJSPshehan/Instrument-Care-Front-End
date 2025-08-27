@@ -34,7 +34,7 @@ export default function LoginPage() {
         
         setError(""); // clear error if success
 
-        localStorage.setItem("isLoggedIn", "true");     // ✅ mark logged-in
+        localStorage.setItem("isLoggedIn", "true");     //  mark logged-in
         localStorage.setItem("role", String(result.role));
         
         if (result.role === 8) {
@@ -45,12 +45,12 @@ export default function LoginPage() {
           setError("Unauthorized role!");
         }
       } else {
-        setError("Invalid username or password!"); // 🔹 show error
+        setError("Invalid username or password!"); //  show error
       }
 
     } catch (err) {
       console.error("Login failed:", err);
-      setError("Something went wrong. Please try again!"); // 🔹 network/server error
+      setError("Something went wrong. Please try again!"); //  network/server error
     }
   };
 
