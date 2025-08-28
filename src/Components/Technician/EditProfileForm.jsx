@@ -21,7 +21,7 @@ export default function EditProfileForm() {
     supervisor_name: "",
     supervisor_Designation: "",
     supervisor_Email: "",
-    supervisor_Contract_No:"",
+    supervisor_Contract_No: "",
     company_name: "",
     company_designation: "",
     years_of_experience: "",
@@ -32,8 +32,60 @@ export default function EditProfileForm() {
     additional_comment: "",
   });
 
+  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Reset form
+  const handleClear = () => {
+    setFormData({
+      fullName: "",
+      nic: "",
+      email: "",
+      address: "",
+      personalNumber: "",
+      bio: "",
+      experiences: "",
+      certificates: "",
+      specialistInstrument: "",
+      current_designation: "",
+      institute_name: "",
+      laboratory_category: "",
+      instrument_category: "",
+      supervisor_name: "",
+      supervisor_Designation: "",
+      supervisor_Email: "",
+      supervisor_Contract_No: "",
+      company_name: "",
+      company_designation: "",
+      years_of_experience: "",
+      certificate_name: "",
+      certificate_issued_year: "",
+      certificate_verification_code: "",
+      guarantee_for_service: "",
+      additional_comment: "",
+    });
+  };
+
+  // Submit form to backend
+  const handleSubmit = async () => {
+    console.log("Submitting profile data:", formData);
+
+    try {
+      const res = await fetch("http://localhost/api/technician-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await res.json();
+      console.log("Backend response:", result);
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("Submit failed:", err);
+      alert("Failed to update profile. Please try again.");
+    }
   };
 
   return (
@@ -49,10 +101,16 @@ export default function EditProfileForm() {
 
       {/* Action Buttons */}
       <div className="flex justify-between mt-4">
-        <button className="bg-orange-300 text-black font-bold py-2 px-6 rounded hover:bg-orange-200">
+        <button
+          onClick={handleClear}
+          className="bg-orange-300 text-black font-bold py-2 px-6 rounded hover:bg-orange-200"
+        >
           Clear
         </button>
-        <button className="bg-orange-600 text-white font-bold py-2 px-6 rounded hover:bg-orange-400">
+        <button
+          onClick={handleSubmit}
+          className="bg-orange-600 text-white font-bold py-2 px-6 rounded hover:bg-orange-400"
+        >
           Update Profile
         </button>
       </div>
