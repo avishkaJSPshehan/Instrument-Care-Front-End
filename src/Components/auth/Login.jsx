@@ -36,7 +36,7 @@ export default function LoginPage() {
 
         localStorage.setItem("isLoggedIn", "true");     //  mark logged-in
         localStorage.setItem("role", String(result.role));
-        localStorage.setItem("username", String(result.username));
+        localStorage.setItem("user_id", String(result.user_id));
         
         if (result.role === 8) {
           navigate("/user/dashboard");
