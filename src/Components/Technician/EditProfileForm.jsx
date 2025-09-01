@@ -11,8 +11,6 @@ export default function EditProfileForm() {
     address: "",
     personalNumber: "",
     bio: "",
-    experiences: "",
-    certificates: "",
     specialistInstrument: "",
     current_designation: "",
     institute_name: "",
@@ -98,8 +96,6 @@ export default function EditProfileForm() {
       address: "",
       personalNumber: "",
       bio: "",
-      experiences: "",
-      certificates: "",
       specialistInstrument: "",
       current_designation: "",
       institute_name: "",
@@ -125,20 +121,28 @@ export default function EditProfileForm() {
     console.log("Submitting profile data:", formData);
 
     try {
-      const res = await fetch("http://localhost/api/technician-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+        const userId = localStorage.getItem("user_id");
 
-      const result = await res.json();
-      console.log("Backend response:", result);
-      alert("Profile updated successfully!");
-    } catch (err) {
-      console.error("Submit failed:", err);
-      alert("Failed to update profile. Please try again.");
-    }
-  };
+        if (!userId) {
+          console.error("No user ID found in localStorage");
+          return;
+        }
+
+        const res = await fetch(`http://localhost/instrument-care-back-end/public/tech/profile/${userId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        const result = await res.json();
+
+        console.log("Backend response:", result);
+        alert("Profile updated successfully!");
+      } catch (err) {
+        console.error("Submit failed:", err);
+        alert("Failed to update profile. Please try again.");
+      }
+    };
 
   return (
     <div className="bg-[#ffffff80] p-4 rounded-lg font-poppins">
