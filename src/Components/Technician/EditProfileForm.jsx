@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
 import ProfileFormLeft from "./ProfileFormLeft";
 import ProfileFormRight from "./ProfileFormRight";
@@ -31,6 +31,58 @@ export default function EditProfileForm() {
     guarantee_for_service: "",
     additional_comment: "",
   });
+
+  // ✅ Fetch user profile data when component mounts
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+
+      const userId = localStorage.getItem("user_id");
+      console.log(userId);
+
+      if (!userId) {
+        console.error("No user ID found in localStorage");
+        return;
+      }
+
+        const res = await fetch(`http://localhost/instrument-care-back-end/public/tech/profile/${userId}`); // <-- replace 44 with logged-in user_id
+        const data = await res.json();
+
+        // Map backend response keys to frontend state
+        setFormData({
+          fullName: data.full_name || "",
+          nic: data.nic || "",
+          email: data.email || "",
+          address: data.address || "",
+          personalNumber: data.personal_number || "",
+          bio: data.bio || "",
+          experiences: data.experiences || "",
+          certificates: data.certificates || "",
+          specialistInstrument: data.specialist_instrument || "",
+          current_designation: data.current_designation || "",
+          institute_name: data.institute_name || "",
+          laboratory_category: data.laboratory_category || "",
+          instrument_category: data.instrument_category || "",
+          supervisor_name: data.supervisor_name || "",
+          supervisor_Designation: data.supervisor_designation || "",
+          supervisor_Email: data.supervisor_email || "",
+          supervisor_Contract_No: data.supervisor_contract_no || "",
+          company_name: data.company_name || "",
+          company_designation: data.company_designation || "",
+          years_of_experience: data.years_of_experience || "",
+          certificate_name: data.certificate_name || "",
+          certificate_issued_year: data.certificate_issued_year || "",
+          certificate_verification_code: data.certificate_verification_code || "",
+          guarantee_for_service: data.guarantee_for_service || "",
+          additional_comment: data.additional_comment || "",
+        });
+      } catch (err) {
+        console.error("Failed to fetch profile:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // Handle input changes
   const handleChange = (e) => {
