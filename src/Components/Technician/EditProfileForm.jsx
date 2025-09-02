@@ -11,7 +11,6 @@ export default function EditProfileForm() {
     address: "",
     personalNumber: "",
     bio: "",
-    specialistInstrument: "",
     current_designation: "",
     institute_name: "",
     laboratory_category: "",
@@ -28,6 +27,7 @@ export default function EditProfileForm() {
     certificate_verification_code: "",
     guarantee_for_service: "",
     additional_comment: "",
+
   });
 
   // ✅ Fetch user profile data when component mounts
@@ -54,9 +54,6 @@ export default function EditProfileForm() {
           address: data.address || "",
           personalNumber: data.personal_number || "",
           bio: data.bio || "",
-          experiences: data.experiences || "",
-          certificates: data.certificates || "",
-          specialistInstrument: data.specialist_instrument || "",
           current_designation: data.current_designation || "",
           institute_name: data.institute_name || "",
           laboratory_category: data.laboratory_category || "",
@@ -95,7 +92,7 @@ export default function EditProfileForm() {
       email: "",
       address: "",
       personalNumber: "",
-      bio: "",
+      bio: "", 
       specialistInstrument: "",
       current_designation: "",
       institute_name: "",
@@ -134,7 +131,8 @@ export default function EditProfileForm() {
           body: JSON.stringify(formData),
         });
 
-        const result = await res.json();
+        const result = await res.text();
+        console.log(result)
 
         console.log("Backend response:", result);
         alert("Profile updated successfully!");

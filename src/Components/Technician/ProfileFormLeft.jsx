@@ -77,7 +77,7 @@ export default function ProfileFormLeft({ formData, handleChange }) {
         Laboratory Category
         <select
           name="laboratory_category"
-          value={formData.contractNo}
+          value={formData.laboratory_category}
           onChange={handleChange}
           className="border rounded p-2 w-full"
         >
@@ -103,7 +103,7 @@ export default function ProfileFormLeft({ formData, handleChange }) {
         Instrument Category
         <select
           name="instrument_category"
-          value={formData.contractNo}
+          value={formData.instrument_category}
           onChange={handleChange}
           className="border rounded p-2 w-full"
         >
