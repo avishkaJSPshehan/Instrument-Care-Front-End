@@ -1,116 +1,37 @@
-import { CheckCircle, Plus, Info,Award, Home, ArrowUpRight,SquareArrowOutUpRight} from "lucide-react";
+import { CheckCircle, Plus, Info, Award, Home, ArrowUpRight, SquareArrowOutUpRight } from "lucide-react";
 import { Link } from 'react-router-dom';
-import ProfileImage from '../../assets/images/profile-image.jpeg';
-
-const technicians = [
-  {
-    name: "Nuwan Perera",
-    position: "Electrical Technician",
-    title: "With over 12 years in automotive electrical systems, I specialize in creating flawless lighting solutions and wiring layouts for custom builds.",
-    followers: 312,
-    institute: "NSF",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Malsha Fernando",
-    position: "Mechanical Technician",
-    title: "Passionate about improving ride comfort, I design and install custom suspension systems that balance performance with durability.",
-    followers: 420,
-    institute: "NRC",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Dilan Gunasekara",
-    position: "Mechanical Technician",
-    title: "From leather stitching to ambient lighting, I transform vehicle interiors into luxurious, personalized spaces for every driver.",
-    followers: 287,
-    institute: "IIT",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Thilina Jayawardena",
-    position: "Electrical Technician",
-    title: "Bringing colors to life with custom paints and flawless restoration work that turn ordinary vehicles into head-turning masterpieces.",
-    followers: 368,
-    institute: "UOC",
-    img: `${ProfileImage}`,
-  },
-    {
-    name: "Nuwan Perera",
-    position: "Electrical Technician",
-    title: "With over 12 years in automotive electrical systems, I specialize in creating flawless lighting solutions and wiring layouts for custom builds.",
-    followers: 312,
-    institute: "NSF",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Malsha Fernando",
-    position: "Mechanical Technician",
-    title: "Passionate about improving ride comfort, I design and install custom suspension systems that balance performance with durability.",
-    followers: 420,
-    institute: "NRC",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Dilan Gunasekara",
-    position: "Mechanical Technician",
-    title: "From leather stitching to ambient lighting, I transform vehicle interiors into luxurious, personalized spaces for every driver.",
-    followers: 287,
-    institute: "IIT",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Thilina Jayawardena",
-    position: "Electrical Technician",
-    title: "Bringing colors to life with custom paints and flawless restoration work that turn ordinary vehicles into head-turning masterpieces.",
-    followers: 368,
-    institute: "UOC",
-    img: `${ProfileImage}`,
-  },
-    {
-    name: "Nuwan Perera",
-    position: "Electrical Technician",
-    title: "With over 12 years in automotive electrical systems, I specialize in creating flawless lighting solutions and wiring layouts for custom builds.",
-    followers: 312,
-    institute: "NSF",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Malsha Fernando",
-    position: "Mechanical Technician",
-    title: "Passionate about improving ride comfort, I design and install custom suspension systems that balance performance with durability.",
-    followers: 420,
-    institute: "NRC",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Dilan Gunasekara",
-    position: "Mechanical Technician",
-    title: "From leather stitching to ambient lighting, I transform vehicle interiors into luxurious, personalized spaces for every driver.",
-    followers: 287,
-    institute: "IIT",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Thilina Jayawardena",
-    position: "Electrical Technician",
-    title: "Bringing colors to life with custom paints and flawless restoration work that turn ordinary vehicles into head-turning masterpieces.",
-    followers: 368,
-    institute: "UOC",
-    img: `${ProfileImage}`,
-  },
- 
-];
+import { useEffect, useState } from 'react';
+import ProfileImage from '../../assets/images/profile-image.jpeg'; // fallback image if needed
 
 export default function TechniciansCard() {
+  const [technicians, setTechnicians] = useState([]);
+
+  useEffect(() => {
+    // Fetch technicians data from backend
+    const fetchTechnicians = async () => {
+      try {
+        const response = await fetch('http://localhost/instrument-care-back-end/public/user/dashboard', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}` // or any auth method
+          }
+        });
+        if (!response.ok) throw new Error('Failed to fetch technicians');
+        const data = await response.json();
+        setTechnicians(data);
+      } catch (error) {
+        console.error('Error fetching technicians:', error);
+      }
+    };
+
+    fetchTechnicians();
+  }, []);
+
   return (
     <section className="bg-[#ffffff] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-white text-3xl font-semibold mb-8 text-center">
-          {/* <span className="text-sm font-semibold font-poppins uppercase text-amber-600 bg-orange-200 rounded-full px-4 py-1 inline-block mb-4 tracking-wide">
-                ── Our All Techinicians ──
-        </span> */}
-        </h2>
+        <h2 className="text-white text-3xl font-semibold mb-8 text-center"></h2>
         
         <div className="grid gap-4 sm:grid-cols-4 lg:grid-cols-4">
           {technicians.map((tech, index) => (
@@ -122,7 +43,7 @@ export default function TechniciansCard() {
                 {/* Image */}
                 <div className="rounded-2xl overflow-hidden mb-4">
                   <img
-                    src={tech.img}
+                    src={tech.img || ProfileImage} // fallback image if none
                     alt={tech.name}
                     className="w-full h-64 object-cover rounded-2xl"
                   />
@@ -138,8 +59,6 @@ export default function TechniciansCard() {
                     {tech.position}
                   </div>
                 </div>
-                
-                
 
                 {/* Title */}
                 <p className="text-gray-400 text-sm mt-1">{tech.title}</p>
