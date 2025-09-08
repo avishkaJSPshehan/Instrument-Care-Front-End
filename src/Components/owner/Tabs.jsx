@@ -1,11 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export default function Tabs() {
+export default function Tabs({ techId }) {
   const tabs = [
     { label: "Technician", path: "/user/dashboard" },
-    { label: "Overview", path: "/user/view-profile" },
-    { label: "Service Request", path: "/user/service-request" },
+    { label: "Overview", path: `/user/view-profile/${techId}` },
+    { label: "Service Request", path: `/user/service-request/${techId}` },
     { label: "Service History", path: "/" },
   ];
 

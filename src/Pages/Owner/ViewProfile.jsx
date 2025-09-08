@@ -1,4 +1,5 @@
 import React from 'react'
+import { useParams } from "react-router-dom";
 import Navbar from '../../Components/owner/Navbar'
 import Footer from '../../Components/Common/Footer'
 import Tabs from "../../Components/owner/Tabs";
@@ -8,6 +9,7 @@ import JobSummaryTable_UserPage from '../../Components/owner/JobSummery-user-pag
 import BG from '../../assets/images/technician-dashboard-bg-4.jpg'
 
 export default function ViewProfile() {
+  const { id } = useParams();
   return (
     <>
       <Navbar />
@@ -24,7 +26,7 @@ export default function ViewProfile() {
           <h1 className="text-2xl font-bold mb-6">Technician Profile</h1>
 
           {/* Tabs */}
-          <Tabs />
+          <Tabs techId={id} />
 
           {/* Main Content */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-4">

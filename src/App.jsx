@@ -104,7 +104,7 @@ export default function App() {
           }
         />
         <Route
-          path="/user/view-profile"
+          path="/user/view-profile/:id"
           element={
             <ProtectedRoute allow={[8]}>
               <ViewProfile />
@@ -112,7 +112,7 @@ export default function App() {
           }
         />
         <Route
-          path="/user/service-request"
+          path="/user/service-request/:id"
           element={
             <ProtectedRoute allow={[8]}>
               <ServiceRequest />
