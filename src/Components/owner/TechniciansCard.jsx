@@ -1,4 +1,4 @@
-import { CheckCircle, Plus, Info, Award, Home, ArrowUpRight, SquareArrowOutUpRight } from "lucide-react";
+import { CheckCircle, Award, Home, ArrowUpRight, SquareArrowOutUpRight } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProfileImage from '../../assets/images/profile-image.jpeg'; // fallback image if needed
@@ -19,6 +19,7 @@ export default function TechniciansCard() {
         });
         if (!response.ok) throw new Error('Failed to fetch technicians');
         const data = await response.json();
+        console.log(data);
         setTechnicians(data);
       } catch (error) {
         console.error('Error fetching technicians:', error);
@@ -43,35 +44,35 @@ export default function TechniciansCard() {
                 {/* Image */}
                 <div className="rounded-2xl overflow-hidden mb-4">
                   <img
-                    src={tech.img || ProfileImage} // fallback image if none
-                    alt={tech.name}
+                    src={ProfileImage} // fallback since API doesn’t provide an image
+                    alt={tech.full_name}
                     className="w-full h-64 object-cover rounded-2xl"
                   />
                 </div>
 
-                {/* Name */}
+                {/* Name & Position */}
                 <div className="flex items-center justify-between mt-4 text-sm text-white">
                   <div className="text-lg font-semibold flex items-center gap-1">
-                    {tech.name}
+                    {tech.full_name}
                     <CheckCircle className="w-4 h-4 text-green-500" />
                   </div>
                   <div className="text-xs font-semibold flex items-center gap-1">
-                    {tech.position}
+                    {tech.company_designation}
                   </div>
                 </div>
 
-                {/* Title */}
-                <p className="text-gray-400 text-sm mt-1">{tech.title}</p>
+                {/* Title (bio) */}
+                <p className="text-gray-400 text-sm mt-1">{tech.bio}</p>
 
                 {/* Stats */}
                 <div className="flex items-center justify-between mt-4 text-sm text-gray-400">
                   <div className="flex items-center gap-1">
                     <Award className="w-4 h-4" />
-                    {tech.followers}
+                    {tech.certificate_name}
                   </div>
                   <div className="flex items-center gap-1">
                     <Home className="w-4 h-4" />
-                    {tech.institute}
+                    {tech.institute_name}
                   </div>
                 </div>
               </div>
@@ -80,7 +81,7 @@ export default function TechniciansCard() {
               <div className="mt-5 flex gap-2">
                 <Link to="/user/view-profile">
                   <button className="flex-1 bg-orange-300 text-black font-semibold text-sm py-2 p-3 rounded-full flex items-center justify-center gap-1 hover:bg-gray-100 transition hover:cursor-pointer">
-                    Viwe Profile <SquareArrowOutUpRight className="w-3 h-3" />
+                    View Profile <SquareArrowOutUpRight className="w-3 h-3" />
                   </button>
                 </Link>
                 <Link to="/user/service-request">
