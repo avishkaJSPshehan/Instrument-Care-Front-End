@@ -65,7 +65,7 @@ export default function TechniciansCard() {
                 <p className="text-gray-400 text-sm mt-1">{tech.bio}</p>
 
                 {/* Stats */}
-                <div className="flex items-center justify-between mt-4 text-sm text-gray-400">
+                <div className="flex flex-col mt-4 text-sm text-gray-400 gap-2">
                   <div className="flex items-center gap-1">
                     <Award className="w-4 h-4" />
                     {tech.certificate_name}
