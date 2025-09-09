@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {} }) {
+  const { id: technicianId } = useParams(); // ✅ grab technician ID from URL
+
   // State to hold all form data
   const [formData, setFormData] = useState({
     full_name: "",
@@ -30,16 +33,29 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
 
   // Submit data to backend
   const handleSubmit = async (e) => {
-    console.log(formData);
     e.preventDefault();
+
+    // Include technician ID in request
+    const payload = {
+      ...formData,
+      technician_id: technicianId,
+    };
+
+    console.log(payload);
+
     try {
-      const response = await fetch("http://localhost/instrument-care-back-end/public/user/service-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost/instrument-care-back-end/public/user/service-request",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`, // ✅ include auth token
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
       const data = await response.json();
       console.log("Response:", data);
       onSend(data); // Call the passed onSend callback
