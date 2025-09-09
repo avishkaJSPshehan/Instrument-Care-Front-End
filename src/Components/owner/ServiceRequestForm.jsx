@@ -41,7 +41,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
       technician_id: technicianId,
     };
 
-    console.log(payload);
+    // console.log(payload);
 
     try {
       const response = await fetch(
