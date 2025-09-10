@@ -9,40 +9,33 @@ import JobSummaryTable_UserPage from '../../Components/owner/JobSummery-user-pag
 import BG from '../../assets/images/technician-dashboard-bg-4.jpg'
 
 export default function ViewProfile() {
-  const { id } = useParams();
+  const { id } = useParams(); // technician ID from URL
+
   return (
     <>
       <Navbar />
 
-      {/* Full Page Layout */}
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${BG})`,
-        }}
+        style={{ backgroundImage: `url(${BG})` }}
       >
-        <div className="w-full  bg-[#ffffff70] p-6 font-poppins rounded-md">
-          {/* Title */}
+        <div className="w-full bg-[#ffffff70] p-6 font-poppins rounded-md">
           <h1 className="text-2xl font-bold mb-6">Technician Profile</h1>
 
-          {/* Tabs */}
-          <Tabs/>
+          <Tabs />
 
-          {/* Main Content */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-4">
-            {/* Profile Left Side */}
             <div className="lg:col-span-1">
               <ProfileCard />
             </div>
 
-            {/* Right Side */}
             <div className="lg:col-span-2 flex flex-col">
-              <DashboardStats />
+              {/* Pass technician ID as prop */}
+              <DashboardStats technicianId={id} />
               <JobSummaryTable_UserPage />
             </div>
           </div>
         </div>
-      
       </div>
       <Footer />
     </>
