@@ -37,6 +37,8 @@ export default function Navbar() {
 
           {/* Desktop profile picture & logout */}
           <div className="hidden md:flex items-center space-x-4 flex-shrink-0">
+            
+
             {/* Profile picture clickable */}
               <img
                 src={profileImage}
@@ -44,12 +46,19 @@ export default function Navbar() {
                 className="h-10 w-10 rounded-full object-cover cursor-pointer border border-gray-300 hover:scale-105 transition-transform"
               />
 
+            {/* All Service Requests */}
+              <Link to="/">
+                <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-300 transition font-poppins">
+                  My Request
+                </button>
+              </Link>
+
             {/* Log out button */}
-            <Link to="/">
-              <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
-                Log Out
-              </button>
-            </Link>
+              <Link to="/">
+                <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
+                  Log Out
+                </button>
+              </Link>
           </div>
 
           {/* Mobile menu icon */}

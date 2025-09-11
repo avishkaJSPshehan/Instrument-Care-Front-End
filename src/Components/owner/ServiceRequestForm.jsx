@@ -51,10 +51,19 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
       return;
     }
 
-    // Include technician ID in request
+    // ✅ Get user_id from localStorage
+    const userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+      alert("User ID not found. Please log in again.");
+      return;
+    }
+
+    // Include technician ID + user ID in request
     const payload = {
       ...formData,
       technician_id: technicianId,
+      user_id: userId, // ✅ added user_id
     };
 
     try {
@@ -69,6 +78,8 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
           body: JSON.stringify(payload),
         }
       );
+
+      console.log("Payload Sent:", payload);
 
       const data = await response.json();
       console.log("Response:", data);

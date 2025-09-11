@@ -20,7 +20,7 @@ export default function TechnicianHeader({ searchTerm, setSearchTerm }) {
             <p className="text-lg md:text-xl font-medium text-gray-700">
               Skilled professionals, passionate about precision and performance.
             </p>
-            <h1 className="text-5xl font-black text-gray-900 mt-10">
+            <h1 className="text-8xl font-black text-gray-900 mt-10">
               Find Your Technicians
             </h1>
 
