@@ -48,14 +48,14 @@ export default function Navbar() {
 
             {/* All Service Requests */}
               <Link to="/">
-                <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-300 transition font-poppins">
+                <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-300 transition font-poppins cursor-pointer">
                   My Request
                 </button>
               </Link>
 
             {/* Log out button */}
               <Link to="/">
-                <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
+                <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins cursor-pointer">
                   Log Out
                 </button>
               </Link>

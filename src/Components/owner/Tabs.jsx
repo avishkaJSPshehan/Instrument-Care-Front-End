@@ -8,7 +8,7 @@ export default function Tabs() {
     { label: "Technician", path: "/user/dashboard" },
     { label: "Overview", path: `/user/view-profile/${id}` },
     { label: "Service Request", path: `/user/service-request/${id}` },
-    { label: "Service History", path: `/user/service-history/${id}` }, // you can adjust this route if needed
+    { label: "Request History", path: `/user/service-history/${id}` }, // you can adjust this route if needed
   ];
 
   return (
