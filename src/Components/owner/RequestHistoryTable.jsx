@@ -2,25 +2,49 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function RequestHistoryTable() {
-  const { id: techId } = useParams(); // Get technician ID from URL
+  const { id: techId } = useParams(); // Technician ID
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedJob, setSelectedJob] = useState(null); // ✅ Track selected job for modal
+  const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
     if (!techId) return;
 
     const fetchServiceRequests = async () => {
+      setLoading(true);
       try {
+        const userId = localStorage.getItem("user_id"); // ✅ get logged-in user ID
+        if (!userId) throw new Error("User not logged in");
+
         const response = await fetch(
-          `http://localhost/instrument-care-back-end/public/user/service-request/${techId}`
+          `http://localhost/instrument-care-back-end/public/user/service-request/${techId}/my-requests`,
+          {
+            method: "POST", // POST request to send user_id
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({ user_id: userId }), // ✅ send user_id in body
+          }
         );
-        if (!response.ok) throw new Error("No data found or server error");
+
         const data = await response.json();
-        setJobs(Array.isArray(data) ? data : []); // Ensure it's always an array
+
+        if (!response.ok) {
+          throw new Error(data.error || "No data found or server error");
+        }
+
+        // ✅ Support both array and object responses
+        if (Array.isArray(data)) {
+          setJobs(data);
+        } else if (data.data && Array.isArray(data.data)) {
+          setJobs(data.data);
+        } else {
+          setJobs([]);
+        }
       } catch (error) {
         console.error("Error fetching service requests:", error);
-        setJobs([]); // Treat as empty if server not found or error occurs
+        setJobs([]);
       } finally {
         setLoading(false);
       }
@@ -50,19 +74,13 @@ export default function RequestHistoryTable() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="text-center text-gray-500 italic p-4"
-                  >
+                  <td colSpan={5} className="text-center text-gray-500 italic p-4">
                     Loading...
                   </td>
                 </tr>
               ) : jobs.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="text-center text-gray-500 italic p-4"
-                  >
+                  <td colSpan={5} className="text-center text-gray-500 italic p-4">
                     No job summaries found.
                   </td>
                 </tr>
@@ -71,12 +89,12 @@ export default function RequestHistoryTable() {
                   <tr
                     key={job.id}
                     className="border-b hover:bg-gray-100 cursor-pointer"
-                    onClick={() => setSelectedJob(job)} // ✅ Open modal with clicked job
+                    onClick={() => setSelectedJob(job)}
                   >
                     <td className="p-2">{job.instrument_name}</td>
                     <td className="p-2">{job.full_name}</td>
-                    <td className="p-2">{job.created_at.split(" ")[0]}</td>
-                    <td className="p-2">{job.updated_at.split(" ")[0]}</td>
+                    <td className="p-2">{job.created_at?.split(" ")[0]}</td>
+                    <td className="p-2">{job.updated_at?.split(" ")[0]}</td>
                     <td
                       className={`p-2 font-bold ${
                         job.status === "In Progress"
@@ -100,64 +118,29 @@ export default function RequestHistoryTable() {
         </div>
       </div>
 
-      {/* ✅ Popup Modal */}
+      {/* Popup Modal */}
       {selectedJob && (
-        <div className="fixed inset-0 bg-[#00000090] bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-[#00000090] flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-[800px] max-h-[80vh] overflow-y-auto">
             <h2 className="text-lg font-bold mb-4">
               Service Request #{selectedJob.id}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <p>
-                <strong>Full Name:</strong> {selectedJob.full_name}
-              </p>
-              <p>
-                <strong>Email:</strong> {selectedJob.email}
-              </p>
-              <p>
-                <strong>Contact:</strong> {selectedJob.contact_number}
-              </p>
-              <p>
-                <strong>Address:</strong> {selectedJob.physical_address}
-              </p>
-              <p>
-                <strong>Institute:</strong> {selectedJob.institute_name}
-              </p>
-              <p>
-                <strong>Institute Address:</strong>{" "}
-                {selectedJob.institute_address}
-              </p>
-              <p>
-                <strong>Instrument:</strong> {selectedJob.instrument_name}
-              </p>
-              <p>
-                <strong>Brand:</strong> {selectedJob.instrument_brand}
-              </p>
-              <p>
-                <strong>Model:</strong> {selectedJob.instrument_model}
-              </p>
-              <p>
-                <strong>Manufacturer:</strong>{" "}
-                {selectedJob.instrument_manufacturer}
-              </p>
-              <p>
-                <strong>Year:</strong> {selectedJob.manufactured_year}
-              </p>
-              <p>
-                <strong>Testing Type:</strong>{" "}
-                {selectedJob.product_testing_type}
-              </p>
-              <p>
-                <strong>Testing Parameter:</strong>{" "}
-                {selectedJob.testing_parameter}
-              </p>
-              <p>
-                <strong>Consumption Period:</strong>{" "}
-                {selectedJob.consumption_period}
-              </p>
-              <p className="col-span-2">
-                <strong>Issue:</strong> {selectedJob.issue_description}
-              </p>
+              <p><strong>Full Name:</strong> {selectedJob.full_name}</p>
+              <p><strong>Email:</strong> {selectedJob.email}</p>
+              <p><strong>Contact:</strong> {selectedJob.contact_number}</p>
+              <p><strong>Address:</strong> {selectedJob.physical_address}</p>
+              <p><strong>Institute:</strong> {selectedJob.institute_name}</p>
+              <p><strong>Institute Address:</strong> {selectedJob.institute_address}</p>
+              <p><strong>Instrument:</strong> {selectedJob.instrument_name}</p>
+              <p><strong>Brand:</strong> {selectedJob.instrument_brand}</p>
+              <p><strong>Model:</strong> {selectedJob.instrument_model}</p>
+              <p><strong>Manufacturer:</strong> {selectedJob.instrument_manufacturer}</p>
+              <p><strong>Year:</strong> {selectedJob.manufactured_year}</p>
+              <p><strong>Testing Type:</strong> {selectedJob.product_testing_type}</p>
+              <p><strong>Testing Parameter:</strong> {selectedJob.testing_parameter}</p>
+              <p><strong>Consumption Period:</strong> {selectedJob.consumption_period}</p>
+              <p className="col-span-2"><strong>Issue:</strong> {selectedJob.issue_description}</p>
               <p className="col-span-2">
                 <strong>Status:</strong>{" "}
                 <span
@@ -179,7 +162,7 @@ export default function RequestHistoryTable() {
             </div>
             <div className="flex justify-end mt-6">
               <button
-                onClick={() => setSelectedJob(null)} // ✅ Close modal
+                onClick={() => setSelectedJob(null)}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               >
                 Close
