@@ -31,17 +31,31 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
     });
   };
 
+  // Validation function
+  const validateForm = () => {
+    for (const key in formData) {
+      if (!formData[key] || formData[key].trim() === "") {
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Submit data to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate before submit
+    if (!validateForm()) {
+      alert("Please fill out all required fields before submitting.");
+      return;
+    }
 
     // Include technician ID in request
     const payload = {
       ...formData,
       technician_id: technicianId,
     };
-
-    // console.log(payload);
 
     try {
       const response = await fetch(
@@ -82,6 +96,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
                 className="w-full border rounded px-3 py-1"
                 value={formData.full_name}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -96,6 +111,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
                 className="w-full border rounded px-3 py-1"
                 value={formData.email}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -106,10 +122,11 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
               <input
                 type="text"
                 name="physical_address"
-                placeholder="main Road, Pitipana, Homagama"
+                placeholder="Main Road, Pitipana, Homagama"
                 className="w-full border rounded px-3 py-1"
                 value={formData.physical_address}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -124,6 +141,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
                 className="w-full border rounded px-3 py-1"
                 value={formData.contact_number}
                 onChange={handleChange}
+                required
               />
             </div>
           </div>
@@ -146,6 +164,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
                 className="w-full border rounded px-3 py-1"
                 value={formData.institute_name}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -160,6 +179,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
                 className="w-full border rounded px-3 py-1"
                 value={formData.institute_address}
                 onChange={handleChange}
+                required
               />
             </div>
           </div>
@@ -192,6 +212,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
                   className="w-full border rounded px-3 py-1"
                   value={formData[field.name]}
                   onChange={handleChange}
+                  required
                 />
               </div>
             ))}
@@ -208,6 +229,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
               className="w-full border rounded px-3 py-2"
               value={formData.issue_description}
               onChange={handleChange}
+              required
             />
           </div>
         </div>
