@@ -18,6 +18,7 @@ import Reject_Service_Request from './Pages/Technician/ServiceRequestReject';
 import ViewProfile from './Pages/Owner/ViewProfile';
 import ServiceRequest from './Pages/Owner/ServiceRequest';
 import RequestHistory from './Pages/Owner/RequestHistory';
+import MyRequest from './Pages/Owner/MyRequest';
 
 // 🔹 import ProtectedRoute
 import ProtectedRoute from './Components/auth/ProtectedRoute';
@@ -127,6 +128,15 @@ export default function App() {
           element={
             <ProtectedRoute allow={[8]}>
               <RequestHistory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/user/my-request"
+          element={
+            <ProtectedRoute allow={[8]}>
+              <MyRequest />
             </ProtectedRoute>
           }
         />

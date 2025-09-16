@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function RequestHistoryTable() {
+export default function MyPreviousRequestHistoryTable() {
   const { id: techId } = useParams(); // Technician ID
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);

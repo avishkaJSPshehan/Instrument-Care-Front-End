@@ -47,7 +47,7 @@ export default function Navbar() {
               />
 
             {/* All Service Requests */}
-              <Link to="/">
+              <Link to="/user/my-request">
                 <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-300 transition font-poppins cursor-pointer">
                   My Request
                 </button>
