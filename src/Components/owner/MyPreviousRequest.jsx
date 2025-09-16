@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 
 export default function MyPreviousRequestHistoryTable() {
-  const { id: techId } = useParams(); // Technician ID
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState(null);
 
   useEffect(() => {
-    if (!techId) return;
-
     const fetchServiceRequests = async () => {
       setLoading(true);
       try {
@@ -17,7 +13,7 @@ export default function MyPreviousRequestHistoryTable() {
         if (!userId) throw new Error("User not logged in");
 
         const response = await fetch(
-          `http://localhost/instrument-care-back-end/public/user/service-request/${techId}/my-requests`,
+          `http://localhost/instrument-care-back-end/public/user/my-requests`,
           {
             method: "POST", // POST request to send user_id
             headers: {
@@ -27,11 +23,8 @@ export default function MyPreviousRequestHistoryTable() {
             body: JSON.stringify({ user_id: userId }), // ✅ send user_id in body
           }
         );
-        console.log(response);
-
 
         const data = await response.json();
-        console.log(data);
 
         if (!response.ok) {
           throw new Error(data.error || "No data found or server error");
@@ -54,7 +47,7 @@ export default function MyPreviousRequestHistoryTable() {
     };
 
     fetchServiceRequests();
-  }, [techId]);
+  }, []); // ✅ Removed techId dependency
 
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins">
