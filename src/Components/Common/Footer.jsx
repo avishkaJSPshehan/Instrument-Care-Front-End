@@ -16,18 +16,10 @@ export default function Footer() {
             Instrument Care
           </div>
           <div className="flex flex-wrap items-center gap-6 text-lg text-white font-poppins ">
-            <Link to="/">
-              <a href="#" className="hover:text-orange-600">Home</a>
-            </Link>
-            <Link to="/about">
-              <a href="#" className="hover:text-orange-600">About</a>
-            </Link>
-            <Link to="/technician">
-              <a href="#" className="hover:text-orange-600">Technician</a>
-            </Link>
-            <Link to="/contact">
-              <a href="#" className="hover:text-orange-600">Contact Us</a>
-            </Link>
+            <Link to="/" className="hover:text-orange-600">Home</Link>
+            <Link to="/about" className="hover:text-orange-600">About</Link>
+            <Link to="/technician" className="hover:text-orange-600">Technician</Link>
+            <Link to="/contact" className="hover:text-orange-600">Contact Us</Link>
           </div>
         </div>
 
