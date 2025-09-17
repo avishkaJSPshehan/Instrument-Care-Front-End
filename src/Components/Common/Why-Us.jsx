@@ -2,8 +2,21 @@ import React from "react";
 import { CheckCircle } from "lucide-react"; // Icon
 import whyUsBg from '../../assets/images/why-us-bg.jpg';
 import techImage from '../../assets/images/hero-image-2.png';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function WhyUs() {
+
+  const navigate = useNavigate();
+  
+    const handleFindTechnician = () => {
+      const userId = localStorage.getItem("user_id");
+      if (userId) {
+        navigate("/user/dashboard");
+      } else {
+        navigate("/auth/login");
+      }
+    };
+
   return (
     <section
       className="py-16 px-4 bg-cover bg-center bg-no-repeat"
@@ -48,7 +61,10 @@ export default function WhyUs() {
             </li>
           </ul>
 
-          <button className="bg-orange-400 text-white px-6 py-3 rounded-md font-medium hover:bg-orange-500 transition">
+          <button 
+            className="bg-orange-400 text-white px-6 py-3 rounded-md font-medium hover:bg-orange-500 transition"
+            onClick={handleFindTechnician}
+          >
             Find Now →
           </button>
         </div>

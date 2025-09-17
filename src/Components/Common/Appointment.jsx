@@ -1,7 +1,19 @@
 import React from "react";
 import AppointmentBg from '../../assets/images/appointment-bg.jpg';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AppointmentSection() {
+
+  const navigate = useNavigate();
+  const handleFindTechnician = () => {
+      const userId = localStorage.getItem("user_id");
+      if (userId) {
+        navigate("/user/dashboard");
+      } else {
+        navigate("/auth/login");
+      }
+    };
+
   return (
     <section
       className="relative bg-cover bg-center bg-no-repeat py-24 px-6 text-center"
@@ -23,7 +35,10 @@ export default function AppointmentSection() {
           quality handyman solutions! */}
           Start your repair process quickly and easily with trusted professionals at your fingertips.
         </p>
-        <button className="inline-flex items-center justify-center px-6 py-3 bg-orange-200 text-[#FF8356] font-poppins rounded-lg font-semibold hover:opacity-90 transition hover:bg-orange-600 hover:text-white">
+        <button 
+          className="inline-flex items-center justify-center px-6 py-3 bg-orange-200 text-[#FF8356] font-poppins rounded-lg font-semibold hover:opacity-90 transition hover:bg-orange-600 hover:text-white"
+          onClick={handleFindTechnician}
+        >
           Find a Technician
           <span className="ml-2 text-lg">➝</span>
         </button>

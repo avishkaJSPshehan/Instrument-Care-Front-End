@@ -8,8 +8,21 @@ import {
 
 import TechBg from '../../assets/images/technician-hero-bg-4.jpg';
 import Techinician from '../../assets/images/Technician-image.jpg';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function TechnicianHeader() {
+
+  const navigate = useNavigate();
+    
+      const handleFindTechnician = () => {
+        const userId = localStorage.getItem("user_id");
+        if (userId) {
+          navigate("/user/dashboard");
+        } else {
+          navigate("/auth/login");
+        }
+      };
+
   return (
     <section className="relative overflow-hidden">
       {/* Background Image */}
@@ -37,7 +50,10 @@ export default function TechnicianHeader() {
                 Meet Our Technicians
               </h1>
 
-              <button className="bg-orange-300 hover:bg-orange-400 hover:text-black text-black rounded-lg px-6 py-4 mt-10 text-base font-semibold tracking-wide transition-all duration-300 hover:scale-105 cursor-pointer">
+              <button 
+                className="bg-orange-300 hover:bg-orange-400 hover:text-black text-black rounded-lg px-6 py-4 mt-10 text-base font-semibold tracking-wide transition-all duration-300 hover:scale-105 cursor-pointer"
+                onClick={handleFindTechnician}
+              >
                 Find a Technician
               </button>
             </div>
