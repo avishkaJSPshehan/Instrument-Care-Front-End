@@ -4,8 +4,21 @@ import { Link } from "react-router-dom";
 import NationalLogo from "../../assets/images/national-logo.jpg";
 import NsfLogo from "../../assets/images/NSF-Logo.jpg";
 import profileImage from '../../assets/images/owner_profile.jpg';
+import { useNavigate } from "react-router-dom";
+import { doFrontendLogout /* or logoutWithBackend */ } from "../auth/Logout";
 
 export default function Navbar() {
+
+  const navigate = useNavigate();
+  
+    const handleLogout = async () => {
+      // EITHER: await logoutWithBackend();   // if you have an API
+      doFrontendLogout();                     // frontend-only
+  
+      // use replace so the Back button won't jump into a protected page
+      navigate("/", { replace: true });
+    };
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = ["Home", "About", "Technician", "Contact"];
@@ -54,11 +67,14 @@ export default function Navbar() {
               </Link>
 
             {/* Log out button */}
-              <Link to="/">
-                <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins cursor-pointer">
+
+              <button
+                className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins cursor-pointer"
+                onClick={handleLogout}
+              >
                   Log Out
-                </button>
-              </Link>
+              </button>
+
           </div>
 
           {/* Mobile menu icon */}

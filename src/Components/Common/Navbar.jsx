@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import NationalLogo from "../../assets/images/national-logo.jpg";
 import NsfLogo from "../../assets/images/NSF-Logo.jpg";
 
-
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
