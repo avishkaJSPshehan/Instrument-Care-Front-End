@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import NationalLogo from "../../assets/images/national-logo.jpg";
 import NsfLogo from "../../assets/images/NSF-Logo.jpg";
 
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    setIsLoggedIn(!!userId);
+  }, []);
 
   const navLinks = ["Home", "About", "Technician", "Contact"];
 
@@ -17,7 +24,6 @@ export default function Navbar() {
           <div className="flex items-center space-x-2">
             <img src={NationalLogo} alt="National Logo" className="h-18 w-18" />
             <img src={NsfLogo} alt="NSF Logo" className="h-13 w-25" />
-            {/* <span className="text-xl font-semibold text-gray-800">Instrument Care</span> */}
           </div>
 
           {/* Desktop nav links */}
@@ -35,19 +41,20 @@ export default function Navbar() {
 
           {/* Right side buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* <a href="#" className="text-orange-600 font-medium hover:underline font-poppins">
-              Log In
-            </a> */}
-            <Link to="/auth/login">
-              <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins">
-                Log In
-              </button>
-            </Link>
-            <Link to="/auth/tech-registration">
-              <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
-                Become a Technician
-              </button>
-            </Link>
+            {!isLoggedIn && (
+              <>
+                <Link to="/auth/login">
+                  <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins">
+                    Log In
+                  </button>
+                </Link>
+                <Link to="/auth/tech-registration">
+                  <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
+                    Become a Technician
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Hamburger icon */}
@@ -73,15 +80,22 @@ export default function Navbar() {
                 {link}
               </Link>
             ))}
-            <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins">
-              Log In
-            </button>
-            <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
-              Become a Technician
-            </button>
+            {!isLoggedIn && (
+              <>
+                <Link to="/auth/login">
+                  <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins">
+                    Log In
+                  </button>
+                </Link>
+                <Link to="/auth/tech-registration">
+                  <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
+                    Become a Technician
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         )}
-        {/* Need to do Tablet Responsive */}
       </div>
     </nav>
   );
