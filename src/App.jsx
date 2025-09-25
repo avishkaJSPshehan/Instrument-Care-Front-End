@@ -19,6 +19,7 @@ import ViewProfile from './Pages/Owner/ViewProfile';
 import ServiceRequest from './Pages/Owner/ServiceRequest';
 import RequestHistory from './Pages/Owner/RequestHistory';
 import MyRequest from './Pages/Owner/MyRequest';
+import VerifyEmail from './Pages/Auth/VerifyEmail';
 
 // 🔹 import ProtectedRoute
 import ProtectedRoute from './Components/auth/ProtectedRoute';
@@ -37,6 +38,7 @@ export default function App() {
         {/* ===== Auth Routes ===== */}
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/tech-registration" element={<Technician_Registration />} />
+        <Route path="/auth/verify-email" element={<VerifyEmail/>}/>
 
         {/* ===== Technician Routes (role: 10) ===== */}
         <Route
