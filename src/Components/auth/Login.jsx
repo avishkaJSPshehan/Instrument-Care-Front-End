@@ -56,7 +56,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative w-screen h-[210vh] flex items-center justify-center m-0 p-0">
+    <div className="relative w-screen h-screen flex items-center justify-center m-0 p-0">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
