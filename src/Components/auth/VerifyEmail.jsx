@@ -111,8 +111,8 @@ export default function EmailVerificationPage() {
           className="hidden md:flex w-1/2 flex-col justify-center items-center px-12 text-white"
           style={{
             background: "linear-gradient(135deg, #e78f0c, #e78f0c)",
-            borderTopLeftRadius: "120px",
-            borderBottomLeftRadius: "120px",
+            borderTopLeftRadius: "60px",
+            borderBottomLeftRadius: "60px",
           }}
         >
           <h2 className="text-3xl sm:text-4xl font-bold mb-3">

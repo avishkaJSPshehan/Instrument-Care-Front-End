@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Bg from '../../assets/images/hero-bg-5.jpg';
 
 export default function TechnicianRegisterPage() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -29,10 +31,19 @@ export default function TechnicianRegisterPage() {
           body: JSON.stringify(formData),
         }
       );
+
       const result = await response.json();
       console.log("Registration Response:", result);
+
+      // ✅ Check success condition (adjust based on your API response structure)
+      if (result.success || result.message === "User registered successfully") {
+        navigate("/auth/verify-email"); // go to verify email page
+      } else {
+        alert(result.message || "Registration failed. Please try again.");
+      }
     } catch (err) {
       console.error("Registration failed:", err);
+      alert("Something went wrong. Please try again later.");
     }
   };
 
@@ -41,13 +52,12 @@ export default function TechnicianRegisterPage() {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
-        style={{
-          backgroundImage: `url(${Bg})`,
-        }}
+        style={{ backgroundImage: `url(${Bg})` }}
       ></div>
 
       {/* Main Container */}
       <div className="relative h-150 z-10 w-full max-w-6xl flex flex-col md:flex-row bg-gray-50 bg-opacity-90 shadow-2xl rounded-none md:rounded-2xl overflow-hidden transform -translate-y-[5vh]">
+        
         {/* Orange Side */}
         <div
           className="hidden md:flex w-1/2 flex-col justify-center items-center px-8 lg:px-12 text-white"
@@ -73,14 +83,14 @@ export default function TechnicianRegisterPage() {
 
           <input
             type="text"
-            placeholder="first Name"
+            placeholder="First Name"
             className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
             value={formData.first_name}
             onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
           />
           <input
             type="text"
-            placeholder="last Name"
+            placeholder="Last Name"
             className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
             value={formData.last_name}
             onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
@@ -90,56 +100,36 @@ export default function TechnicianRegisterPage() {
             placeholder="Email"
             className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
             value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           />
           <input
             type="text"
             placeholder="Phone Number"
             className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
-            value={formData.phone}
-            onChange={(e) =>
-              setFormData({ ...formData, mobile_number: e.target.value })
-            }
+            value={formData.mobile_number}
+            onChange={(e) => setFormData({ ...formData, mobile_number: e.target.value })}
           />
           <input
             type="password"
             placeholder="Password"
             className="w-full mb-3 p-3 sm:p-4 border rounded-md text-md font-poppins"
             value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           />
           <input
             type="password"
             placeholder="Confirm Password"
             className="w-full mb-4 p-3 sm:p-4 border rounded-md text-md font-poppins"
             value={formData.confirmPassword}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                confirmPassword: e.target.value,
-              })
-            }
+            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
           />
 
-  
-            <Link to="/tech/dashboard">
-              <button onClick={handleRegister}  className="w-full bg-orange-400 text-white py-3 rounded-md text-lg font-semibold font-poppins hover:bg-orange-600 transition">
-                REGISTER
-              </button>
-            </Link>
-
-          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/">
-              <button className="w-full bg-orange-200 text-orange-400 py-3 rounded-md text-lg font-semibold font-poppins hover:bg-orange-100 transition">
-                GO BACK
-              </button>
-            </Link>
-          </div> */}
-
+          <button
+            onClick={handleRegister}
+            className="w-full bg-orange-400 text-white py-3 rounded-md text-lg font-semibold font-poppins hover:bg-orange-600 transition"
+          >
+            REGISTER
+          </button>
         </div>
       </div>
     </div>
