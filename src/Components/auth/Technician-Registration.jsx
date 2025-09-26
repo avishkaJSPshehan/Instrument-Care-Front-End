@@ -35,15 +35,15 @@ export default function TechnicianRegisterPage() {
       const result = await response.json();
       console.log("Registration Response:", result);
 
-      // ✅ Check success condition (adjust based on your API response structure)
-      if (result.success || result.message === "User registered successfully. Verification email sent.") {
-        navigate("/auth/verify-email"); // go to verify email page
+      // ✅ Navigate to verify-email page with user_id
+      if (result.message === "User registered successfully. Verification email sent.") {
+        navigate("/auth/verify-email", { state: { userId: result.user_id, email: formData.email } });
       } else {
         alert(result.message || "Registration failed. Please try again.");
       }
     } catch (err) {
-      console.error("Registration failed:", err);
-      alert("Something went wrong. Please try again later.");
+        console.error("Registration failed:", err);
+        alert("Something went wrong. Please try again later.");
     }
   };
 
