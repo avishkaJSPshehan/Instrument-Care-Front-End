@@ -36,7 +36,7 @@ export default function TechnicianRegisterPage() {
       console.log("Registration Response:", result);
 
       // ✅ Check success condition (adjust based on your API response structure)
-      if (result.success || result.message === "User registered successfully") {
+      if (result.success || result.message === "User registered successfully. Verification email sent.") {
         navigate("/auth/verify-email"); // go to verify email page
       } else {
         alert(result.message || "Registration failed. Please try again.");
