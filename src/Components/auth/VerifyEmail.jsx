@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Bg from '../../assets/images/hero-bg-5.jpg';
 
 export default function EmailVerificationPage() {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]); // 🔹 6-digit OTP state
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState(""); 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // 🔹 Get userId from navigation state
+  const { userId, email } = location.state || {};
 
   useEffect(() => {
+    if (!userId) {
+      // If no userId, redirect back to login/register
+      navigate("/auth/login");
+    }
     document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
+    return () => { document.body.style.overflow = "auto"; };
+  }, [userId, navigate]);
 
   const handleOtpChange = (index, value) => {
-    if (/^\d?$/.test(value)) { // only digits allowed
+    if (/^\d?$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      // Move focus to next input
-      if (value && index < 5) {
-        document.getElementById(`otp-${index + 1}`).focus();
-      }
+      if (value && index < 5) document.getElementById(`otp-${index + 1}`).focus();
     }
   };
 
@@ -37,7 +40,7 @@ export default function EmailVerificationPage() {
       const response = await fetch("http://localhost/instrument-care-back-end/public/api/verify-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ otp: enteredOtp }),
+        body: JSON.stringify({ user_id: userId, otp: enteredOtp }),
       });
 
       const result = await response.json();
@@ -45,7 +48,7 @@ export default function EmailVerificationPage() {
 
       if (result.message === "Verification successful") {
         setError("");
-        navigate("/auth/login"); // redirect to login after success
+        navigate("/auth/login");
       } else {
         setError("Invalid OTP. Please try again!");
       }
@@ -57,16 +60,11 @@ export default function EmailVerificationPage() {
 
   return (
     <div className="relative w-screen h-screen flex items-center justify-center m-0 p-0">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center z-0"
-        style={{ backgroundImage: `url(${Bg})` }}
-      ></div>
+      {/* Background */}
+      <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: `url(${Bg})` }}></div>
 
-      {/* Main Container */}
       <div className="relative z-10 w-full max-w-6xl flex flex-col md:flex-row bg-gray-50 bg-opacity-90 shadow-2xl rounded-none md:rounded-2xl overflow-hidden transform -translate-y-[5vh]">
         
-        {/* Left Panel - Email Verification */}
         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 py-6 sm:px-10 md:px-16 md:py-12">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-center md:text-left">
             Verify Your Email
@@ -76,14 +74,12 @@ export default function EmailVerificationPage() {
             Enter the 6-digit code sent to your email to continue.
           </p>
 
-          {/* 🔹 Error Notification */}
           {error && (
             <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded-md text-center">
               {error}
             </div>
           )}
 
-          {/* OTP Input Boxes */}
           <div className="flex justify-between mb-6 gap-2">
             {otp.map((digit, index) => (
               <input
@@ -106,18 +102,9 @@ export default function EmailVerificationPage() {
           </button>
         </div>
 
-        {/* Right Panel - Info Section */}
-        <div
-          className="hidden md:flex w-1/2 flex-col justify-center items-center px-12 text-white"
-          style={{
-            background: "linear-gradient(135deg, #e78f0c, #e78f0c)",
-            borderTopLeftRadius: "60px",
-            borderBottomLeftRadius: "60px",
-          }}
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-3">
-            Need Help?
-          </h2>
+        <div className="hidden md:flex w-1/2 flex-col justify-center items-center px-12 text-white"
+             style={{ background: "linear-gradient(135deg, #e78f0c, #e78f0c)", borderTopLeftRadius: "60px", borderBottomLeftRadius: "60px" }}>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-3">Need Help?</h2>
           <p className="text-lg text-center mb-8">
             Didn't receive the code? Check your spam folder or request a new verification code.
           </p>
@@ -127,6 +114,7 @@ export default function EmailVerificationPage() {
             </button>
           </Link>
         </div>
+
       </div>
     </div>
   );
