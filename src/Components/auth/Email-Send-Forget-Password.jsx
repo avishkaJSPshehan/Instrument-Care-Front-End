@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Bg from "../../assets/images/hero-bg-5.jpg";
-import ForgotImg from "../../assets/images/fp-email-sending.webp"; // add your illustration here
+import ForgotImg from "../../assets/images/fp-email-verifying.png"; // add your illustration here
 
-export default function EmailEntry_ForgotPassword() {
+export default function EmailSend_ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -65,11 +65,11 @@ export default function EmailEntry_ForgotPassword() {
 
         {/* Title */}
         <h2 className="text-3xl sm:text-4xl font-bold mb-3 text-center">
-          Forgot your password?
+          Check your email!
         </h2>
 
         <p className="text-sm sm:text-md text-gray-500 mb-6 text-center">
-          Enter your email so we can send you a password reset link.
+          Thanks! An email was sent that will ask you to click on a link to verify that you own this account. <br/>If you don't get the email, please contact support@kinety.com
         </p>
 
         {/* 🔹 Success / Error Messages */}
@@ -84,35 +84,22 @@ export default function EmailEntry_ForgotPassword() {
           </div>
         )}
 
-        {/* Email Input (shorter height) */}
-        <div className="flex justify-center">
-            <input
-                type="email"
-                placeholder="e.g. username@kinety.com"
-                className="w-lg mb-3 px-3 py-2 border rounded-md text-sm"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-        </div>
-
 
         {/* Submit Button (shorter height) */}
         <div className="flex justify-center">
-            <Link to='/auth/email-send-forgot-password'>
-                <button
-                    className="w-lg bg-orange-400 text-white py-2 rounded-md text-md font-semibold hover:bg-orange-500"
-                    onClick={handleForgotPassword}
-                >
-                    Send Email
-                </button>
-            </Link>
+            <button
+                className="w-lg bg-orange-400 text-white py-2 rounded-md text-md font-semibold hover:bg-orange-500"
+                onClick={handleForgotPassword}
+            >
+                Open Email Inbox
+            </button>
         </div>
 
 
         {/* Back to Login */}
         <div className="mt-4 text-center">
-          <Link to="/auth/login" className="text-sm text-blue-600 hover:underline">
-            ← Back to Login
+          <Link to="/auth/email-entry-forgot-password" className="text-sm text-blue-600 hover:underline">
+            ← Resend Email
           </Link>
         </div>
       </div>
