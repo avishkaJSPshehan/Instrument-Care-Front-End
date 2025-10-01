@@ -69,7 +69,7 @@ export default function EmailSend_ForgotPassword() {
         </h2>
 
         <p className="text-sm sm:text-md text-gray-500 mb-6 text-center">
-          Thanks! An email was sent that will ask you to click on a link to verify that you own this account. <br/>If you don't get the email, please contact support@kinety.com
+          Thanks! An email was sent that will ask you to click on a link to verify that you own this account. <br/>If you don't get the email, please contact support@nsf.gov.lk
         </p>
 
         {/* 🔹 Success / Error Messages */}
