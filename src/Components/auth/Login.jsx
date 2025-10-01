@@ -115,9 +115,13 @@ export default function LoginPage() {
             }
           />
 
-          <p className="text-sm text-right text-blue-600 mb-5 cursor-pointer">
-            Forget Your Password?
-          </p>
+          <div className="w-full text-right mb-5">
+            <Link to="/auth/email-entry-forgot-password">
+              <button className="text-sm text-blue-600 cursor-pointer">
+                Forget Your Password?
+              </button>
+            </Link>
+          </div>
 
           <button
             className="w-full bg-orange-400 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-500"
