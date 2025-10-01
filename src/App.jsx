@@ -20,6 +20,7 @@ import ServiceRequest from './Pages/Owner/ServiceRequest';
 import RequestHistory from './Pages/Owner/RequestHistory';
 import MyRequest from './Pages/Owner/MyRequest';
 import VerifyEmail from './Pages/Auth/VerifyEmail';
+import EmailEntry_ForgotPassword from './Pages/Auth/Email-Entry-Forget-Password';
 
 // 🔹 import ProtectedRoute
 import ProtectedRoute from './Components/auth/ProtectedRoute';
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/tech-registration" element={<Technician_Registration />} />
         <Route path="/auth/verify-email" element={<VerifyEmail/>}/>
+        <Route path="/auth/email-entry-forgot-password" element={<EmailEntry_ForgotPassword/>}/>
 
         {/* ===== Technician Routes (role: 10) ===== */}
         <Route
