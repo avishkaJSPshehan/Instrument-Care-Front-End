@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Bg from "../../assets/images/hero-bg-5.jpg";
-import ForgotImg from "../../assets/images/national-logo.png"; // add your illustration here
+import ForgotImg from "../../assets/images/fp-email-sending.webp"; // add your illustration here
 
 export default function EmailEntry_ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -59,7 +59,7 @@ export default function EmailEntry_ForgotPassword() {
           <img 
             src={ForgotImg} 
             alt="Forgot Password Illustration" 
-            className="w-24 h-24"
+            className="w-70 h-70"
           />
         </div>
 
