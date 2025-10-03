@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Bg from "../../assets/images/hero-bg-5.jpg";
-import ForgotImg from "../../assets/images/keyhandove.jpg";
+import ForgotImg from "../../assets/images/keyhandove-removebg-preview.png";
 
 export default function PasswordReseted_ForgotPassword() {
   const [message, setMessage] = useState("");
