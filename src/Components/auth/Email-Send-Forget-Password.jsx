@@ -15,34 +15,7 @@ export default function EmailSend_ForgotPassword() {
     };
   }, []);
 
-  const handleForgotPassword = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost/instrument-care-back-end/public/api/forgot-password",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        }
-      );
-
-      const result = await response.json();
-      console.log("Forgot Password Response:", result);
-
-      if (response.ok) {
-        setError("");
-        setMessage("Password reset link has been sent to your email!");
-      } else {
-        setMessage("");
-        setError(result.message || "Something went wrong!");
-      }
-    } catch (err) {
-      console.error("Forgot password error:", err);
-      setMessage("");
-      setError("Server error. Please try again later.");
-    }
-  };
-
+  
   return (
     <div className="relative w-screen h-screen flex items-center justify-center m-0 p-0">
       {/* Background Image */}
@@ -87,12 +60,16 @@ export default function EmailSend_ForgotPassword() {
 
         {/* Submit Button (shorter height) */}
         <div className="flex justify-center">
+          <Link 
+            to='https://mail.google.com/'
+            target="_blank"
+            rel="noopener noreferrer">
             <button
                 className="w-lg bg-orange-400 text-white py-2 rounded-md text-md font-semibold hover:bg-orange-500"
-                onClick={handleForgotPassword}
             >
                 Open Email Inbox
             </button>
+          </Link>
         </div>
 
 
