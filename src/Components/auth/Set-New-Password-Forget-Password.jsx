@@ -80,6 +80,15 @@ export default function SetNewPassword_ForgotPassword() {
           </div>
         )}
 
+        {/* Email Input */}
+        <div className="flex flex-col items-center mb-3 w-full">
+          <input
+            type="email"
+            placeholder="e.g. username@kinety.com"
+            className="w-lg mb-3 px-3 py-2 border rounded-md text-sm"
+            />
+        </div>
+
         {/* Password Input */}
         <div className="flex flex-col items-center mb-3 w-full">
           <input
