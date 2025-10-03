@@ -23,6 +23,7 @@ import VerifyEmail from './Pages/Auth/VerifyEmail';
 import EmailEntryForgotPassword from './Pages/Auth/Email-Entry-Forget-Password';
 import EmailSendForgotPassword from './Pages/Auth/Email-Send-Forget-Password';
 import SetNewPasswordForgotPassword from './Pages/Auth/Set-New-Password-Forget-Password';
+import PasswordResetedForgotPassword from './Pages/Auth/Password-Reseted-Forget-Password';
 
 // 🔹 import ProtectedRoute
 import ProtectedRoute from './Components/auth/ProtectedRoute';
@@ -45,6 +46,8 @@ export default function App() {
         <Route path="/auth/email-entry-forgot-password" element={<EmailEntryForgotPassword/>}/>
         <Route path="/auth/email-send-forgot-password" element={<EmailSendForgotPassword/>}/>
         <Route path="/auth/set-new-password-forgot-password" element={<SetNewPasswordForgotPassword/>}/>
+        <Route path="/auth/set-new-password-forgot-password" element={<SetNewPasswordForgotPassword/>}/>
+        <Route path="/auth/password-reseted-forgot-password" element={<PasswordResetedForgotPassword/>}/>
 
         {/* ===== Technician Routes (role: 10) ===== */}
         <Route
