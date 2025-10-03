@@ -106,13 +106,15 @@ export default function SetNewPassword_ForgotPassword() {
         </div>
 
         <div className="flex justify-center">
-          <button
-            className="w-lg bg-orange-400 text-white py-2 rounded-md text-md font-semibold hover:bg-orange-500 disabled:opacity-50"
-            onClick={handleResetPassword}
-            disabled={!password || password !== confirmPassword}
-          >
-            Reset Password
-          </button>
+          <Link to='/auth/password-reseted-forgot-password'>
+            <button
+              className="w-lg bg-orange-400 text-white py-2 rounded-md text-md font-semibold hover:bg-orange-500 disabled:opacity-50"
+              onClick={handleResetPassword}
+              disabled={!password || password !== confirmPassword}
+            >
+              Reset Password
+            </button>
+          </Link>
         </div>
 
         <div className="mt-4 text-center">
