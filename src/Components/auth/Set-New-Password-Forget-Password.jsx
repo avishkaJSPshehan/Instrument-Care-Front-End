@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Bg from "../../assets/images/hero-bg-5.jpg";
-import ForgotImg from "../../assets/images/fp-email-sending.webp";
+import ForgotImg from "../../assets/images/set-new-password.png";
 
 export default function SetNewPassword_ForgotPassword() {
   const [password, setPassword] = useState("");
@@ -61,7 +61,7 @@ export default function SetNewPassword_ForgotPassword() {
 
       <div className="relative z-10 w-full max-w-6xl flex flex-col bg-gray-50 bg-opacity-90 shadow-2xl rounded-none md:rounded-2xl overflow-hidden transform -translate-y-[5vh] px-6 py-10 sm:px-12 sm:py-14">
         <div className="flex justify-center mb-4">
-          <img src={ForgotImg} alt="Reset Password Illustration" className="w-40 h-40" />
+          <img src={ForgotImg} alt="Reset Password Illustration" className="w-80 h-80" />
         </div>
 
         <h2 className="text-3xl sm:text-4xl font-bold mb-3 text-center">Reset password</h2>
