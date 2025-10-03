@@ -18,7 +18,7 @@ export default function EmailEntry_ForgotPassword() {
   const handleForgotPassword = async () => {
     try {
       const response = await fetch(
-        "http://localhost/instrument-care-back-end/public/api/forgot-password",
+        "http://localhost/instrument-care-back-end/public/api/email-entry-forgot-password",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

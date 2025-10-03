@@ -46,7 +46,6 @@ export default function App() {
         <Route path="/auth/email-entry-forgot-password" element={<EmailEntryForgotPassword/>}/>
         <Route path="/auth/email-send-forgot-password" element={<EmailSendForgotPassword/>}/>
         <Route path="/auth/set-new-password-forgot-password" element={<SetNewPasswordForgotPassword/>}/>
-        <Route path="/auth/set-new-password-forgot-password" element={<SetNewPasswordForgotPassword/>}/>
         <Route path="/auth/password-reseted-forgot-password" element={<PasswordResetedForgotPassword/>}/>
 
         {/* ===== Technician Routes (role: 10) ===== */}
