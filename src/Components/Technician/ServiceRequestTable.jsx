@@ -9,12 +9,20 @@ export default function ServiceRequestTable() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
+        const techId = localStorage.getItem("user_id");
+
+        if (!techId) {
+          setError("Technician ID not found in local storage.");
+          setLoading(false);
+          return;
+        }
+
         const response = await fetch(
-          "http://localhost/instrument-care-back-end/public/api/service-requests",
+          `http://localhost/instrument-care-back-end/public/user/service-request/${techId}`,
           {
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem("token")}`, // if needed
+              "Authorization": `Bearer ${localStorage.getItem("token")}`, // if required
             },
           }
         );
@@ -22,9 +30,20 @@ export default function ServiceRequestTable() {
         if (!response.ok) throw new Error("Failed to fetch service requests");
 
         const data = await response.json();
-        setRequests(data);
+
+        // ✅ Ensure we always set an array
+        if (Array.isArray(data)) {
+          setRequests(data);
+        } else if (data && Array.isArray(data.requests)) {
+          // In case backend sends { requests: [...] }
+          setRequests(data.requests);
+        } else {
+          console.warn("Unexpected data format:", data);
+          setRequests([]);
+          setError("No valid service request data found.");
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching service requests:", err);
         setError("Failed to load service requests.");
       } finally {
         setLoading(false);
@@ -46,11 +65,15 @@ export default function ServiceRequestTable() {
       </div>
 
       {loading ? (
-        <p className="text-gray-500 italic p-4 text-center">Loading service requests...</p>
+        <p className="text-gray-500 italic p-4 text-center">
+          Loading service requests...
+        </p>
       ) : error ? (
         <p className="text-red-500 italic p-4 text-center">{error}</p>
       ) : requests.length === 0 ? (
-        <p className="text-gray-500 italic p-4 text-center">No service requests found.</p>
+        <p className="text-gray-500 italic p-4 text-center">
+          No service requests found.
+        </p>
       ) : (
         <div className="overflow-x-auto max-h-[288px] overflow-y-auto">
           <table className="w-full text-left text-sm border-collapse">
@@ -67,7 +90,9 @@ export default function ServiceRequestTable() {
                 <tr key={request.id} className="border-b">
                   <td className="p-2">{request.instrument_name}</td>
                   <td className="p-2">{request.full_name}</td>
-                  <td className="p-2">{new Date(request.created_at).toLocaleDateString()}</td>
+                  <td className="p-2">
+                    {new Date(request.created_at).toLocaleDateString()}
+                  </td>
                   <td className="p-2">{request.contact_number}</td>
                 </tr>
               ))}
@@ -78,13 +103,3 @@ export default function ServiceRequestTable() {
     </div>
   );
 }
-
-
-
-// ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-// ["Spectrometer", "Sophia Martinez", "2024/07/25", "+94 71 23 45 678"],
-// ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-// ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-// ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-// ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-// ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
