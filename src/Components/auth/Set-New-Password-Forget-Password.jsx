@@ -4,6 +4,7 @@ import Bg from "../../assets/images/hero-bg-5.jpg";
 import ForgotImg from "../../assets/images/set-new-password.png";
 
 export default function SetNewPassword_ForgotPassword() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -21,6 +22,12 @@ export default function SetNewPassword_ForgotPassword() {
   };
 
   const handleResetPassword = async () => {
+    if (!email) {
+      setError("Please enter your email address!");
+      setMessage("");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       setMessage("");
@@ -31,16 +38,20 @@ export default function SetNewPassword_ForgotPassword() {
       const response = await fetch(
         "http://localhost/instrument-care-back-end/public/api/reset-password",
         {
-          method: "POST",
+          method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password }),
+          body: JSON.stringify({ email, password }),
         }
       );
 
       const result = await response.json();
+
       if (response.ok) {
         setError("");
         setMessage("Your password has been reset successfully!");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
       } else {
         setMessage("");
         setError(result.message || "Something went wrong!");
@@ -61,10 +72,16 @@ export default function SetNewPassword_ForgotPassword() {
 
       <div className="relative z-10 w-full max-w-6xl flex flex-col bg-gray-50 bg-opacity-90 shadow-2xl rounded-none md:rounded-2xl overflow-hidden transform -translate-y-[5vh] px-6 py-10 sm:px-12 sm:py-14">
         <div className="flex justify-center mb-4">
-          <img src={ForgotImg} alt="Reset Password Illustration" className="w-80 h-80" />
+          <img
+            src={ForgotImg}
+            alt="Reset Password Illustration"
+            className="w-80 h-80"
+          />
         </div>
 
-        <h2 className="text-3xl sm:text-4xl font-bold mb-3 text-center">Reset password</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-3 text-center">
+          Reset password
+        </h2>
         <p className="text-sm sm:text-md text-gray-500 mb-6 text-center">
           Please kindly set your new password.
         </p>
@@ -86,7 +103,9 @@ export default function SetNewPassword_ForgotPassword() {
             type="email"
             placeholder="e.g. username@kinety.com"
             className="w-lg mb-3 px-3 py-2 border rounded-md text-sm"
-            />
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
 
         {/* Password Input */}
@@ -110,20 +129,20 @@ export default function SetNewPassword_ForgotPassword() {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {confirmPassword && confirmPassword !== password && (
-            <p className="mt-1 text-xs text-red-500">Passwords do not match</p>
+            <p className="mt-1 text-xs text-red-500">
+              Passwords do not match
+            </p>
           )}
         </div>
 
         <div className="flex justify-center">
-          <Link to='/auth/password-reseted-forgot-password'>
-            <button
-              className="w-lg bg-orange-400 text-white py-2 rounded-md text-md font-semibold hover:bg-orange-500 disabled:opacity-50"
-              onClick={handleResetPassword}
-              disabled={!password || password !== confirmPassword}
-            >
-              Reset Password
-            </button>
-          </Link>
+          <button
+            className="w-lg bg-orange-400 text-white py-2 rounded-md text-md font-semibold hover:bg-orange-500 disabled:opacity-50"
+            onClick={handleResetPassword}
+            disabled={!email || !password || password !== confirmPassword}
+          >
+            Reset Password
+          </button>
         </div>
 
         <div className="mt-4 text-center">
