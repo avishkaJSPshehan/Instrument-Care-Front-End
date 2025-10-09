@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {} }) {
-  const { id: technicianId } = useParams(); // ✅ grab technician ID from URL
+  const { id: technicianId } = useParams();
 
-  // State to hold all form data
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -23,7 +22,8 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
     issue_description: "",
   });
 
-  // Handle input changes
+  const [loading, setLoading] = useState(false); // ✅ loading state
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -31,61 +31,54 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
     });
   };
 
-  // Validation function
   const validateForm = () => {
     for (const key in formData) {
-      if (!formData[key] || formData[key].trim() === "") {
-        return false;
-      }
+      if (!formData[key] || formData[key].trim() === "") return false;
     }
     return true;
   };
 
-  // Submit data to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate before submit
     if (!validateForm()) {
       alert("Please fill out all required fields before submitting.");
       return;
     }
 
-    // ✅ Get user_id from localStorage
     const userId = localStorage.getItem("user_id");
-
     if (!userId) {
       alert("User ID not found. Please log in again.");
       return;
     }
 
-    // Include technician ID + user ID in request
     const payload = {
       ...formData,
       technician_id: technicianId,
-      user_id: userId, // ✅ added user_id
+      user_id: userId,
     };
 
     try {
+      setLoading(true); // ✅ start loading
       const response = await fetch(
         "http://localhost/instrument-care-back-end/public/user/service-request",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`, // ✅ include auth token
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify(payload),
         }
       );
 
-      console.log("Payload Sent:", payload);
-
       const data = await response.json();
-      console.log("Response:", data);
-      onSend(data); // Call the passed onSend callback
+      onSend(data); // ✅ callback with response
     } catch (error) {
       console.error("Error submitting service request:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false); // ✅ stop loading
     }
   };
 
@@ -96,65 +89,27 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
         <div>
           <h2 className="text-lg font-semibold mb-4">Personal Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-semibold mb-1">
-                Full Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="full_name"
-                placeholder="Avishka Shehan Jayasiri"
-                className="w-full border rounded px-3 py-1"
-                value={formData.full_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold mb-1">
-                Email Address <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="example@example.com"
-                className="w-full border rounded px-3 py-1"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold mb-1">
-                Physical Address <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="physical_address"
-                placeholder="Main Road, Pitipana, Homagama"
-                className="w-full border rounded px-3 py-1"
-                value={formData.physical_address}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold mb-1">
-                Contact Number <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="contact_number"
-                placeholder="+94 71 23 45 678"
-                className="w-full border rounded px-3 py-1"
-                value={formData.contact_number}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            {[
+              { label: "Full Name", name: "full_name", placeholder: "Avishka Shehan Jayasiri" },
+              { label: "Email Address", name: "email", placeholder: "example@example.com" },
+              { label: "Physical Address", name: "physical_address", placeholder: "Main Road, Pitipana, Homagama" },
+              { label: "Contact Number", name: "contact_number", placeholder: "+94 71 23 45 678" },
+            ].map((field) => (
+              <div key={field.name}>
+                <label className="block font-semibold mb-1">
+                  {field.label} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type={field.name === "email" ? "email" : "text"}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  className="w-full border rounded px-3 py-1"
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -164,35 +119,25 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
         <div>
           <h2 className="text-lg font-semibold mb-4">Institute Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-semibold mb-1">
-                Name <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="institute_name"
-                placeholder="National Science Foundation"
-                className="w-full border rounded px-3 py-1"
-                value={formData.institute_name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold mb-1">
-                Address <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="institute_address"
-                placeholder="46/b De Mel Road, Colombo 07"
-                className="w-full border rounded px-3 py-1"
-                value={formData.institute_address}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            {[
+              { label: "Name", name: "institute_name", placeholder: "National Science Foundation" },
+              { label: "Address", name: "institute_address", placeholder: "46/b De Mel Road, Colombo 07" },
+            ].map((field) => (
+              <div key={field.name}>
+                <label className="block font-semibold mb-1">
+                  {field.label} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  className="w-full border rounded px-3 py-1"
+                  value={formData[field.name]}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -254,11 +199,39 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
           >
             Clear Details
           </button>
+
           <button
             type="submit"
-            className="w-full md:w-1/2 bg-orange-400 text-white font-semibold py-2 rounded hover:bg-orange-500 transition hover:cursor-pointer"
+            className={`w-full md:w-1/2 bg-orange-400 text-white font-semibold py-2 rounded hover:bg-orange-500 transition flex items-center justify-center`}
+            disabled={loading} // ✅ disable button when loading
           >
-            Send a Service Request
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 text-white mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+                Sending...
+              </>
+            ) : (
+              "Send a Service Request"
+            )}
           </button>
         </div>
       </form>
