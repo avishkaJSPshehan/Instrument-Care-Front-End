@@ -9,7 +9,7 @@ export default function ServiceRequestTable() {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const techId = localStorage.getItem("user_id");
+        const techId = localStorage.getItem("technician_id");
 
         if (!techId) {
           setError("Technician ID not found in local storage.");
