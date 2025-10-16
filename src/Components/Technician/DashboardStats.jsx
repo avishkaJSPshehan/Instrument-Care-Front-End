@@ -10,7 +10,14 @@ export default function DashboardStats({ technicianId }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!technicianId) return; // skip if no ID
+    // Use technicianId from prop or fallback to localStorage
+    const id = technicianId || localStorage.getItem("technician_id");
+
+    if (!id) {
+      setError("Technician ID not found");
+      setLoading(false);
+      return;
+    }
 
     const fetchJobCounts = async () => {
       try {
@@ -18,7 +25,7 @@ export default function DashboardStats({ technicianId }) {
         setError("");
 
         const response = await fetch(
-          `http://localhost/instrument-care-back-end/public/service-request/${technicianId}/job-counts`,
+          `http://localhost/instrument-care-back-end/public/service-request/${id}/job-counts`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -32,7 +39,7 @@ export default function DashboardStats({ technicianId }) {
         }
 
         const data = await response.json();
-        const jobCounts = data.job_counts || {}; // fallback to empty object
+        const jobCounts = data.job_counts || {};
 
         // Total jobs excluding "In Progress"
         const totalJobs = Object.entries(jobCounts)
@@ -55,7 +62,7 @@ export default function DashboardStats({ technicianId }) {
     };
 
     fetchJobCounts();
-  }, [technicianId]);
+  }, [technicianId]); // Re-run if technicianId prop changes
 
   if (loading) return <div className="text-center py-6">Loading stats...</div>;
   if (error) return <div className="text-center py-6 text-red-500">{error}</div>;
