@@ -22,7 +22,7 @@ export default function ServiceRequestTable() {
           {
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -30,14 +30,20 @@ export default function ServiceRequestTable() {
         if (!response.ok) throw new Error("Failed to fetch service requests");
 
         const data = await response.json();
+        let allRequests = [];
+
         if (Array.isArray(data)) {
-          setRequests(data);
+          allRequests = data;
         } else if (data && Array.isArray(data.requests)) {
-          setRequests(data.requests);
-        } else {
-          setRequests([]);
-          setError("No valid service request data found.");
+          allRequests = data.requests;
         }
+
+        // ✅ Filter only pending requests
+        const pendingRequests = allRequests.filter(
+          (r) => r.status?.toLowerCase() === "pending"
+        );
+
+        setRequests(pendingRequests);
       } catch (err) {
         console.error(err);
         setError("Failed to load service requests.");
@@ -76,7 +82,7 @@ export default function ServiceRequestTable() {
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 mb-6 font-poppins min-h-[288px]">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-bold text-lg text-gray-800">Service Requests</h3>
+        <h3 className="font-bold text-lg text-gray-800">Pending Service Requests</h3>
         <Link to="/tech/all-service-request">
           <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-1 rounded-md text-sm hover:from-orange-400 hover:to-orange-500 transition">
             View all
@@ -92,7 +98,7 @@ export default function ServiceRequestTable() {
         <p className="text-red-500 italic p-4 text-center">{error}</p>
       ) : requests.length === 0 ? (
         <p className="text-gray-500 italic p-4 text-center">
-          No service requests found.
+          No pending service requests found.
         </p>
       ) : (
         <div className="overflow-x-auto max-h-[288px] overflow-y-auto">
