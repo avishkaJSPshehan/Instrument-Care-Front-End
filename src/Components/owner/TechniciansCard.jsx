@@ -18,7 +18,6 @@ export default function TechniciansCard({ searchTerm }) {
         });
         if (!response.ok) throw new Error('Failed to fetch technicians');
         const data = await response.json();
-        console.log(data);
         setTechnicians(data);
       } catch (error) {
         console.error('Error fetching technicians:', error);
@@ -28,7 +27,6 @@ export default function TechniciansCard({ searchTerm }) {
     fetchTechnicians();
   }, []);
 
-  // Filter technicians
   const filteredTechnicians = technicians.filter(tech => {
     const term = (searchTerm || "").toLowerCase();
     return (
@@ -89,7 +87,10 @@ export default function TechniciansCard({ searchTerm }) {
                   </button>
                 </Link>
 
-                <Link to={`/user/service-request/${tech.id}`}>
+                <Link
+                  to={`/user/service-request/${tech.id}`}
+                  state={{ technicianEmail: tech.email }} // 👈 pass email via state
+                >
                   <button className="flex-1 bg-gray-800 text-white font-semibold text-sm py-2 p-2 rounded-full flex items-center justify-center gap-1 hover:bg-gray-700 transition">
                     Service Request <ArrowUpRight className="w-4 h-4" />
                   </button>
