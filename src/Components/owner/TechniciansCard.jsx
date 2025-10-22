@@ -18,6 +18,7 @@ export default function TechniciansCard({ searchTerm }) {
         });
         if (!response.ok) throw new Error('Failed to fetch technicians');
         const data = await response.json();
+        console.log(data);
         setTechnicians(data);
       } catch (error) {
         console.error('Error fetching technicians:', error);
