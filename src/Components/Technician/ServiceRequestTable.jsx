@@ -109,6 +109,7 @@ export default function ServiceRequestTable() {
                 <th className="p-2">Owner</th>
                 <th className="p-2">Start Date</th>
                 <th className="p-2">Contact Number</th>
+                <th className="p-2">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -124,6 +125,7 @@ export default function ServiceRequestTable() {
                     {new Date(request.created_at).toLocaleDateString()}
                   </td>
                   <td className="p-2">{request.contact_number}</td>
+                  <td className="p-2 text-orange-500 font-semibold">{request.status}</td>
                 </tr>
               ))}
             </tbody>

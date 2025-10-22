@@ -56,6 +56,7 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
       ...formData,
       technician_id: technicianId,
       user_id: userId,
+      
     };
 
     try {
