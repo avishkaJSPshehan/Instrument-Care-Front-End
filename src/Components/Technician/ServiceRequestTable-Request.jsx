@@ -33,10 +33,10 @@ export default function ServiceRequestTable_Request({ data, onView }) {
             <tbody>
               {data.map((req, index) => (
                 <tr key={index} className="border-b">
-                  <td className="p-2">{req.instrument}</td>
-                  <td className="p-2">{req.owner}</td>
-                  <td className="p-2">{req.startDate}</td>
-                  <td className="p-2">{req.contact}</td>
+                  <td className="p-2">{req.instrument_name}</td>
+                  <td className="p-2">{req.full_name}</td>
+                  <td className="p-2">{req.created_at}</td>
+                  <td className="p-2">{req.contact_number}</td>
                   <td className="p-2">
                     <button
                       className="bg-orange-400 text-white px-4 py-1 rounded-md text-sm hover:bg-orange-300"
