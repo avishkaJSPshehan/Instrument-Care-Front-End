@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {} }) {
   const { id: technicianId } = useParams();
-  const location = useLocation();
-
-  // Get technician email from Router state
-  const technicianEmail = location.state?.technicianEmail || "";
 
   const [formData, setFormData] = useState({
     full_name: "",
-    email: "", // user email
+    email: "",
     physical_address: "",
     contact_number: "",
     institute_name: "",
@@ -24,10 +20,9 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
     testing_parameter: "",
     consumption_period: "",
     issue_description: "",
-    technician_email: technicianEmail, // separate key for technician email
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // ✅ loading state
 
   const handleChange = (e) => {
     setFormData({
@@ -62,31 +57,31 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
       technician_id: technicianId,
       user_id: userId,
     };
-
-    // Log payload to see request body in console
-    console.log("Service Request Payload:", payload);
+  console.log("🚀 Sending service request payload:", JSON.stringify(payload, null, 2));
 
     try {
-      setLoading(true);
+      setLoading(true); // ✅ start loading
+
       const response = await fetch(
         "http://localhost/instrument-care-back-end/public/user/service-request",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify(payload),
         }
+        
       );
 
       const data = await response.json();
-      onSend(data);
+      onSend(data); // ✅ callback with response
     } catch (error) {
-      console.error("Error submitting service request:", error);
+      console.error(":", error);
       alert("Something went wrong. Please try again.");
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ stop loading
     }
   };
 
@@ -119,11 +114,6 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
               </div>
             ))}
           </div>
-          {technicianEmail && (
-            <p className="text-sm text-gray-500 mt-2">
-              Sending request to technician: <b>{technicianEmail}</b>
-            </p>
-          )}
         </div>
 
         <hr className="my-6 border-gray-300" />
@@ -215,8 +205,8 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
 
           <button
             type="submit"
-            className={`w-full md:w-1/2 bg-orange-400 text-white font-semibold py-2 rounded hover:bg-orange-500 transition flex items-center justify-center`}
-            disabled={loading}
+            className="w-full md:w-1/2 bg-orange-400 text-white font-semibold py-2 rounded hover:bg-orange-500 transition flex items-center justify-center"
+            disabled={loading} // ✅ disable button when loading
           >
             {loading ? (
               <>
@@ -226,8 +216,19 @@ export default function ServiceRequestForm({ onBack = () => {}, onSend = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                 >
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
                 </svg>
                 Sending...
               </>
