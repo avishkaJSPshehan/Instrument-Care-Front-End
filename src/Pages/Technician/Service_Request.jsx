@@ -1,40 +1,47 @@
-import React, { useState } from "react";
-import Navbar from '../../Components/Technician/Navbar'
-import Sidebar from '../../Components/Technician/Sidebar'
+import React, { useState, useEffect } from "react";
+import Navbar from '../../Components/Technician/Navbar';
+import Sidebar from '../../Components/Technician/Sidebar';
 import ServiceRequestTable_Request from "../../Components/Technician/ServiceRequestTable-Request";
 import ServiceRequestDetails from "../../Components/Technician/ServiceRequestDetails";
-import Footer from '../../Components/Common/Footer'
+import Footer from '../../Components/Common/Footer';
 import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 
 export default function Service_Request() {
-    const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [requestData, setRequestData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const requestData = [
-    {
-      instrument: "Microscope",
-      owner: "Ava Thompson",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "ava@example.com",
-      address: "123 Main St",
-      model: "X200",
-      country: "Sri Lanka",
-      period: "6 months",
-      description: "Lens alignment issue."
-    },
-    {
-      instrument: "Microscope",
-      owner: "Ava Thompson",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "ava@example.com",
-      address: "123 Main St",
-      model: "X200",
-      country: "Sri Lanka",
-      period: "6 months",
-      description: "Lens alignment issue."
-    }
-  ];
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const techId = localStorage.getItem("technician_id");
+        if (!techId) {
+          console.error("Technician ID not found in localStorage");
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost/instrument-care-back-end/public/user/service-request/${techId}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch service requests");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setRequestData(data); // Assuming backend returns an array
+      } catch (error) {
+        console.error("Error fetching service requests:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRequests();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -42,9 +49,7 @@ export default function Service_Request() {
       {/* Background Image Wrapper */}
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${BG})`,
-        }}
+        style={{ backgroundImage: `url(${BG})` }}
       >
         {/* Sidebar */}
         <Sidebar />
@@ -52,14 +57,21 @@ export default function Service_Request() {
         {/* Main Content */}
         <main className="flex-1 bg-[#ffffff80] rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">Service Request</h2>
-          <ServiceRequestTable_Request data={requestData} onView={setSelectedRequest} />
-        <ServiceRequestDetails details={selectedRequest} />
+
+          {loading ? (
+            <p>Loading service requests...</p>
+          ) : (
+            <ServiceRequestTable_Request
+              data={requestData}
+              onView={setSelectedRequest}
+            />
+          )}
+
+          <ServiceRequestDetails details={selectedRequest} />
         </main>
       </div>
 
       <Footer />
     </>
-  )
+  );
 }
-
-
