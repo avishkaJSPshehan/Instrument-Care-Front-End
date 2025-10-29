@@ -4,17 +4,57 @@ import { Link } from "react-router-dom";
 export default function ServiceRequestAccept({
   initialFormData = {
     ownerEmail: "jspshehan@gmail.com",
-    yourEmail: "",
     subject: "",
     message: "",
   },
   onBack = () => {},
-  onSend = () => {},
 }) {
   const [formData, setFormData] = useState(initialFormData);
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSend = async () => {
+    // You can change this endpoint URL as per your backend
+    const endpoint = "http://localhost/instrument-care-back-end/public/api/send-owner-email";
+
+    const payload = {
+      owner_email: formData.ownerEmail,
+      subject: formData.subject,
+      message: formData.message,
+    };
+
+    console.log("📤 Sending email payload:", JSON.stringify(payload, null, 2));
+
+    try {
+      setLoading(true);
+      setStatusMessage("");
+
+      const response = await fetch(endpoint, {
+        method: "PUT", // Change to POST if your backend expects POST
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("✅ Email send response:", data);
+
+      setStatusMessage("✅ Email successfully sent to the instrument owner.");
+    } catch (error) {
+      console.error("❌ Error sending email:", error);
+      setStatusMessage("❌ Failed to send email. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,19 +74,6 @@ export default function ServiceRequestAccept({
             type="email"
             value={formData.ownerEmail}
             onChange={(e) => handleChange("ownerEmail", e.target.value)}
-            className="border rounded px-2 py-1 w-full sm:w-2/3"
-          />
-        </div>
-
-        {/* Your Email */}
-        <div className="flex flex-col sm:flex-row sm:items-center">
-          <label className="font-semibold w-full sm:w-1/3 mb-1 sm:mb-0">
-            Your Email Address
-          </label>
-          <input
-            type="email"
-            value={formData.yourEmail}
-            onChange={(e) => handleChange("yourEmail", e.target.value)}
             className="border rounded px-2 py-1 w-full sm:w-2/3"
           />
         </div>
@@ -77,25 +104,38 @@ export default function ServiceRequestAccept({
           />
         </div>
 
+        {/* Status Message */}
+        {statusMessage && (
+          <div
+            className={`text-sm mt-2 ${
+              statusMessage.startsWith("✅") ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {statusMessage}
+          </div>
+        )}
+
         <hr className="mt-4" />
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center sm:justify-end gap-3 mt-4">
-          <Link to='/tech/service-request'>
+          <Link to="/tech/service-request">
             <button
               type="button"
               onClick={onBack}
               className="bg-red-500 hover:bg-red-400 text-white px-6 py-2 rounded-md font-semibold w-md"
+              disabled={loading}
             >
               Back
             </button>
           </Link>
           <button
             type="button"
-            onClick={() => onSend(formData)}
-            className="bg-green-500 hover:bg-green-400 text-white px-6 py-2 rounded-md font-semibold w-md"
+            onClick={handleSend}
+            className="bg-green-500 hover:bg-green-400 text-white px-6 py-2 rounded-md font-semibold w-md disabled:opacity-50"
+            disabled={loading}
           >
-            Send
+            {loading ? "Sending..." : "Send"}
           </button>
         </div>
       </form>
