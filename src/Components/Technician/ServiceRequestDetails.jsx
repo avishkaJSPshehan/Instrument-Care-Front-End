@@ -15,7 +15,7 @@ export default function ServiceRequestDetails({ details }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-2">
           <input
             disabled
-            value={placeholder ? "" : details.owner}
+            value={placeholder ? "" : details.full_name}
             className="border rounded p-2 bg-gray-100"
             placeholder="Full Name"
           />
@@ -27,13 +27,13 @@ export default function ServiceRequestDetails({ details }) {
           />
           <input
             disabled
-            value={placeholder ? "" : details.address}
+            value={placeholder ? "" : details.institute_address}
             className="border rounded p-2 bg-gray-100"
             placeholder="Physical Address"
           />
           <input
             disabled
-            value={placeholder ? "" : details.contact}
+            value={placeholder ? "" : details.contact_number}
             className="border rounded p-2 bg-gray-100"
             placeholder="Contact Number"
           />
@@ -46,25 +46,25 @@ export default function ServiceRequestDetails({ details }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-2">
           <input
             disabled
-            value={placeholder ? "" : details.instrument}
+            value={placeholder ? "" : details.instrument_name}
             className="border rounded p-2 bg-gray-100"
             placeholder="Instrument Name"
           />
           <input
             disabled
-            value={placeholder ? "" : details.model}
+            value={placeholder ? "" : details.instrument_model}
             className="border rounded p-2 bg-gray-100"
             placeholder="Instrument Model"
           />
           <input
             disabled
-            value={placeholder ? "" : details.country}
+            value={placeholder ? "" : details.instrument_manufacturer}
             className="border rounded p-2 bg-gray-100"
-            placeholder="Country"
+            placeholder="Manufacture"
           />
           <input
             disabled
-            value={placeholder ? "" : details.period}
+            value={placeholder ? "" : details.consumption_period}
             className="border rounded p-2 bg-gray-100"
             placeholder="Consumption Period"
           />
@@ -74,7 +74,7 @@ export default function ServiceRequestDetails({ details }) {
       {/* Description */}
       <textarea
         disabled
-        value={placeholder ? "" : details.description}
+        value={placeholder ? "" : details.issue_description}
         className="border rounded p-2 w-full bg-gray-100"
         rows={3}
         placeholder="Description About Issue"
