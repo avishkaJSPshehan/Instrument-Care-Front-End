@@ -14,7 +14,7 @@ export default function Sidebar() {
                 className="h-20 w-20 rounded-full object-cover cursor-pointer border border-gray-300 hover:scale-105 transition-transform"
           />
         </div>
-        <h2 className="text-lg font-bold">Pubudu Shehan</h2>
+        <h2 className="text-lg font-bold">Avishka Shehan</h2>
         <p className="text-sm text-gray-800">Electrical Technician</p>
         <hr className="w-full border-gray-700 my-4" />
         <nav className="flex flex-col items-center space-y-4 w-full">
