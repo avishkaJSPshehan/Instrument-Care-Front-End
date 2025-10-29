@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function ServiceRequestAccept({
   initialFormData = {
-    ownerEmail: "jspshehan@gmail.com",
+    ownerEmail: "",
     subject: "",
     message: "",
   },
@@ -25,6 +25,7 @@ export default function ServiceRequestAccept({
       owner_email: formData.ownerEmail,
       subject: formData.subject,
       message: formData.message,
+
     };
 
     console.log("📤 Sending email payload:", JSON.stringify(payload, null, 2));
