@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Navbar from '../../Components/Technician/Navbar';
 import Sidebar from '../../Components/Technician/Sidebar';
 import ServiceRequestTable_Request from "../../Components/Technician/ServiceRequestTable-Request";
@@ -12,107 +12,40 @@ export default function Accept_Service_Request() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false); // <-- new state
 
-  const requestData = [
-    {
-      instrument: "Microscope",
-      owner: "Ava Thompson",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "ava@example.com",
-      address: "123 Main St",
-      model: "X200",
-      country: "Sri Lanka",
-      period: "6 months",
-      description: "Lens alignment issue."
-    },
-    {
-      instrument: "Microscope",
-      owner: "Ava Thompson",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "ava@example.com",
-      address: "123 Main St",
-      model: "X200",
-      country: "Sri Lanka",
-      period: "6 months",
-      description: "Lens alignment issue."
-    },
-    {
-      instrument: "Microscope",
-      owner: "Ava Thompson",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "ava@example.com",
-      address: "123 Main St",
-      model: "X200",
-      country: "Sri Lanka",
-      period: "6 months",
-      description: "Lens alignment issue."
-    },
-    {
-      instrument: "Microscope",
-      owner: "Ava Thompson",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "ava@example.com",
-      address: "123 Main St",
-      model: "X200",
-      country: "Sri Lanka",
-      period: "6 months",
-      description: "Lens alignment issue."
-    },
-    {
-      instrument: "Spectrometer",
-      owner: "Sophia Martinez",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "sophia@example.com",
-      address: "456 Elm St",
-      model: "Spec500",
-      country: "Sri Lanka",
-      period: "1 year",
-      description: "Calibration needed."
-    }
-    ,
-    {
-      instrument: "Spectrometer",
-      owner: "Sophia Martinez",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "sophia@example.com",
-      address: "456 Elm St",
-      model: "Spec500",
-      country: "Sri Lanka",
-      period: "1 year",
-      description: "Calibration needed."
-    }
-    ,
-    {
-      instrument: "Spectrometer",
-      owner: "Sophia Martinez",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "sophia@example.com",
-      address: "456 Elm St",
-      model: "Spec500",
-      country: "Sri Lanka",
-      period: "1 year",
-      description: "Calibration needed."
-    }
-    ,
-    {
-      instrument: "Spectrometer",
-      owner: "Sophia Martinez",
-      startDate: "2024/07/25",
-      contact: "+94 71 23 45 678",
-      email: "sophia@example.com",
-      address: "456 Elm St",
-      model: "Spec500",
-      country: "Sri Lanka",
-      period: "1 year",
-      description: "Calibration needed."
-    }
-  ];
+  const [requestData,setRequestData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() =>{
+    const fetchRequests = async () => {
+      try {
+        const techId = localStorage.getItem("technician_id");
+        if (!techId) {
+          console.error("Technician ID not found in localStorage");
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost/instrument-care-back-end/public/user/service-request/${techId}`
+        );
+
+        if (!response.ok){
+          throw new Error("Failed to fetch service requests");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setRequestData(data);
+      } catch (error) {
+        console.error("Error fetching service requests:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRequests();
+  }, []);
+
 
   return (
     <>
