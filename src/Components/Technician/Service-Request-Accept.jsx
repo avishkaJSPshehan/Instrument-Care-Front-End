@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function ServiceRequestAccept({
@@ -6,6 +6,7 @@ export default function ServiceRequestAccept({
     ownerEmail: "",
     subject: "",
     message: "",
+    request_id: null,
   },
   onBack = () => {},
 }) {
@@ -13,19 +14,24 @@ export default function ServiceRequestAccept({
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
+  // ✅ Sync formData whenever initialFormData changes (important fix)
+  useEffect(() => {
+    setFormData(initialFormData);
+  }, [initialFormData]);
+
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSend = async () => {
-    // You can change this endpoint URL as per your backend
-    const endpoint = "http://localhost/instrument-care-back-end/public/api/send-owner-email";
+    const endpoint =
+      "http://localhost/instrument-care-back-end/public/api/send-owner-email";
 
     const payload = {
       owner_email: formData.ownerEmail,
       subject: formData.subject,
       message: formData.message,
-
+      request_id: formData.request_id,
     };
 
     console.log("📤 Sending email payload:", JSON.stringify(payload, null, 2));
@@ -35,7 +41,7 @@ export default function ServiceRequestAccept({
       setStatusMessage("");
 
       const response = await fetch(endpoint, {
-        method: "PUT", // Change to POST if your backend expects POST
+        method: "PUT", // Change if your backend expects POST
         headers: {
           "Content-Type": "application/json",
         },
@@ -48,7 +54,6 @@ export default function ServiceRequestAccept({
 
       const data = await response.json();
       console.log("✅ Email send response:", data);
-
       setStatusMessage("✅ Email successfully sent to the instrument owner.");
     } catch (error) {
       console.error("❌ Error sending email:", error);
@@ -60,11 +65,9 @@ export default function ServiceRequestAccept({
 
   return (
     <div className="rounded-lg p-4 sm:p-6 w-full mx-auto shadow bg-[#ffffff80]">
-      {/* Section Title */}
       <h3 className="mb-2 font-bold text-lg">Response to the Service Request</h3>
       <hr className="mb-4" />
 
-      {/* Form */}
       <form className="space-y-4">
         {/* Owner Email */}
         <div className="flex flex-col sm:flex-row sm:items-center">
