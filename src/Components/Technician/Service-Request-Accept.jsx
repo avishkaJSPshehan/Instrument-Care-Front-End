@@ -9,12 +9,13 @@ export default function ServiceRequestAccept({
     request_id: null,
   },
   onBack = () => {},
+  onSend = () => {}, // called when backend returns success
 }) {
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
-  // ✅ Sync formData whenever initialFormData changes (important fix)
+  // ✅ keep form synced when parent data changes
   useEffect(() => {
     setFormData(initialFormData);
   }, [initialFormData]);
@@ -41,20 +42,24 @@ export default function ServiceRequestAccept({
       setStatusMessage("");
 
       const response = await fetch(endpoint, {
-        method: "PUT", // Change if your backend expects POST
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
-
       const data = await response.json();
       console.log("✅ Email send response:", data);
-      setStatusMessage("✅ Email successfully sent to the instrument owner.");
+
+      // ✅ detect backend success
+      if (response.ok && data?.success === true) {
+        onSend(data); // send to parent to show success component
+      } else {
+        setStatusMessage(
+          data?.message || "❌ Failed to send email. Please try again."
+        );
+      }
     } catch (error) {
       console.error("❌ Error sending email:", error);
       setStatusMessage("❌ Failed to send email. Please try again.");
@@ -108,7 +113,7 @@ export default function ServiceRequestAccept({
           />
         </div>
 
-        {/* Status Message */}
+        {/* Error / Info Message */}
         {statusMessage && (
           <div
             className={`text-sm mt-2 ${
