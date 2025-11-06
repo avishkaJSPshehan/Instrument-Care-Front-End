@@ -22,11 +22,12 @@ export default function AllJobSummary() {
       .then((data) => {
         // Assuming your backend returns an array of job objects
         // Example shape: [{ instrument: '', owner: '', start_date: '', end_date: '', status: '' }]
+        console.log(data);
         const formattedJobs = data.map((job) => [
           job.instrument_name || "N/A",
-          job.owner_name || "N/A",
-          job.start_date || "N/A",
-          job.end_date || "N/A",
+          job.full_name || "N/A",
+          job.created_at || "N/A",
+          job.contact_number || "N/A",
           job.status || "Pending",
         ]);
         setJobs(formattedJobs);
@@ -77,6 +78,8 @@ export default function AllJobSummary() {
                             ? "text-green-500 font-bold"
                             : cell === "Rejected"
                             ? "text-red-500 font-bold"
+                            : cell === "In Progress"
+                            ? "text-blue-500 font-bold"
                             : cell === "Pending"
                             ? "text-yellow-500 font-bold"
                             : ""
