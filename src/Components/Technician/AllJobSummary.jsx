@@ -1,33 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function AllJobSummary() {
-  const jobs = [
-    // Uncomment to test
-    ["Microscope", "Ava Thompson", "2024/07/25", "2024/08/25", "Pass"],
-    ["Spectrometer", "Sophia Martinez", "2024/07/25", "2024/08/25", "Rejected"],
-    ["Centrifuge", "James Anderson", "2024/07/25", "2024/08/25", "Pass"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["Microscope", "Ava Thompson", "2024/07/25", "2024/08/25", "Pass"],
-    ["Spectrometer", "Sophia Martinez", "2024/07/25", "2024/08/25", "Rejected"],
-    ["Centrifuge", "James Anderson", "2024/07/25", "2024/08/25", "Pass"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["Microscope", "Ava Thompson", "2024/07/25", "2024/08/25", "Pass"],
-    ["Spectrometer", "Sophia Martinez", "2024/07/25", "2024/08/25", "Rejected"],
-    ["Centrifuge", "James Anderson", "2024/07/25", "2024/08/25", "Pass"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["Microscope", "Ava Thompson", "2024/07/25", "2024/08/25", "Pass"],
-    ["Spectrometer", "Sophia Martinez", "2024/07/25", "2024/08/25", "Rejected"],
-    ["Centrifuge", "James Anderson", "2024/07/25", "2024/08/25", "Pass"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-    ["X-ray Equipment", "Isabella Brown", "2024/07/25", "2024/08/25", "Pending"],
-  ];
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const techId = localStorage.getItem("technician_id");
+    if (!techId) {
+      console.error("Technician ID not found in localStorage");
+      setLoading(false);
+      return;
+    }
+
+    fetch(`http://localhost/instrument-care-back-end/public/user/service-request/${techId}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch job summary");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Assuming your backend returns an array of job objects
+        // Example shape: [{ instrument: '', owner: '', start_date: '', end_date: '', status: '' }]
+        const formattedJobs = data.map((job) => [
+          job.instrument_name || "N/A",
+          job.owner_name || "N/A",
+          job.start_date || "N/A",
+          job.end_date || "N/A",
+          job.status || "Pending",
+        ]);
+        setJobs(formattedJobs);
+      })
+      .catch((err) => {
+        console.error("Error fetching job summaries:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
@@ -36,7 +46,11 @@ export default function AllJobSummary() {
       </div>
 
       <div className="overflow-x-auto">
-        {jobs.length === 0 ? (
+        {loading ? (
+          <p className="text-gray-500 italic p-4 text-center">
+            Loading job summaries...
+          </p>
+        ) : jobs.length === 0 ? (
           <p className="text-gray-500 italic p-4 text-center">
             No job summaries found.
           </p>
