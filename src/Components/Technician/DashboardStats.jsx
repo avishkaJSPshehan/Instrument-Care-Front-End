@@ -41,15 +41,11 @@ export default function DashboardStats({ technicianId }) {
         const data = await response.json();
         const jobCounts = data.job_counts || {};
 
-        // Total jobs excluding "In Progress"
-        const totalJobs = Object.entries(jobCounts)
-          .filter(([status]) => status !== "In Progress")
-          .reduce((sum, [, count]) => sum + (count || 0), 0);
-
+        // Use total and pending from backend response
         const updatedStats = [
-          { label: "Total Job", value: totalJobs },
+          { label: "Total Job", value: jobCounts["total"] || 0 },
           { label: "Pending Job", value: jobCounts["Pending"] || 0 },
-          { label: "Rejected Job", value: jobCounts["Cancelled"] || 0 },
+          { label: "Rejected Job", value: 0 }, // keep as 0
         ];
 
         setStats(updatedStats);
