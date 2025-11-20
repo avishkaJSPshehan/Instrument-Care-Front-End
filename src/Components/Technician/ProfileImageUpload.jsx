@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import profileImage from '../../assets/images/profile-image.jpeg';
 
-export default function ProfileImageUpload({ formData, handleChange }) {
-  const [selectedImage, setSelectedImage] = useState(profileImage);
+export default function ProfileImageUpload({ formData, setFormData, handleChange }) {
+  const [previewImage, setPreviewImage] = useState(profileImage);
+
+  // Update preview if formData.profileImagePreview changes (for editing existing profile)
+  useEffect(() => {
+    if (formData.profileImagePreview) {
+      setPreviewImage(formData.profileImagePreview);
+    }
+  }, [formData.profileImagePreview]);
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+
+      // Update preview
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setSelectedImage(e.target.result);
+      reader.onload = (ev) => {
+        setPreviewImage(ev.target.result);
+
+        // Update parent formData
+        setFormData({
+          ...formData,
+          profileImage: file, // actual file to send to backend
+          profileImagePreview: ev.target.result, // optional preview
+        });
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -23,14 +40,14 @@ export default function ProfileImageUpload({ formData, handleChange }) {
       {/* Profile Image Placeholder */}
       <div className="border rounded-full flex items-center justify-center mb-2">
         <img
-          src={selectedImage}
+          src={previewImage}
           alt="Profile"
           className="h-28 w-28 rounded-full object-cover cursor-pointer border border-gray-300 hover:scale-105 transition-transform"
           onClick={triggerFileInput}
         />
       </div>
 
-      <p className="text-sm text-gray-500">Brows Image From your computer</p>
+      <p className="text-sm text-gray-500">Browse Image From your computer</p>
       <button
         className="mt-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-400"
         onClick={triggerFileInput}
@@ -47,7 +64,8 @@ export default function ProfileImageUpload({ formData, handleChange }) {
         onChange={handleImageChange}
       />
 
-      <div className="flex flex-col gap-3">
+      {/* Form Inputs */}
+      <div className="flex flex-col gap-3 mt-4">
         <label>
           Full Name *
           <input
