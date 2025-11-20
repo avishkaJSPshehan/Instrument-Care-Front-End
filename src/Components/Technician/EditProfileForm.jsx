@@ -126,37 +126,53 @@ export default function EditProfileForm() {
 
       const formDataToSend = new FormData();
 
-      // Append all normal fields except the preview
-      for (const key in formData) {
-        if (formData.hasOwnProperty(key) && key !== "profileImagePreview" && key !== "profileImage") {
-          formDataToSend.append(key, formData[key]);
+      // Append all scalar fields except the preview blob & image file
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === "profileImage" || key === "profileImagePreview") {
+          return;
         }
-      }
+        if (value !== null && value !== undefined) {
+          formDataToSend.append(key, value);
+        }
+      });
 
-      // Append the profile image with the correct key
+      // Append profile image under the key expected by the backend
       if (formData.profileImage) {
-        formDataToSend.append("profileImage", formData.profileImage); // Must match $_FILES['profileImage'] in PHP
+        formDataToSend.append("profileImage", formData.profileImage);
       }
 
-      // Log FormData for debugging
+      // Debug: log all FormData entries
       console.log("FormData to send:");
       for (let pair of formDataToSend.entries()) {
         console.log(pair[0], ":", pair[1]);
       }
 
+      // PHP only populates $_POST/$_FILES for POST requests.
+      // Let backend keep routing logic with a method override flag.
+      formDataToSend.append("_method", "PUT");
+
       const res = await fetch(
         `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`,
         {
-          method: "PUT",
+          method: "POST",
           body: formDataToSend,
         }
       );
 
-      const result = await res.json();
+      const text = await res.text();
+
+      let result;
+      try {
+        result = JSON.parse(text); // try parsing JSON
+      } catch (err) {
+        console.warn("Backend returned non-JSON response:", text);
+        result = { error: "Invalid server response" };
+      }
+
       console.log("Backend response:", result);
 
       if (res.ok) {
-        alert("Profile updated successfully!");
+        alert(result.message || "Profile updated successfully!");
       } else {
         alert(result.error || "Failed to update profile");
       }
@@ -165,6 +181,7 @@ export default function EditProfileForm() {
       alert("Failed to update profile. Please try again.");
     }
   };
+
 
   return (
     <div className="bg-[#ffffff80] p-4 rounded-lg font-poppins">
