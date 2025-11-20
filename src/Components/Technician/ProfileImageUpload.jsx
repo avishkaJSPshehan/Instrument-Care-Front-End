@@ -4,6 +4,15 @@ import profileImage from '../../assets/images/profile-image.jpeg';
 export default function ProfileImageUpload({ formData, setFormData, handleChange }) {
   const [previewImage, setPreviewImage] = useState(profileImage);
 
+  // If parent doesn't pass handleChange, create a default one
+  const safeHandleChange = handleChange || ((e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  });
+
   // Update preview if formData.profileImagePreview changes (for editing existing profile)
   useEffect(() => {
     if (formData.profileImagePreview) {
@@ -23,8 +32,8 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
         // Update parent formData
         setFormData({
           ...formData,
-          profileImage: file, // actual file to send to backend
-          profileImagePreview: ev.target.result, // optional preview
+          profileImage: file, // file for backend
+          profileImagePreview: ev.target.result, // preview
         });
       };
       reader.readAsDataURL(file);
@@ -72,7 +81,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             type="text"
             name="fullName"
             value={formData.fullName}
-            onChange={handleChange}
+            onChange={safeHandleChange}
             className="border rounded p-1 w-full font-normal"
           />
         </label>
@@ -83,7 +92,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             type="text"
             name="nic"
             value={formData.nic}
-            onChange={handleChange}
+            onChange={safeHandleChange}
             className="border rounded p-1 w-full font-normal"
           />
         </label>
@@ -94,7 +103,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             type="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={safeHandleChange}
             className="border rounded p-1 w-full font-normal"
           />
         </label>
@@ -105,7 +114,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             type="text"
             name="address"
             value={formData.address}
-            onChange={handleChange}
+            onChange={safeHandleChange}
             className="border rounded p-1 w-full font-normal"
           />
         </label>
@@ -116,7 +125,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             type="text"
             name="personalNumber"
             value={formData.personalNumber}
-            onChange={handleChange}
+            onChange={safeHandleChange}
             className="border rounded p-1 w-full font-normal"
           />
         </label>
@@ -126,7 +135,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
           <textarea
             name="bio"
             value={formData.bio}
-            onChange={handleChange}
+            onChange={safeHandleChange}
             className="border rounded p-5 w-full font-normal"
           />
         </label>
