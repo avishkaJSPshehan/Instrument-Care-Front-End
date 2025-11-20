@@ -126,17 +126,19 @@ export default function EditProfileForm() {
 
       const formDataToSend = new FormData();
 
+      // Append all normal fields except the preview
       for (const key in formData) {
-        if (formData.hasOwnProperty(key) && key !== "profileImagePreview") {
+        if (formData.hasOwnProperty(key) && key !== "profileImagePreview" && key !== "profileImage") {
           formDataToSend.append(key, formData[key]);
         }
       }
 
+      // Append the profile image with the correct key
       if (formData.profileImage) {
-        formDataToSend.append("profile_image", formData.profileImage);
+        formDataToSend.append("profileImage", formData.profileImage); // Must match $_FILES['profileImage'] in PHP
       }
 
-      // ✅ Log request body in console
+      // Log FormData for debugging
       console.log("FormData to send:");
       for (let pair of formDataToSend.entries()) {
         console.log(pair[0], ":", pair[1]);
@@ -150,9 +152,14 @@ export default function EditProfileForm() {
         }
       );
 
-      const result = await res.text();
+      const result = await res.json();
       console.log("Backend response:", result);
-      alert("Profile updated successfully!");
+
+      if (res.ok) {
+        alert("Profile updated successfully!");
+      } else {
+        alert(result.error || "Failed to update profile");
+      }
     } catch (err) {
       console.error("Submit failed:", err);
       alert("Failed to update profile. Please try again.");
