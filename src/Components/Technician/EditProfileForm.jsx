@@ -27,27 +27,27 @@ export default function EditProfileForm() {
     certificate_verification_code: "",
     guarantee_for_service: "",
     additional_comment: "",
-
+    profileImage: null, // store actual file
+    profileImagePreview: null, // for preview
   });
 
-  // ✅ Fetch user profile data when component mounts
+  // Fetch user profile data when component mounts
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const userId = localStorage.getItem("user_id");
+        if (!userId) {
+          console.error("No user ID found in localStorage");
+          return;
+        }
 
-      const userId = localStorage.getItem("user_id");
-      console.log(userId);
-
-      if (!userId) {
-        console.error("No user ID found in localStorage");
-        return;
-      }
-
-        const res = await fetch(`http://localhost/instrument-care-back-end/public/tech/profile/${userId}`); // <-- replace 44 with logged-in user_id
+        const res = await fetch(
+          `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`
+        );
         const data = await res.json();
 
-        // Map backend response keys to frontend state
-        setFormData({
+        setFormData((prev) => ({
+          ...prev,
           fullName: data.full_name || "",
           nic: data.nic || "",
           email: data.email || "",
@@ -70,7 +70,8 @@ export default function EditProfileForm() {
           certificate_verification_code: data.certificate_verification_code || "",
           guarantee_for_service: data.guarantee_for_service || "",
           additional_comment: data.additional_comment || "",
-        });
+          profileImagePreview: data.profile_image_url || null, // if backend provides image URL
+        }));
       } catch (err) {
         console.error("Failed to fetch profile:", err);
       }
@@ -92,8 +93,7 @@ export default function EditProfileForm() {
       email: "",
       address: "",
       personalNumber: "",
-      bio: "", 
-      specialistInstrument: "",
+      bio: "",
       current_designation: "",
       institute_name: "",
       laboratory_category: "",
@@ -110,37 +110,54 @@ export default function EditProfileForm() {
       certificate_verification_code: "",
       guarantee_for_service: "",
       additional_comment: "",
+      profileImage: null,
+      profileImagePreview: null,
     });
   };
 
   // Submit form to backend
   const handleSubmit = async () => {
-    console.log("Submitting profile data:", formData);
-
     try {
-        const userId = localStorage.getItem("user_id");
-
-        if (!userId) {
-          console.error("No user ID found in localStorage");
-          return;
-        }
-
-        const res = await fetch(`http://localhost/instrument-care-back-end/public/tech/profile/${userId}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        const result = await res.text();
-        console.log(result)
-
-        console.log("Backend response:", result);
-        alert("Profile updated successfully!");
-      } catch (err) {
-        console.error("Submit failed:", err);
-        alert("Failed to update profile. Please try again.");
+      const userId = localStorage.getItem("user_id");
+      if (!userId) {
+        console.error("No user ID found in localStorage");
+        return;
       }
-    };
+
+      const formDataToSend = new FormData();
+
+      for (const key in formData) {
+        if (formData.hasOwnProperty(key) && key !== "profileImagePreview") {
+          formDataToSend.append(key, formData[key]);
+        }
+      }
+
+      if (formData.profileImage) {
+        formDataToSend.append("profile_image", formData.profileImage);
+      }
+
+      // ✅ Log request body in console
+      console.log("FormData to send:");
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0], ":", pair[1]);
+      }
+
+      const res = await fetch(
+        `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`,
+        {
+          method: "PUT",
+          body: formDataToSend,
+        }
+      );
+
+      const result = await res.text();
+      console.log("Backend response:", result);
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("Submit failed:", err);
+      alert("Failed to update profile. Please try again.");
+    }
+  };
 
   return (
     <div className="bg-[#ffffff80] p-4 rounded-lg font-poppins">
@@ -148,7 +165,7 @@ export default function EditProfileForm() {
 
       {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <ProfileImageUpload formData={formData} handleChange={handleChange} />
+        <ProfileImageUpload formData={formData} setFormData={setFormData} />
         <ProfileFormLeft formData={formData} handleChange={handleChange} />
         <ProfileFormRight formData={formData} handleChange={handleChange} />
       </div>
