@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import DefaultProfileImage from "../../assets/images/profile-image.jpeg"; // local default image
 
 export default function TechniciansCard({ searchTerm }) {
   const [technicians, setTechnicians] = useState([]);
@@ -56,9 +57,11 @@ export default function TechniciansCard({ searchTerm }) {
         <div className="grid gap-4 sm:grid-cols-4 lg:grid-cols-4">
           {filteredTechnicians.length > 0 ? (
             filteredTechnicians.map((tech, index) => {
-              const imageUrl = tech.profile_image
-                ? `http://localhost/instrument-care-back-end/public/${tech.profile_image}`
-                : "https://via.placeholder.com/400x400.png?text=No+Image";
+              // Use profile_image_url if available, otherwise default local image
+              const imageUrl =
+                tech.profile_image_url && tech.profile_image_url.trim() !== ""
+                  ? tech.profile_image_url
+                  : DefaultProfileImage;
 
               return (
                 <div
@@ -69,29 +72,29 @@ export default function TechniciansCard({ searchTerm }) {
                     <div className="rounded-2xl overflow-hidden mb-4">
                       <img
                         src={imageUrl}
-                        alt={tech.full_name}
+                        alt={tech.full_name || "No Name"}
                         className="w-full h-64 object-cover rounded-2xl"
                       />
                     </div>
 
                     <div className="flex items-center justify-between mt-4 text-sm text-white">
                       <div className="text-lg font-semibold flex items-center gap-1">
-                        {tech.full_name}
+                        {tech.full_name || "No Name"}
                         <CheckCircle className="w-4 h-4 text-green-500" />
                       </div>
                       <div className="text-xs font-semibold flex items-center gap-1">
-                        {tech.company_designation}
+                        {tech.company_designation || "-"}
                       </div>
                     </div>
 
-                    <p className="text-gray-400 text-sm mt-1">{tech.bio}</p>
+                    <p className="text-gray-400 text-sm mt-1">{tech.bio || "-"}</p>
 
                     <div className="flex flex-col mt-4 text-sm text-gray-400 gap-2">
                       <div className="flex items-center gap-1">
-                        <Award className="w-4 h-4" /> {tech.certificate_name}
+                        <Award className="w-4 h-4" /> {tech.certificate_name || "-"}
                       </div>
                       <div className="flex items-center gap-1">
-                        <Home className="w-4 h-4" /> {tech.institute_name}
+                        <Home className="w-4 h-4" /> {tech.institute_name || "-"}
                       </div>
                     </div>
                   </div>
@@ -102,6 +105,7 @@ export default function TechniciansCard({ searchTerm }) {
                         View Profile <SquareArrowOutUpRight className="w-3 h-3" />
                       </button>
                     </Link>
+
                     <Link to={`/user/service-request/${tech.id}`}>
                       <button className="flex-1 bg-gray-800 text-white font-semibold text-sm py-2 p-2 rounded-full flex items-center justify-center gap-1 hover:bg-gray-700 transition">
                         Service Request <ArrowUpRight className="w-4 h-4" />
