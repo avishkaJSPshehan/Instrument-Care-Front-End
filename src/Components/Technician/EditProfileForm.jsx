@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
 import ProfileFormLeft from "./ProfileFormLeft";
 import ProfileFormRight from "./ProfileFormRight";
+import {uploadToCloudinary} from "../utils/cloudinary";
 
 export default function EditProfileForm() {
   const [formData, setFormData] = useState({
@@ -117,71 +118,53 @@ export default function EditProfileForm() {
 
   // Submit form to backend
   const handleSubmit = async () => {
-    try {
-      const userId = localStorage.getItem("user_id");
-      if (!userId) {
-        console.error("No user ID found in localStorage");
-        return;
-      }
+  try {
+    const userId = localStorage.getItem("user_id");
+    if (!userId) return alert("User not found.");
 
-      const formDataToSend = new FormData();
+    let profileImageUrl = formData.profileImagePreview || null;
 
-      // Append all scalar fields except the preview blob & image file
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key === "profileImage" || key === "profileImagePreview") {
-          return;
-        }
-        if (value !== null && value !== undefined) {
-          formDataToSend.append(key, value);
-        }
-      });
-
-      // Append profile image under the key expected by the backend
-      if (formData.profileImage) {
-        formDataToSend.append("profileImage", formData.profileImage);
-      }
-
-      // Debug: log all FormData entries
-      console.log("FormData to send:");
-      for (let pair of formDataToSend.entries()) {
-        console.log(pair[0], ":", pair[1]);
-      }
-
-      // PHP only populates $_POST/$_FILES for POST requests.
-      // Let backend keep routing logic with a method override flag.
-      formDataToSend.append("_method", "PUT");
-
-      const res = await fetch(
-        `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`,
-        {
-          method: "POST",
-          body: formDataToSend,
-        }
-      );
-
-      const text = await res.text();
-
-      let result;
+    // Step 1: Upload image to Cloudinary if user selected a new file
+    if (formData.profileImage) {
       try {
-        result = JSON.parse(text); // try parsing JSON
+        profileImageUrl = await uploadToCloudinary(formData.profileImage);
       } catch (err) {
-        console.warn("Backend returned non-JSON response:", text);
-        result = { error: "Invalid server response" };
+        console.error("Cloudinary upload failed", err);
+        return alert("Failed to upload image. Try again.");
       }
-
-      console.log("Backend response:", result);
-
-      if (res.ok) {
-        alert(result.message || "Profile updated successfully!");
-      } else {
-        alert(result.error || "Failed to update profile");
-      }
-    } catch (err) {
-      console.error("Submit failed:", err);
-      alert("Failed to update profile. Please try again.");
     }
-  };
 
+    // Step 2: Prepare payload for backend
+    const payload = { ...formData };
+    delete payload.profileImage;
+    delete payload.profileImagePreview;
+    payload.profile_image_url = profileImageUrl;
+
+    // Step 3: Send to backend as JSON
+    const res = await fetch(
+      `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const text = await res.text();
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch {
+      return alert("Invalid server response");
+    }
+
+    if (res.ok) alert(result.message || "Profile updated successfully!");
+    else alert(result.error || "Failed to update profile");
+  } catch (err) {
+    console.error(err);
+    alert("Error updating profile. Please try again.");
+  }
+};
 
   return (
     <div className="bg-[#ffffff80] p-4 rounded-lg font-poppins">
