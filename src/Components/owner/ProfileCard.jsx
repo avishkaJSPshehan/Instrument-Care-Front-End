@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import profileImage from '../../assets/images/profile-image.jpeg';
+import DefaultProfileImage from '../../assets/images/profile-image.jpeg';
 
 export default function ProfileCard() {
   const { id } = useParams(); // get technician id from URL
@@ -30,6 +30,11 @@ export default function ProfileCard() {
   if (!tech) {
     return <div className="p-4">Loading profile...</div>;
   }
+
+  // Determine which profile image to show
+  const profileImageUrl = tech.profile_image_url && tech.profile_image_url.trim() !== ""
+    ? tech.profile_image_url
+    : DefaultProfileImage;
 
   const laboratoryCategoryMap = {
     1: "Chemical Testing",
@@ -87,21 +92,21 @@ export default function ProfileCard() {
       <div className="flex items-center gap-4">
         <div className="border rounded-full flex items-center justify-center mb-2">
           <img
-            src={profileImage}
-            alt="Profile"
+            src={profileImageUrl}
+            alt={tech.full_name || "Profile"}
             className="h-20 w-20 rounded-full object-cover cursor-pointer border border-gray-300 hover:scale-105 transition-transform"
           />
         </div>
         <div>
-          <h2 className="font-bold text-lg">{tech.full_name}</h2>
-          <p className="text-gray-500 text-sm">{tech.company_designation}</p>
+          <h2 className="font-bold text-lg">{tech.full_name || "N/A"}</h2>
+          <p className="text-gray-500 text-sm">{tech.company_designation || "-"}</p>
         </div>
       </div>
 
       {/* About */}
       <div>
         <h3 className="font-bold">About</h3>
-        <p className="text-sm text-gray-600">{tech.bio}</p>
+        <p className="text-sm text-gray-600">{tech.bio || "-"}</p>
       </div>
       <hr />
 
@@ -110,10 +115,10 @@ export default function ProfileCard() {
         <h3 className="font-bold">Qualifications</h3>
         <ul className="text-sm text-gray-600 space-y-1">
           <li className="font-semibold pl-5">
-            Certificate: {tech.certificate_name}
+            Certificate: {tech.certificate_name || "-"}
           </li>
-          <li className="pl-5">Year: {tech.certificate_issued_year}</li>
-          <li className="pl-5">Code: {tech.certificate_verification_code}</li>
+          <li className="pl-5">Year: {tech.certificate_issued_year || "-"}</li>
+          <li className="pl-5">Code: {tech.certificate_verification_code || "-"}</li>
         </ul>
       </div>
       <hr />
@@ -122,8 +127,8 @@ export default function ProfileCard() {
       <div>
         <h3 className="font-bold">Institute Details</h3>
         <ul className="text-sm text-gray-600 space-y-1">
-          <li className="font-semibold pl-5">{tech.company_designation}</li>
-          <li className="pl-5">{tech.institute_name}</li>
+          <li className="font-semibold pl-5">{tech.company_designation || "-"}</li>
+          <li className="pl-5">{tech.institute_name || "-"}</li>
         </ul>
       </div>
       <hr />
@@ -132,23 +137,23 @@ export default function ProfileCard() {
       <div>
         <h3 className="font-bold">Experiences</h3>
         <ul className="text-sm text-gray-600 space-y-1">
-          <li className="pl-5">Years of Experience: {tech.years_of_experience}</li>
-          <li className="pl-5">Current Designation: {tech.current_designation}</li>
+          <li className="pl-5">Years of Experience: {tech.years_of_experience || "-"}</li>
+          <li className="pl-5">Current Designation: {tech.current_designation || "-"}</li>
         </ul>
       </div>
       <hr />
 
       {/* Technical Expertise */}
       <div>
-      <h3 className="font-bold">Technical Expertise</h3>
-      <ul className="text-sm text-gray-600 space-y-1">
-        <li className="font-semibold pl-5">
-          Laboratory Category: {laboratoryCategoryMap[tech.laboratory_category] || "N/A"}
-        </li>
-        <li className="font-semibold pl-5">
-          Instrument Category: {instrumentCategoryMap[tech.instrument_category] || "N/A"}
-        </li>
-      </ul>
+        <h3 className="font-bold">Technical Expertise</h3>
+        <ul className="text-sm text-gray-600 space-y-1">
+          <li className="font-semibold pl-5">
+            Laboratory Category: {laboratoryCategoryMap[tech.laboratory_category] || "N/A"}
+          </li>
+          <li className="font-semibold pl-5">
+            Instrument Category: {instrumentCategoryMap[tech.instrument_category] || "N/A"}
+          </li>
+        </ul>
       </div>
     </div>
   );
