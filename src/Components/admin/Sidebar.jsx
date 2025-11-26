@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import profileImage from '../../assets/images/profile-image.jpeg';
 
-export default function Sidebar() {
+export default function Admin_Sidebar() {
   const [avatarSrc, setAvatarSrc] = useState(profileImage);
-  const [fullName, setFullName] = useState("Untitled Technician");
-  const [designation, setDesignation] = useState("Technician");
+  const [fullName, setFullName] = useState("System Administrator");
+  const [designation, setDesignation] = useState("System Administrator");
 
   useEffect(() => {
     const loadProfile = async () => {
