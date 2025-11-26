@@ -9,7 +9,7 @@ import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 export default function Admin_Dashboard() {
 
   const chartData = [
-    { date: "2025-01-01", count: 5 },
+    { date: "2025-01-01", count: 15 },
     { date: "2025-01-02", count: 12 },
     { date: "2025-01-03", count: 7 },
     { date: "2025-01-04", count: 18 },

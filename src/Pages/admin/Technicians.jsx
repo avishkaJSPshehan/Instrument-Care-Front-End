@@ -1,10 +1,18 @@
 import React from 'react'
 import Navbar from '../../Components/Technician/Navbar'
 import Admin_Sidebar from '../../Components/admin/Sidebar'
+import AllTechnicianTable from '../../Components/admin/AdminAllTechnician';
 import Footer from '../../Components/Common/Footer'
 import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 
 export default function All_Technicians() {
+
+  const users = [
+  ["Alice Green", "alice@example.com", "0771234567", "Admin", "2025-01-05"],
+  ["Tom White", "tom@example.com", "0777654321", "Technician", "2025-02-12"],
+  ["Sara Black", "sara@example.com", "0771112233", "User", "2025-03-20"],
+];
+
   return (
     <>
       <Navbar />
@@ -22,7 +30,7 @@ export default function All_Technicians() {
         {/* Main Content */}
         <main className="flex-1 bg-[#ffffff80] rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">All Technicians</h2>
-          
+          <AllTechnicianTable usersData={users}/>
         </main>
       </div>
 
