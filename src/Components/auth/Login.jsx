@@ -43,6 +43,8 @@ export default function LoginPage() {
           navigate("/user/dashboard");
         } else if (result.role === 10) {
           navigate("/tech/dashboard");
+        } else if (result.role === 1){
+          navigate("/admin/dashboard");
         } else {
           setError("Unauthorized role!");
         }
