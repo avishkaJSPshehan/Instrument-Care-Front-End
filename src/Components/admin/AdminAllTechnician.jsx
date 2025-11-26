@@ -1,13 +1,59 @@
-import React from "react";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import React, { useState } from "react";
 
-export default function AllTechnicianTable({ usersData }) {
-  // Sample data if no prop passed
-  const users = usersData || [
-    ["John Doe", "john@example.com", "0771234567", "Admin", "2025-01-01", true],
-    ["Jane Smith", "jane@example.com", "0779876543", "Technician", "2025-02-15", false],
-    ["Bob Brown", "bob@example.com", "0775554433", "User", "2025-03-10", true],
+export default function AllTechnicianTableWithEdit({ usersData }) {
+  const initialUsers = usersData || [
+    {
+      fullName: "John Doe",
+      email: "john@example.com",
+      contact: "0771234567",
+      role: "Admin",
+      createdAt: "2025-01-01",
+      active: true,
+      bio: "Experienced admin",
+    },
+    {
+      fullName: "Jane Smith",
+      email: "jane@example.com",
+      contact: "0779876543",
+      role: "Technician",
+      createdAt: "2025-02-15",
+      active: false,
+      bio: "Lab technician",
+    },
+    {
+      fullName: "Bob Brown",
+      email: "bob@example.com",
+      contact: "0775554433",
+      role: "User",
+      createdAt: "2025-03-10",
+      active: true,
+      bio: "General user",
+    },
   ];
+
+  const [users, setUsers] = useState(initialUsers);
+  const [editingUser, setEditingUser] = useState(null);
+
+  const handleEditClick = (user) => {
+    setEditingUser({ ...user }); // create a copy for editing
+  };
+
+  const handleCloseModal = () => setEditingUser(null);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEditingUser((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSave = () => {
+    setUsers((prev) =>
+      prev.map((u) => (u.email === editingUser.email ? editingUser : u))
+    );
+    handleCloseModal();
+  };
 
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
@@ -35,51 +81,37 @@ export default function AllTechnicianTable({ usersData }) {
                 </tr>
               </thead>
               <tbody>
-                {users.map((row, i) => (
+                {users.map((user, i) => (
                   <tr key={i} className="border-b">
-                    {row.slice(0, 5).map((cell, j) => (
-                      <td
-                        key={j}
-                        className={`
-                          p-2
-                          ${
-                            cell === "Admin"
-                              ? "text-purple-600 font-semibold"
-                              : cell === "Technician"
-                              ? "text-blue-600 font-semibold"
-                              : cell === "User"
-                              ? "text-gray-700 font-semibold"
-                              : ""
-                          }
-                        `}
-                      >
-                        {cell}
-                      </td>
-                    ))}
-
-                    {/* Active Checkbox */}
+                    <td className="p-2">{user.fullName}</td>
+                    <td className="p-2">{user.email}</td>
+                    <td className="p-2">{user.contact}</td>
+                    <td
+                      className={`p-2 font-semibold ${
+                        user.role === "Admin"
+                          ? "text-purple-600"
+                          : user.role === "Technician"
+                          ? "text-blue-600"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {user.role}
+                    </td>
+                    <td className="p-2">{user.createdAt}</td>
                     <td className="p-2">
                       <input
                         type="checkbox"
-                        checked={row[5]}
+                        checked={user.active}
                         readOnly
                         className="w-5 h-5 accent-orange-600"
                       />
                     </td>
-
-                    {/* Action Buttons */}
-                    <td className="p-2 flex gap-2">
+                    <td className="p-2">
                       <button
-                        className="p-1 bg-blue-600 text-white rounded hover:bg-blue-500"
-                        onClick={() => alert(`Update ${row[0]}`)}
+                        className="bg-orange-600 text-white px-2 py-1 rounded hover:bg-orange-500"
+                        onClick={() => handleEditClick(user)}
                       >
-                        <PencilSquareIcon className="w-5 h-5" />
-                      </button>
-                      <button
-                        className="p-1 bg-red-600 text-white rounded hover:bg-red-500"
-                        onClick={() => alert(`Delete ${row[0]}`)}
-                      >
-                        <TrashIcon className="w-5 h-5" />
+                        Edit
                       </button>
                     </td>
                   </tr>
@@ -89,6 +121,100 @@ export default function AllTechnicianTable({ usersData }) {
           </div>
         )}
       </div>
+
+      {/* Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-[#ffffff90] bg-opacity-40 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h2 className="text-xl font-bold mb-4">Edit User Profile</h2>
+
+            <div className="flex flex-col gap-3">
+              <label>
+                Full Name *
+                <input
+                  type="text"
+                  name="fullName"
+                  value={editingUser.fullName}
+                  onChange={handleChange}
+                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                />
+              </label>
+
+              <label>
+                Email *
+                <input
+                  type="email"
+                  name="email"
+                  value={editingUser.email}
+                  onChange={handleChange}
+                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                />
+              </label>
+
+              <label>
+                Contact Number *
+                <input
+                  type="text"
+                  name="contact"
+                  value={editingUser.contact}
+                  onChange={handleChange}
+                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                />
+              </label>
+
+              <label>
+                Role *
+                <select
+                  name="role"
+                  value={editingUser.role}
+                  onChange={handleChange}
+                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                >
+                  <option value="Admin">Admin</option>
+                  <option value="Technician">Technician</option>
+                  <option value="User">User</option>
+                </select>
+              </label>
+
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="active"
+                  checked={editingUser.active}
+                  onChange={handleChange}
+                  className="w-5 h-5 accent-orange-600"
+                />
+                Active
+              </label>
+
+              <label>
+                Bio
+                <textarea
+                  name="bio"
+                  value={editingUser.bio}
+                  onChange={handleChange}
+                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                />
+              </label>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-4">
+              <button
+                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
+                onClick={handleCloseModal}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500"
+                onClick={handleSave}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

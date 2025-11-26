@@ -8,9 +8,33 @@ import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 export default function All_Technicians() {
 
   const users = [
-  ["Alice Green", "alice@example.com", "0771234567", "Admin", "2025-01-05"],
-  ["Tom White", "tom@example.com", "0777654321", "Technician", "2025-02-12"],
-  ["Sara Black", "sara@example.com", "0771112233", "User", "2025-03-20"],
+  {
+      fullName: "John Doe",
+      email: "john@example.com",
+      contact: "0771234567",
+      role: "Admin",
+      createdAt: "2025-01-01",
+      active: true,
+      bio: "Experienced admin",
+    },
+    {
+      fullName: "Jane Smith",
+      email: "jane@example.com",
+      contact: "0779876543",
+      role: "Technician",
+      createdAt: "2025-02-15",
+      active: false,
+      bio: "Lab technician",
+    },
+    {
+      fullName: "Bob Brown",
+      email: "bob@example.com",
+      contact: "0775554433",
+      role: "User",
+      createdAt: "2025-03-10",
+      active: true,
+      bio: "General user",
+    },
 ];
 
   return (
