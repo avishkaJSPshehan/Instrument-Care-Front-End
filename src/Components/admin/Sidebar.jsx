@@ -72,31 +72,31 @@ export default function Admin_Sidebar() {
         <hr className="w-full border-gray-700 my-4" />
         <nav className="flex flex-col items-center space-y-4 w-full">
 
-            <Link to="/tech/dashboard">
+            <Link to="/admin/dashboard">
                 <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
                     Dashboard
                 </button>
             </Link>
 
-            <Link to="/tech/service-request">
+            <Link to="/admin/technicians">
                 <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
                     Technicians
                 </button>
             </Link>
 
-            <Link to="/tech/profile">
+            <Link to="/admin/users">
                 <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
                     Users
                 </button>
             </Link>
 
-            <Link to="/tech/profile">
+            <Link to="/admin/instrument">
                 <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
                     Instruments
                 </button>
             </Link>
 
-            <Link to="/tech/profile">
+            <Link to="/admin/service-requests">
                 <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
                     Service Requests
                 </button>
@@ -106,7 +106,7 @@ export default function Admin_Sidebar() {
       </div>
 
       {/* Contact Section */}
-      <div className="bg-orange-200 text-black rounded-lg p-4 text-sm mt-6">
+      {/* <div className="bg-orange-200 text-black rounded-lg p-4 text-sm mt-6">
         <p className="font-bold mb-2 text-center">Contact System Admin</p>
         <div className="flex items-center mb-2">
           📞 <span className="ml-2">(+94) 71 23 45 678</span>
@@ -114,7 +114,7 @@ export default function Admin_Sidebar() {
         <div className="flex items-center">
           ✉️ <span className="ml-2">admin@nsf.gov.lk</span>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 }
