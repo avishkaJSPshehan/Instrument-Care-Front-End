@@ -80,13 +80,25 @@ export default function Admin_Sidebar() {
 
             <Link to="/tech/service-request">
                 <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
-                    Service Request
+                    Technicians
                 </button>
             </Link>
 
             <Link to="/tech/profile">
                 <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
-                    My Profile
+                    Users
+                </button>
+            </Link>
+
+            <Link to="/tech/profile">
+                <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
+                    Instruments
+                </button>
+            </Link>
+
+            <Link to="/tech/profile">
+                <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
+                    Service Requests
                 </button>
             </Link>
 

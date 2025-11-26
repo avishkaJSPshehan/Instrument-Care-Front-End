@@ -25,9 +25,9 @@ export default function Admin_Dashboard() {
         {/* Main Content */}
         <main className="flex-1 bg-[#ffffff80] rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">Admin Dashboard</h2>
-          <DashboardStats />
+          {/* <DashboardStats />
           <ServiceRequestTable />
-          <JobSummaryTable />
+          <JobSummaryTable /> */}
         </main>
       </div>
 
