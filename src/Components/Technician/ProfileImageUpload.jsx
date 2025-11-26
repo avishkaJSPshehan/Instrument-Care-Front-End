@@ -82,7 +82,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="fullName"
             value={formData.fullName}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal"
+            className="border rounded p-1 w-full font-normal bg-gray-200"
           />
         </label>
 
@@ -93,7 +93,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="nic"
             value={formData.nic}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal"
+            className="border rounded p-1 w-full font-normal bg-gray-200"
           />
         </label>
 
@@ -104,7 +104,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="email"
             value={formData.email}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal"
+            className="border rounded p-1 w-full font-normal bg-gray-200"
           />
         </label>
 
@@ -115,7 +115,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="address"
             value={formData.address}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal"
+            className="border rounded p-1 w-full font-normal bg-gray-200"
           />
         </label>
 
@@ -126,7 +126,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="personalNumber"
             value={formData.personalNumber}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal"
+            className="border rounded p-1 w-full font-normal bg-gray-200"
           />
         </label>
 
@@ -136,7 +136,7 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="bio"
             value={formData.bio}
             onChange={safeHandleChange}
-            className="border rounded p-5 w-full font-normal"
+            className="border rounded p-5 w-full font-normal bg-gray-200"
           />
         </label>
       </div>
