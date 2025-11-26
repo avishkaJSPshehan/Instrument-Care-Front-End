@@ -33,8 +33,6 @@ export default function Admin_Dashboard() {
     { date: "2025-01-04", count: 18 },
     { date: "2025-01-01", count: 26 },
     { date: "2025-01-02", count: 30 },
-    { date: "2025-01-03", count: 12 },
-    { date: "2025-01-04", count: 15 },
   ];
 
   return (
