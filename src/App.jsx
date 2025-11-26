@@ -24,8 +24,6 @@ import EmailEntryForgotPassword from './Pages/Auth/Email-Entry-Forget-Password';
 import EmailSendForgotPassword from './Pages/Auth/Email-Send-Forget-Password';
 import SetNewPasswordForgotPassword from './Pages/Auth/Set-New-Password-Forget-Password';
 import PasswordResetedForgotPassword from './Pages/Auth/Password-Reseted-Forget-Password';
-
-
 import Admin_Dashboard from './Pages/admin/Dashboard';
 import All_Instruments from './Pages/admin/Instruments';
 import All_Service_Requests from './Pages/admin/Service_Requests';
@@ -56,11 +54,50 @@ export default function App() {
         <Route path="/auth/password-reseted-forgot-password" element={<PasswordResetedForgotPassword/>}/>
 
         {/* ===== Admin Routes ==== */}
-        <Route path="/admin/dashboard" element={<Admin_Dashboard/>}/>
-        <Route path="/admin/instrument" element={<All_Instruments/>}/>
-        <Route path="/admin/service-requests" element={<All_Service_Requests/>}/>
-        <Route path="/admin/technicians" element={<All_Technicians/>}/>
-        <Route path="/admin/users" element={<All_Users/>}/>
+        <Route
+          path="/admin/dashboard" 
+          element={
+            <ProtectedRoute allow={[1]}>
+              <Admin_Dashboard/>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/instrument" 
+          element={
+            <ProtectedRoute allow={[1]}>
+              <All_Instruments/>
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route
+          path="/admin/service-requests" 
+          element={
+            <ProtectedRoute allow={[1]}>
+              <All_Service_Requests/>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/technicians" 
+          element={
+            <ProtectedRoute allow={[1]}>
+              <All_Technicians/>
+            </ProtectedRoute>
+          }
+        />
+          
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allow={[1]}>
+              <All_Users/>
+            </ProtectedRoute>
+          }
+        />
 
         {/* ===== Technician Routes (role: 10) ===== */}
         <Route
