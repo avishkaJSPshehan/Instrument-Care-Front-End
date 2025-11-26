@@ -73,31 +73,31 @@ export default function Admin_Sidebar() {
         <nav className="flex flex-col items-center space-y-4 w-full">
 
             <Link to="/admin/dashboard">
-                <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
+                <button className="bg-orange-300/40 text-gray-800 hover:bg-orange-400/80 font-bold px-4 py-2 rounded-md w-48">
                     Dashboard
                 </button>
             </Link>
 
             <Link to="/admin/technicians">
-                <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
+                <button className="bg-orange-300/40 text-gray-800 hover:bg-orange-400/80 font-bold px-4 py-2 rounded-md w-48">
                     Technicians
                 </button>
             </Link>
 
             <Link to="/admin/users">
-                <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
+                <button className="bg-orange-300/40 text-gray-800 hover:bg-orange-400/80 font-bold px-4 py-2 rounded-md w-48">
                     Users
                 </button>
             </Link>
 
             <Link to="/admin/instrument">
-                <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
+                <button className="bg-orange-300/40 text-gray-800 hover:bg-orange-400/80 font-bold px-4 py-2 rounded-md w-48">
                     Instruments
                 </button>
             </Link>
 
             <Link to="/admin/service-requests">
-                <button className="bg-white/40 text-gray-800 hover:bg-white/80 font-bold px-4 py-2 rounded-md w-48">
+                <button className="bg-orange-300/40 text-gray-800 hover:bg-orange-400/80 font-bold px-4 py-2 rounded-md w-48">
                     Service Requests
                 </button>
             </Link>
