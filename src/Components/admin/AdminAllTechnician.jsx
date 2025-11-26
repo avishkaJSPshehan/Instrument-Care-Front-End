@@ -31,11 +31,11 @@ export default function AllTechnicianTable({ usersData }) {
     },
   ];
 
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState(initialUsers.filter(u => u.role === "Technician")); // filter technicians
   const [editingUser, setEditingUser] = useState(null);
 
   const handleEditClick = (user) => {
-    setEditingUser({ ...user }); // create a copy for editing
+    setEditingUser({ ...user });
   };
 
   const handleCloseModal = () => setEditingUser(null);
@@ -58,12 +58,12 @@ export default function AllTechnicianTable({ usersData }) {
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-bold">All Users</h3>
+        <h3 className="font-bold">All Technicians</h3>
       </div>
 
       <div className="overflow-x-auto">
         {users.length === 0 ? (
-          <p className="text-gray-500 italic p-4 text-center">No users found.</p>
+          <p className="text-gray-500 italic p-4 text-center">No technicians found.</p>
         ) : (
           <div className="max-h-[720px] overflow-y-auto">
             <table className="w-full text-left text-sm border-collapse">
@@ -84,17 +84,7 @@ export default function AllTechnicianTable({ usersData }) {
                     <td className="p-2">{user.fullName}</td>
                     <td className="p-2">{user.email}</td>
                     <td className="p-2">{user.contact}</td>
-                    <td
-                      className={`p-2 font-semibold ${
-                        user.role === "Admin"
-                          ? "text-purple-600"
-                          : user.role === "Technician"
-                          ? "text-blue-600"
-                          : "text-gray-700"
-                      }`}
-                    >
-                      {user.role}
-                    </td>
+                    <td className="p-2 font-semibold text-blue-600">{user.role}</td>
                     <td className="p-2">{user.createdAt}</td>
                     <td className="p-2">
                       <input
@@ -124,7 +114,7 @@ export default function AllTechnicianTable({ usersData }) {
       {editingUser && (
         <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit User Profile</h2>
+            <h2 className="text-xl font-bold mb-4">Edit Technician Profile</h2>
 
             {/* Two-column form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -160,20 +150,6 @@ export default function AllTechnicianTable({ usersData }) {
                     onChange={handleChange}
                     className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                   />
-                </label>
-
-                <label>
-                  Role *
-                  <select
-                    name="role"
-                    value={editingUser.role}
-                    onChange={handleChange}
-                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                  >
-                    <option value="Admin">Admin</option>
-                    <option value="Technician">Technician</option>
-                    <option value="User">User</option>
-                  </select>
                 </label>
 
                 <label className="flex items-center gap-2">
