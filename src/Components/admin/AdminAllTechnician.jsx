@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function AllTechnicianTableWithEdit({ usersData }) {
+export default function AllTechnicianTable({ usersData }) {
   const initialUsers = usersData || [
     {
       fullName: "John Doe",
@@ -63,9 +63,7 @@ export default function AllTechnicianTableWithEdit({ usersData }) {
 
       <div className="overflow-x-auto">
         {users.length === 0 ? (
-          <p className="text-gray-500 italic p-4 text-center">
-            No users found.
-          </p>
+          <p className="text-gray-500 italic p-4 text-center">No users found.</p>
         ) : (
           <div className="max-h-[720px] overflow-y-auto">
             <table className="w-full text-left text-sm border-collapse">
@@ -124,81 +122,87 @@ export default function AllTechnicianTableWithEdit({ usersData }) {
 
       {/* Modal */}
       {editingUser && (
-        <div className="fixed inset-0 bg-[#1a191790] bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
+          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">Edit User Profile</h2>
 
-            <div className="flex flex-col gap-3">
-              <label>
-                Full Name *
-                <input
-                  type="text"
-                  name="fullName"
-                  value={editingUser.fullName}
-                  onChange={handleChange}
-                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                />
-              </label>
+            {/* Two-column form */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-3">
+                <label>
+                  Full Name *
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={editingUser.fullName}
+                    onChange={handleChange}
+                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                  />
+                </label>
 
-              <label>
-                Email *
-                <input
-                  type="email"
-                  name="email"
-                  value={editingUser.email}
-                  onChange={handleChange}
-                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                />
-              </label>
+                <label>
+                  Email *
+                  <input
+                    type="email"
+                    name="email"
+                    value={editingUser.email}
+                    onChange={handleChange}
+                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                  />
+                </label>
 
-              <label>
-                Contact Number *
-                <input
-                  type="text"
-                  name="contact"
-                  value={editingUser.contact}
-                  onChange={handleChange}
-                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                />
-              </label>
+                <label>
+                  Contact Number *
+                  <input
+                    type="text"
+                    name="contact"
+                    value={editingUser.contact}
+                    onChange={handleChange}
+                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                  />
+                </label>
 
-              <label>
-                Role *
-                <select
-                  name="role"
-                  value={editingUser.role}
-                  onChange={handleChange}
-                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                >
-                  <option value="Admin">Admin</option>
-                  <option value="Technician">Technician</option>
-                  <option value="User">User</option>
-                </select>
-              </label>
+                <label>
+                  Role *
+                  <select
+                    name="role"
+                    value={editingUser.role}
+                    onChange={handleChange}
+                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                  >
+                    <option value="Admin">Admin</option>
+                    <option value="Technician">Technician</option>
+                    <option value="User">User</option>
+                  </select>
+                </label>
 
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="active"
-                  checked={editingUser.active}
-                  onChange={handleChange}
-                  className="w-5 h-5 accent-orange-600"
-                />
-                Active
-              </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="active"
+                    checked={editingUser.active}
+                    onChange={handleChange}
+                    className="w-5 h-5 accent-orange-600"
+                  />
+                  Active
+                </label>
+              </div>
 
-              <label>
-                Bio
-                <textarea
-                  name="bio"
-                  value={editingUser.bio}
-                  onChange={handleChange}
-                  className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                />
-              </label>
+              <div className="flex flex-col gap-3">
+                <label>
+                  Bio
+                  <textarea
+                    name="bio"
+                    value={editingUser.bio}
+                    onChange={handleChange}
+                    rows={6}
+                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                  />
+                </label>
+              </div>
             </div>
 
-            <div className="flex justify-end gap-3 mt-4">
+            <div className="flex justify-end gap-3 mt-6">
               <button
                 className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
                 onClick={handleCloseModal}
