@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import ProfileImageUpload from "./ProfileImageUpload";
 import ProfileFormLeft from "./ProfileFormLeft";
 import ProfileFormRight from "./ProfileFormRight";
-import {uploadToCloudinary} from "../utils/cloudinary";
+import { uploadToCloudinary } from "../utils/cloudinary";
 
 export default function EditProfileForm() {
+  const [loading, setLoading] = useState(false); // ⬅ added loading state
+
   const [formData, setFormData] = useState({
     fullName: "",
     nic: "",
@@ -28,19 +30,15 @@ export default function EditProfileForm() {
     certificate_verification_code: "",
     guarantee_for_service: "",
     additional_comment: "",
-    profileImage: null, // store actual file
-    profileImagePreview: null, // for preview
+    profileImage: null,
+    profileImagePreview: null,
   });
 
-  // Fetch user profile data when component mounts
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const userId = localStorage.getItem("user_id");
-        if (!userId) {
-          console.error("No user ID found in localStorage");
-          return;
-        }
+        if (!userId) return;
 
         const res = await fetch(
           `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`
@@ -71,7 +69,7 @@ export default function EditProfileForm() {
           certificate_verification_code: data.certificate_verification_code || "",
           guarantee_for_service: data.guarantee_for_service || "",
           additional_comment: data.additional_comment || "",
-          profileImagePreview: data.profile_image_url || null, // if backend provides image URL
+          profileImagePreview: data.profile_image_url || null,
         }));
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -81,12 +79,10 @@ export default function EditProfileForm() {
     fetchProfile();
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Reset form
   const handleClear = () => {
     setFormData({
       fullName: "",
@@ -116,68 +112,76 @@ export default function EditProfileForm() {
     });
   };
 
-  // Submit form to backend
   const handleSubmit = async () => {
-  try {
-    const userId = localStorage.getItem("user_id");
-    if (!userId) return alert("User not found.");
-
-    let profileImageUrl = formData.profileImagePreview || null;
-
-    // Step 1: Upload image to Cloudinary if user selected a new file
-    if (formData.profileImage) {
-      try {
-        profileImageUrl = await uploadToCloudinary(formData.profileImage);
-      } catch (err) {
-        console.error("Cloudinary upload failed", err);
-        return alert("Failed to upload image. Try again.");
-      }
-    }
-
-    // Step 2: Prepare payload for backend
-    const payload = { ...formData };
-    delete payload.profileImage;
-    delete payload.profileImagePreview;
-    payload.profile_image_url = profileImageUrl;
-
-    // Step 3: Send to backend as JSON
-    const res = await fetch(
-      `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    const text = await res.text();
-    let result;
     try {
-      result = JSON.parse(text);
-    } catch {
-      return alert("Invalid server response");
+      setLoading(true); // ⬅ start loading
+
+      const userId = localStorage.getItem("user_id");
+      if (!userId) {
+        alert("User not found.");
+        setLoading(false);
+        return;
+      }
+
+      let profileImageUrl = formData.profileImagePreview || null;
+
+      if (formData.profileImage) {
+        try {
+          profileImageUrl = await uploadToCloudinary(formData.profileImage);
+        } catch (err) {
+          console.error("Cloudinary upload failed", err);
+          alert("Failed to upload image. Try again.");
+          setLoading(false);
+          return;
+        }
+      }
+
+      const payload = { ...formData };
+      delete payload.profileImage;
+      delete payload.profileImagePreview;
+      payload.profile_image_url = profileImageUrl;
+
+      const res = await fetch(
+        `http://localhost/instrument-care-back-end/public/tech/profile/${userId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const text = await res.text();
+      let result;
+
+      try {
+        result = JSON.parse(text);
+      } catch {
+        alert("Invalid server response");
+        setLoading(false);
+        return;
+      }
+
+      if (res.ok) alert(result.message || "Profile updated successfully!");
+      else alert(result.error || "Failed to update profile");
+
+    } catch (err) {
+      console.error(err);
+      alert("Error updating profile. Please try again.");
     }
 
-    if (res.ok) alert(result.message || "Profile updated successfully!");
-    else alert(result.error || "Failed to update profile");
-  } catch (err) {
-    console.error(err);
-    alert("Error updating profile. Please try again.");
-  }
-};
+    setLoading(false); // ⬅ stop loading
+  };
 
   return (
     <div className="bg-[#ffffff80] p-4 rounded-lg font-poppins">
       <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
 
-      {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <ProfileImageUpload formData={formData} setFormData={setFormData} />
         <ProfileFormLeft formData={formData} handleChange={handleChange} />
         <ProfileFormRight formData={formData} handleChange={handleChange} />
       </div>
 
-      {/* Action Buttons */}
       <div className="flex justify-between mt-4">
         <button
           onClick={handleClear}
@@ -185,11 +189,19 @@ export default function EditProfileForm() {
         >
           Clear
         </button>
+
+        {/* ------------------------- */}
+        {/* UPDATE BUTTON WITH LOADING */}
+        {/* ------------------------- */}
         <button
           onClick={handleSubmit}
-          className="bg-orange-600 text-white font-bold py-2 px-6 rounded hover:bg-orange-400"
+          disabled={loading}
+          className="bg-orange-600 text-white font-bold py-2 px-6 rounded hover:bg-orange-400 flex items-center gap-2 disabled:opacity-70"
         >
-          Update Profile
+          {loading && (
+            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          )}
+          {loading ? "Updating..." : "Update Profile"}
         </button>
       </div>
     </div>
