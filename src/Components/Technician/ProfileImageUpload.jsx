@@ -4,7 +4,6 @@ import profileImage from '../../assets/images/profile-image.jpeg';
 export default function ProfileImageUpload({ formData, setFormData, handleChange }) {
   const [previewImage, setPreviewImage] = useState(profileImage);
 
-  // If parent doesn't pass handleChange, create a default one
   const safeHandleChange = handleChange || ((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -13,7 +12,6 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
     }));
   });
 
-  // Update preview if formData.profileImagePreview changes (for editing existing profile)
   useEffect(() => {
     if (formData.profileImagePreview) {
       setPreviewImage(formData.profileImagePreview);
@@ -24,16 +22,14 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
 
-      // Update preview
       const reader = new FileReader();
       reader.onload = (ev) => {
         setPreviewImage(ev.target.result);
 
-        // Update parent formData
         setFormData({
           ...formData,
-          profileImage: file, // file for backend
-          profileImagePreview: ev.target.result, // preview
+          profileImage: file,
+          profileImagePreview: ev.target.result,
         });
       };
       reader.readAsDataURL(file);
@@ -46,7 +42,6 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
 
   return (
     <div className="flex flex-col items-center p-4">
-      {/* Profile Image Placeholder */}
       <div className="border rounded-full flex items-center justify-center mb-2">
         <img
           src={previewImage}
@@ -64,7 +59,6 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
         Upload Image
       </button>
 
-      {/* Hidden File Input */}
       <input
         type="file"
         id="profileImageInput"
@@ -73,7 +67,6 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
         onChange={handleImageChange}
       />
 
-      {/* Form Inputs */}
       <div className="flex flex-col gap-3 mt-4">
         <label>
           Full Name *
@@ -82,7 +75,8 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="fullName"
             value={formData.fullName}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal bg-gray-200"
+            className="border rounded p-1 w-full font-normal bg-gray-200 
+                       focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </label>
 
@@ -93,7 +87,8 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="nic"
             value={formData.nic}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal bg-gray-200"
+            className="border rounded p-1 w-full font-normal bg-gray-200 
+                       focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </label>
 
@@ -104,7 +99,8 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="email"
             value={formData.email}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal bg-gray-200"
+            className="border rounded p-1 w-full font-normal bg-gray-200 
+                       focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </label>
 
@@ -115,7 +111,8 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="address"
             value={formData.address}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal bg-gray-200"
+            className="border rounded p-1 w-full font-normal bg-gray-200 
+                       focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </label>
 
@@ -126,7 +123,8 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="personalNumber"
             value={formData.personalNumber}
             onChange={safeHandleChange}
-            className="border rounded p-1 w-full font-normal bg-gray-200"
+            className="border rounded p-1 w-full font-normal bg-gray-200 
+                       focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </label>
 
@@ -136,7 +134,8 @@ export default function ProfileImageUpload({ formData, setFormData, handleChange
             name="bio"
             value={formData.bio}
             onChange={safeHandleChange}
-            className="border rounded p-5 w-full font-normal bg-gray-200"
+            className="border rounded p-5 w-full font-normal bg-gray-200 
+                       focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
           />
         </label>
       </div>
