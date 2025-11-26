@@ -91,7 +91,7 @@ export default function App() {
         />
           
         <Route
-          path="/admin/users"
+          path="/admin/owners"
           element={
             <ProtectedRoute allow={[1]}>
               <All_Users/>
