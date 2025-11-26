@@ -24,7 +24,13 @@ import EmailEntryForgotPassword from './Pages/Auth/Email-Entry-Forget-Password';
 import EmailSendForgotPassword from './Pages/Auth/Email-Send-Forget-Password';
 import SetNewPasswordForgotPassword from './Pages/Auth/Set-New-Password-Forget-Password';
 import PasswordResetedForgotPassword from './Pages/Auth/Password-Reseted-Forget-Password';
+
+
 import Admin_Dashboard from './Pages/admin/Dashboard';
+import All_Instruments from './Pages/admin/Instruments';
+import All_Service_Requests from './Pages/admin/Service_Requests';
+import All_Technicians from './Pages/admin/Technicians';
+import All_Users from './Pages/admin/Users';
 
 // 🔹 import ProtectedRoute
 import ProtectedRoute from './Components/auth/ProtectedRoute';
@@ -51,6 +57,10 @@ export default function App() {
 
         {/* ===== Admin Routes ==== */}
         <Route path="/admin/dashboard" element={<Admin_Dashboard/>}/>
+        <Route path="/admin/instrument" element={<All_Instruments/>}/>
+        <Route path="/admin/service-requests" element={<All_Service_Requests/>}/>
+        <Route path="/admin/technicians" element={<All_Technicians/>}/>
+        <Route path="/admin/users" element={<All_Users/>}/>
 
         {/* ===== Technician Routes (role: 10) ===== */}
         <Route

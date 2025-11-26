@@ -4,7 +4,7 @@ import Admin_Sidebar from '../../Components/admin/Sidebar'
 import Footer from '../../Components/Common/Footer'
 import BG from '../../assets/images/technician-dashboard-bg-4.jpg';
 
-export default function Admin_Dashboard() {
+export default function All_Users() {
   return (
     <>
       <Navbar />
@@ -21,7 +21,7 @@ export default function Admin_Dashboard() {
 
         {/* Main Content */}
         <main className="flex-1 bg-[#ffffff80] rounded-lg p-4">
-          <h2 className="text-xl font-bold mb-4">Admin Dashboard</h2>
+          <h2 className="text-xl font-bold mb-4">All Users</h2>
           
         </main>
       </div>
