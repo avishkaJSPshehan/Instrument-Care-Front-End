@@ -53,7 +53,7 @@ export default function App() {
         <Route path="/auth/set-new-password-forgot-password" element={<SetNewPasswordForgotPassword/>}/>
         <Route path="/auth/password-reseted-forgot-password" element={<PasswordResetedForgotPassword/>}/>
 
-        {/* ===== Admin Routes ==== */}
+        {/* ===== Admin Routes (role: 1) ==== */}
         <Route
           path="/admin/dashboard" 
           element={
