@@ -14,7 +14,7 @@ export default function AdminDashboardLineChart({ data }) {
     <div className="bg-[#ffffff80] p-4 rounded-lg shadow-md font-poppins">
       <h2 className="text-lg font-bold mb-4">Service Requests Overview</h2>
 
-      <div className="w-full h-140">
+      <div className="w-full h-120">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
             <CartesianGrid strokeDasharray="5 5" className="opacity-80" />
