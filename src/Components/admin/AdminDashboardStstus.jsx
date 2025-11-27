@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UsersIcon, WrenchScrewdriverIcon, CubeIcon, ClipboardDocumentCheckIcon } from "@heroicons/react/24/outline";
 
 export default function AdminDashboardStats({ technicianId }) {
@@ -8,6 +8,27 @@ export default function AdminDashboardStats({ technicianId }) {
     { label: "Instruments", value: 0, icon: CubeIcon, color: "from-orange-400 to-orange-300" },
     { label: "Service Requests", value: 0, icon: ClipboardDocumentCheckIcon, color: "from-orange-400 to-orange-300" },
   ]);
+
+  // 🔥 Fetch Owners count from backend
+  useEffect(() => {
+    const fetchOwnerCount = async () => {
+      try {
+        const response = await fetch("http://localhost/instrument-care-back-end/public/admin/dashboard");
+        const data = await response.json();
+
+        // Update the "Owners" value in stats
+        setStats((prevStats) =>
+          prevStats.map((stat) =>
+            stat.label === "Owners" ? { ...stat, value: data.user_count || 0 } : stat
+          )
+        );
+      } catch (error) {
+        console.error("Failed to fetch owners count:", error);
+      }
+    };
+
+    fetchOwnerCount();
+  }, []);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 md1:grid-cols-4 gap-6 mb-6 font-poppins">
