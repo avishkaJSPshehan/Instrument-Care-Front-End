@@ -10,7 +10,7 @@ export default function AdminDashboardStats({ technicianId }) {
   ]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-4 gap-6 mb-6 font-poppins">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 md1:grid-cols-4 gap-6 mb-6 font-poppins">
       {stats.map((stat, i) => {
         const Icon = stat.icon;
         return (
