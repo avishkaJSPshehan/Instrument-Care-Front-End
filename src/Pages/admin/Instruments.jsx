@@ -62,6 +62,7 @@ export default function All_Instruments() {
     acquiredOn: "2021-09-30",
     notes: "Temperature range 20-60°C",
   },
+  
 ];
 
 
