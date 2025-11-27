@@ -9,25 +9,27 @@ export default function AdminDashboardStats({ technicianId }) {
     { label: "Service Requests", value: 0, icon: ClipboardDocumentCheckIcon, color: "from-orange-400 to-orange-300" },
   ]);
 
-  // 🔥 Fetch Owners count from backend
+  // 🔥 Fetch dashboard stats from backend
   useEffect(() => {
-    const fetchOwnerCount = async () => {
+    const fetchDashboardStats = async () => {
       try {
         const response = await fetch("http://localhost/instrument-care-back-end/public/admin/dashboard");
         const data = await response.json();
 
-        // Update the "Owners" value in stats
+        // Update the "Owners" and "Technicians" values in stats
         setStats((prevStats) =>
-          prevStats.map((stat) =>
-            stat.label === "Owners" ? { ...stat, value: data.user_count || 0 } : stat
-          )
+          prevStats.map((stat) => {
+            if (stat.label === "Owners") return { ...stat, value: data.owner_count || 0 };
+            if (stat.label === "Technicians") return { ...stat, value: data.technician_count || 0 };
+            return stat;
+          })
         );
       } catch (error) {
-        console.error("Failed to fetch owners count:", error);
+        console.error("Failed to fetch dashboard stats:", error);
       }
     };
 
-    fetchOwnerCount();
+    fetchDashboardStats();
   }, []);
 
   return (
