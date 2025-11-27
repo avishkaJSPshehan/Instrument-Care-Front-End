@@ -28,6 +28,14 @@ export default function AllOwnerTable({ usersData }) {
     handleCloseModal();
   };
 
+  // 🔥 DELETE USER WITH CONFIRMATION
+  const handleDelete = (email) => {
+    const confirmed = window.confirm("Are you sure you want to delete this user?");
+    if (confirmed) {
+      setUsers((prev) => prev.filter((u) => u.email !== email));
+    }
+  };
+
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
       <div className="flex justify-between items-center mb-4">
@@ -75,15 +83,21 @@ export default function AllOwnerTable({ usersData }) {
                       />
                     </td>
 
-                    <td className="p-3">
+                    <td className="p-3 flex gap-2">
                       <button
                         className="bg-orange-600 text-white px-3 py-1 rounded-lg shadow hover:bg-orange-500 transition"
                         onClick={() => handleEditClick(user)}
                       >
                         Edit
                       </button>
-                    </td>
 
+                      <button
+                        className="bg-red-600 text-white px-3 py-1 rounded-lg shadow hover:bg-red-500 transition"
+                        onClick={() => handleDelete(user.email)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
