@@ -1,37 +1,9 @@
 import React, { useState } from "react";
 
 export default function AllTechnicianTable({ usersData }) {
-  const initialUsers = usersData || [
-    // {
-    //   fullName: "John Doe",
-    //   email: "john@example.com",
-    //   contact: "0771234567",
-    //   role: "Admin",
-    //   createdAt: "2025-01-01",
-    //   active: true,
-    //   bio: "Experienced admin",
-    // },
-    // {
-    //   fullName: "Jane Smith",
-    //   email: "jane@example.com",
-    //   contact: "0779876543",
-    //   role: "Technician",
-    //   createdAt: "2025-02-15",
-    //   active: false,
-    //   bio: "Lab technician",
-    // },
-    // {
-    //   fullName: "Bob Brown",
-    //   email: "bob@example.com",
-    //   contact: "0775554433",
-    //   role: "User",
-    //   createdAt: "2025-03-10",
-    //   active: true,
-    //   bio: "General user",
-    // },
-  ];
+  const initialUsers = usersData || [];
 
-  const [users, setUsers] = useState(initialUsers.filter(u => u.role === "Technician")); // filter technicians
+  const [users, setUsers] = useState(initialUsers.filter(u => u.role === "Technician"));
   const [editingUser, setEditingUser] = useState(null);
 
   const handleEditClick = (user) => {
@@ -53,6 +25,14 @@ export default function AllTechnicianTable({ usersData }) {
       prev.map((u) => (u.email === editingUser.email ? editingUser : u))
     );
     handleCloseModal();
+  };
+
+  // 🔥 DELETE TECHNICIAN WITH CONFIRMATION
+  const handleDelete = (email) => {
+    const confirmed = window.confirm("Are you sure you want to delete this technician?");
+    if (confirmed) {
+      setUsers((prev) => prev.filter((u) => u.email !== email));
+    }
   };
 
   return (
@@ -94,12 +74,21 @@ export default function AllTechnicianTable({ usersData }) {
                         className="w-5 h-5 accent-orange-600"
                       />
                     </td>
-                    <td className="p-2">
+
+                    {/* ACTION BUTTONS */}
+                    <td className="p-2 flex gap-2">
                       <button
                         className="bg-orange-600 text-white px-2 py-1 rounded hover:bg-orange-500"
                         onClick={() => handleEditClick(user)}
                       >
                         Edit
+                      </button>
+
+                      <button
+                        className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500"
+                        onClick={() => handleDelete(user.email)}
+                      >
+                        Delete
                       </button>
                     </td>
                   </tr>
