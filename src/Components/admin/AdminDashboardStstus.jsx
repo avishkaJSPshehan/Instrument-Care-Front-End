@@ -16,11 +16,25 @@ export default function AdminDashboardStats({ technicianId }) {
         const response = await fetch("http://localhost/instrument-care-back-end/public/admin/dashboard");
         const data = await response.json();
 
-        // Update the "Owners" and "Technicians" values in stats
+        // ✅ Update all dashboard values from backend response
         setStats((prevStats) =>
           prevStats.map((stat) => {
-            if (stat.label === "Owners") return { ...stat, value: data.owner_count || 0 };
-            if (stat.label === "Technicians") return { ...stat, value: data.technician_count || 0 };
+            if (stat.label === "Owners") {
+              return { ...stat, value: data.owner_count || 0 };
+            }
+
+            if (stat.label === "Technicians") {
+              return { ...stat, value: data.technician_count || 0 };
+            }
+
+            if (stat.label === "Instruments") {
+              return { ...stat, value: data.instrument_count || 0 };
+            }
+
+            if (stat.label === "Service Requests") {
+              return { ...stat, value: data.service_request_count || 0 };
+            }
+
             return stat;
           })
         );
