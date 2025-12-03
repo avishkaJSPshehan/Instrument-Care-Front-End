@@ -33,6 +33,36 @@ export default function AllTechnicianTable({ usersData }) {
       setUsers((prev) => prev.filter((u) => u.id !== id));
     }
   };
+  
+
+  const FormBlock = ({ title, children }) => (
+    <div>
+      <h3 className="mb-5 text-sm font-semibold tracking-wide text-neutral-800 uppercase">
+        {title}
+      </h3>
+      <div className="space-y-5">{children}</div>
+    </div>
+  );
+
+  const Input = ({ label, ...props }) => (
+    <div className="relative">
+      <label className="block text-xs mb-1 text-neutral-500">{label}</label>
+      <input
+        {...props}
+        className="w-full bg-transparent border-b border-neutral-300 focus:border-orange-500 outline-none py-1.5 transition"
+      />
+    </div>
+  );
+
+  const TextArea = ({ label, ...props }) => (
+    <div className="relative">
+      <label className="block text-xs mb-1 text-neutral-500">{label}</label>
+      <textarea
+        {...props}
+        className="w-full bg-transparent border-b border-neutral-300 focus:border-orange-500 outline-none py-1.5 transition resize-none"
+      />
+    </div>
+  );
 
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
@@ -89,53 +119,128 @@ export default function AllTechnicianTable({ usersData }) {
         )}
       </div>
 
-      {/* EDIT MODAL */}
-      {editingUser && (
-        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit Technician Details</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {Object.entries(editingUser).map(([key, value]) => (
-                <label key={key} className="flex flex-col gap-1">
-                  {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-                  {typeof value === "boolean" ? (
-                    <input
-                      type="checkbox"
-                      name={key}
-                      checked={value}
-                      onChange={handleChange}
-                      className="w-5 h-5 accent-orange-600"
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      name={key}
-                      value={value ?? ""}
-                      onChange={handleChange}
-                      className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                    />
-                  )}
-                </label>
-              ))}
-            </div>
+      {/* MODERN GLASS STYLE EDIT MODAL */}
+        {editingUser && (
+          <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-md flex justify-center items-center z-50 p-6">
+            <div className="relative bg-white/90 backdrop-blur-xl rounded-3xl w-full max-w-7xl h-[90vh] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] flex overflow-hidden">
 
-            <div className="flex justify-end gap-3 mt-6">
+              {/* LEFT PROFILE COLUMN */}
+              <div className="w-full md:w-1/3 bg-gradient-to-b from-neutral-100 to-white p-10 flex flex-col items-center border-r">
+                <img
+                  src={editingUser.profile_image_url || "https://via.placeholder.com/150"}
+                  className="w-36 h-36 rounded-full border-[5px] border-white shadow-xl object-cover mb-6"
+                />
+
+                <input
+                  type="text"
+                  name="full_name"
+                  value={editingUser.full_name || ""}
+                  onChange={handleChange}
+                  className="text-2xl font-semibold text-center bg-transparent focus:outline-none border-b border-transparent focus:border-neutral-400 mb-2"
+                />
+
+                <input
+                  type="text"
+                  name="current_designation"
+                  value={editingUser.current_designation || ""}
+                  onChange={handleChange}
+                  className="text-sm text-neutral-500 text-center bg-transparent focus:outline-none"
+                />
+
+                <textarea
+                  name="bio"
+                  value={editingUser.bio || ""}
+                  onChange={handleChange}
+                  rows={2}
+                  placeholder="Short bio..."
+                  className="text-xs text-neutral-500 text-center bg-transparent focus:outline-none resize-none w-full mt-2"
+                />
+
+                {/* WORK INLINE */}
+                <div className="w-full mt-10 flex justify-between items-center text-sm">
+                  <input
+                    type="text"
+                    name="company_name"
+                    value={editingUser.company_name || ""}
+                    onChange={handleChange}
+                    className="font-medium bg-transparent outline-none"
+                  />
+
+                  <div className="text-right">
+                    {/* <input
+                      type="text"
+                      name="company_designation"
+                      value={editingUser.company_designation || ""}
+                      onChange={handleChange}
+                      className="text-xs text-neutral-500 bg-transparent outline-none text-right block"
+                    /> */}
+                    <input
+                      type="number"
+                      name="years_of_experience"
+                      value={editingUser.years_of_experience || ""}
+                      onChange={handleChange}
+                      className="text-xs text-neutral-500 bg-transparent outline-none text-right block"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT FORM COLUMN */}
+              <div className="flex-1 px-12 py-10 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 overflow-y-auto">
+
+                {/* CONTACT */}
+                <FormBlock title="Contact">
+                  <Input label="Email" name="email" value={editingUser.email} onChange={handleChange} />
+                  <Input label="Phone" name="personal_number" value={editingUser.personal_number} onChange={handleChange} />
+                  <Input label="Address" name="address" value={editingUser.address} onChange={handleChange} />
+                </FormBlock>
+
+                {/* BASIC */}
+                <FormBlock title="Basic Info">
+                  <Input label="NIC" name="nic" value={editingUser.nic} onChange={handleChange} />
+                  <Input label="Institute" name="institute_name" value={editingUser.institute_name} onChange={handleChange} />
+                  <Input label="Supervisor" name="supervisor_name" value={editingUser.supervisor_name} onChange={handleChange} />
+                </FormBlock>
+
+                {/* CERTIFICATE */}
+                <FormBlock title="Certificate">
+                  <Input label="Certificate Name" name="certificate_name" value={editingUser.certificate_name} onChange={handleChange} />
+                  <Input label="Issued Year" name="certificate_issued_year" value={editingUser.certificate_issued_year} onChange={handleChange} />
+                  <Input label="Verification Code" name="certificate_verification_code" value={editingUser.certificate_verification_code} onChange={handleChange} />
+                </FormBlock>
+
+                {/* ADDITIONAL */}
+                <FormBlock title="Additional">
+                  <TextArea label="Bio" name="bio" value={editingUser.bio} onChange={handleChange} />
+                  <Input label="Guarantee" name="guarantee_for_service" value={editingUser.guarantee_for_service} onChange={handleChange} />
+                  <TextArea label="Comment" name="additional_comment" value={editingUser.additional_comment} onChange={handleChange} />
+                </FormBlock>
+
+              </div>
+
+              {/* FOOTER ACTIONS */}
+              <div className="absolute bottom-6 right-8 flex gap-3">
+                <button onClick={handleCloseModal} className="px-5 py-2 rounded-lg bg-neutral-200 hover:bg-neutral-300 transition">
+                  Cancel
+                </button>
+                <button onClick={handleSave} className="px-6 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-500 transition shadow-lg">
+                  Save Changes
+                </button>
+              </div>
+
+              {/* CLOSE */}
               <button
-                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
                 onClick={handleCloseModal}
+                className="absolute top-5 right-6 text-2xl text-neutral-600 hover:text-black"
               >
-                Cancel
-              </button>
-              <button
-                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500"
-                onClick={handleSave}
-              >
-                Save
+                ×
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+
+
 
       {/* MODERN VIEW MODAL */}
       {viewingUser && (
@@ -229,4 +334,6 @@ export default function AllTechnicianTable({ usersData }) {
 
     </div>
   );
+
+  
 }
