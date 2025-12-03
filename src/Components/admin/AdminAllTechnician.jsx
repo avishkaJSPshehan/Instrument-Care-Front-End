@@ -21,12 +21,41 @@ export default function AllTechnicianTable({ usersData }) {
     }));
   };
 
-  const handleSave = () => {
-    setUsers((prev) =>
-      prev.map((u) => (u.id === editingUser.id ? editingUser : u))
-    );
-    handleCloseModal();
-  };
+  const handleSave = async () => {
+  if (!editingUser?.id) return;
+
+  try {
+    // Prepare endpoint with technician ID
+    const endpoint = `http://localhost/instrument-care-back-end/public/admin/technicians/${editingUser.id}`;
+
+    // Prepare data to send (exclude id and profile image)
+    const { id, profile_image_url, ...dataToSend } = editingUser;
+
+    const response = await fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToSend),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      // ✅ Update local state
+      setUsers((prev) =>
+        prev.map((u) => (u.id === editingUser.id ? editingUser : u))
+      );
+      handleCloseModal();
+      alert(result.message || "Technician updated successfully");
+    } else {
+      alert(result.error || "Failed to update technician");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong while updating the technician.");
+  }
+};
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this technician?")) {
@@ -122,7 +151,7 @@ export default function AllTechnicianTable({ usersData }) {
       {/* MODERN GLASS STYLE EDIT MODAL */}
         {editingUser && (
           <div className="fixed inset-0 bg-neutral-900/60 backdrop-blur-md flex justify-center items-center z-50 p-6">
-            <div className="relative bg-white/90 backdrop-blur-xl rounded-3xl w-full max-w-7xl h-[90vh] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] flex overflow-hidden">
+            <div className="relative bg-white/90 backdrop-blur-xl rounded-3xl w-full max-w-7xl h-[80vh] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] flex overflow-hidden">
 
               {/* LEFT PROFILE COLUMN */}
               <div className="w-full md:w-1/3 bg-gradient-to-b from-neutral-100 to-white p-10 flex flex-col items-center border-r">
