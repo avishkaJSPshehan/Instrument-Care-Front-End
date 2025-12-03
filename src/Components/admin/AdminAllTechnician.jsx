@@ -57,9 +57,27 @@ export default function AllTechnicianTable({ usersData }) {
   }
 };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this technician?")) {
-      setUsers((prev) => prev.filter((u) => u.id !== id));
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this technician?")) return;
+
+    try {
+      // ✅ Call the DELETE endpoint with the technician ID
+      const response = await fetch(`http://localhost/instrument-care-back-end/public/admin/technicians/${id}`, {
+        method: "DELETE",
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // ✅ Remove from local state if backend deletion succeeded
+        setUsers((prev) => prev.filter((u) => u.id !== id));
+        alert(result.message || "Technician deleted successfully");
+      } else {
+        alert(result.error || "Failed to delete technician");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong while deleting the technician.");
     }
   };
   
