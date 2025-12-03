@@ -3,14 +3,20 @@ import React, { useState } from "react";
 export default function AllTechnicianTable({ usersData }) {
   const initialUsers = usersData || [];
 
-  const [users, setUsers] = useState(initialUsers.filter(u => u.role === "Technician"));
+  const [users, setUsers] = useState(initialUsers);
   const [editingUser, setEditingUser] = useState(null);
+  const [viewingUser, setViewingUser] = useState(null);
 
   const handleEditClick = (user) => {
     setEditingUser({ ...user });
   };
 
+  const handleViewClick = (user) => {
+    setViewingUser({ ...user });
+  };
+
   const handleCloseModal = () => setEditingUser(null);
+  const handleCloseViewModal = () => setViewingUser(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,16 +28,17 @@ export default function AllTechnicianTable({ usersData }) {
 
   const handleSave = () => {
     setUsers((prev) =>
-      prev.map((u) => (u.email === editingUser.email ? editingUser : u))
+      prev.map((u) => (u.id === editingUser.id ? editingUser : u))
     );
     handleCloseModal();
   };
 
-  // 🔥 DELETE TECHNICIAN WITH CONFIRMATION
-  const handleDelete = (email) => {
-    const confirmed = window.confirm("Are you sure you want to delete this technician?");
+  const handleDelete = (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this technician?"
+    );
     if (confirmed) {
-      setUsers((prev) => prev.filter((u) => u.email !== email));
+      setUsers((prev) => prev.filter((u) => u.id !== id));
     }
   };
 
@@ -43,7 +50,9 @@ export default function AllTechnicianTable({ usersData }) {
 
       <div className="overflow-x-auto">
         {users.length === 0 ? (
-          <p className="text-gray-500 italic p-4 text-center">No technicians found.</p>
+          <p className="text-gray-500 italic p-4 text-center">
+            No technicians found.
+          </p>
         ) : (
           <div className="max-h-[720px] overflow-y-auto">
             <table className="w-full text-left text-sm border-collapse">
@@ -52,30 +61,18 @@ export default function AllTechnicianTable({ usersData }) {
                   <th className="p-2">Full Name</th>
                   <th className="p-2">Email</th>
                   <th className="p-2">Contact</th>
-                  <th className="p-2">Role</th>
                   <th className="p-2">Created At</th>
-                  <th className="p-2">Active</th>
                   <th className="p-2">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user, i) => (
                   <tr key={i} className="border-b">
-                    <td className="p-2">{user.fullName}</td>
+                    <td className="p-2">{user.full_name}</td>
                     <td className="p-2">{user.email}</td>
-                    <td className="p-2">{user.contact}</td>
-                    <td className="p-2 font-semibold text-blue-600">{user.role}</td>
-                    <td className="p-2">{user.createdAt}</td>
-                    <td className="p-2">
-                      <input
-                        type="checkbox"
-                        checked={user.active}
-                        readOnly
-                        className="w-5 h-5 accent-orange-600"
-                      />
-                    </td>
+                    <td className="p-2">{user.personal_number}</td>
+                    <td className="p-2">{user.created_at}</td>
 
-                    {/* ACTION BUTTONS */}
                     <td className="p-2 flex gap-2">
                       <button
                         className="bg-orange-600 text-white px-2 py-1 rounded hover:bg-orange-500"
@@ -85,8 +82,15 @@ export default function AllTechnicianTable({ usersData }) {
                       </button>
 
                       <button
+                        className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-500"
+                        onClick={() => handleViewClick(user)}
+                      >
+                        View
+                      </button>
+
+                      <button
                         className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500"
-                        onClick={() => handleDelete(user.email)}
+                        onClick={() => handleDelete(user.id)}
                       >
                         Delete
                       </button>
@@ -99,72 +103,35 @@ export default function AllTechnicianTable({ usersData }) {
         )}
       </div>
 
-      {/* Modal */}
+      {/* EDIT MODAL */}
       {editingUser && (
         <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit Technician Profile</h2>
+            <h2 className="text-xl font-bold mb-4">Edit Technician Details</h2>
 
-            {/* Two-column form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex flex-col gap-3">
-                <label>
-                  Full Name *
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={editingUser.fullName}
-                    onChange={handleChange}
-                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                  />
+              {Object.entries(editingUser).map(([key, value]) => (
+                <label key={key} className="flex flex-col gap-1">
+                  {key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                  {typeof value === "boolean" ? (
+                    <input
+                      type="checkbox"
+                      name={key}
+                      checked={value}
+                      onChange={handleChange}
+                      className="w-5 h-5 accent-orange-600"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      name={key}
+                      value={value ?? ""}
+                      onChange={handleChange}
+                      className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                    />
+                  )}
                 </label>
-
-                <label>
-                  Email *
-                  <input
-                    type="email"
-                    name="email"
-                    value={editingUser.email}
-                    onChange={handleChange}
-                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label>
-                  Contact Number *
-                  <input
-                    type="text"
-                    name="contact"
-                    value={editingUser.contact}
-                    onChange={handleChange}
-                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    name="active"
-                    checked={editingUser.active}
-                    onChange={handleChange}
-                    className="w-5 h-5 accent-orange-600"
-                  />
-                  Active
-                </label>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <label>
-                  Bio
-                  <textarea
-                    name="bio"
-                    value={editingUser.bio}
-                    onChange={handleChange}
-                    rows={6}
-                    className="border rounded p-2 w-full font-normal bg-gray-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                  />
-                </label>
-              </div>
+              ))}
             </div>
 
             <div className="flex justify-end gap-3 mt-6">
@@ -179,6 +146,35 @@ export default function AllTechnicianTable({ usersData }) {
                 onClick={handleSave}
               >
                 Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* VIEW MODAL */}
+      {viewingUser && (
+        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
+          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
+            <h2 className="text-xl font-bold mb-4">Technician Details</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Object.entries(viewingUser).map(([key, value]) => (
+                <div key={key} className="flex flex-col gap-1">
+                  <span className="font-semibold capitalize">
+                    {key.replace(/_/g, " ")}
+                  </span>
+                  <span>{value ?? "-"}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end mt-6">
+              <button
+                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
+                onClick={handleCloseViewModal}
+              >
+                Close
               </button>
             </div>
           </div>
