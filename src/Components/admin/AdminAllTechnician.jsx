@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa"; // Import icons
 
 export default function AllTechnicianTable({ usersData }) {
   const initialUsers = usersData || [];
@@ -7,14 +8,8 @@ export default function AllTechnicianTable({ usersData }) {
   const [editingUser, setEditingUser] = useState(null);
   const [viewingUser, setViewingUser] = useState(null);
 
-  const handleEditClick = (user) => {
-    setEditingUser({ ...user });
-  };
-
-  const handleViewClick = (user) => {
-    setViewingUser({ ...user });
-  };
-
+  const handleEditClick = (user) => setEditingUser({ ...user });
+  const handleViewClick = (user) => setViewingUser({ ...user });
   const handleCloseModal = () => setEditingUser(null);
   const handleCloseViewModal = () => setViewingUser(null);
 
@@ -34,10 +29,7 @@ export default function AllTechnicianTable({ usersData }) {
   };
 
   const handleDelete = (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this technician?"
-    );
-    if (confirmed) {
+    if (window.confirm("Are you sure you want to delete this technician?")) {
       setUsers((prev) => prev.filter((u) => u.id !== id));
     }
   };
@@ -72,28 +64,25 @@ export default function AllTechnicianTable({ usersData }) {
                     <td className="p-2">{user.email}</td>
                     <td className="p-2">{user.personal_number}</td>
                     <td className="p-2">{user.created_at}</td>
-
-                    <td className="p-2 flex gap-2">
-                      <button
-                        className="bg-orange-600 text-white px-2 py-1 rounded hover:bg-orange-500"
-                        onClick={() => handleEditClick(user)}
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-500"
+                    <td className="p-2 flex gap-3">
+                      {/* VIEW ICON */}
+                      <FaEye
+                        className="text-blue-600 cursor-pointer hover:text-blue-500"
+                        size={18}
                         onClick={() => handleViewClick(user)}
-                      >
-                        View
-                      </button>
-
-                      <button
-                        className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500"
+                      />
+                      {/* EDIT ICON */}
+                      <FaEdit
+                        className="text-orange-600 cursor-pointer hover:text-orange-500"
+                        size={18}
+                        onClick={() => handleEditClick(user)}
+                      />
+                      {/* DELETE ICON */}
+                      <FaTrash
+                        className="text-red-600 cursor-pointer hover:text-red-500"
+                        size={18}
                         onClick={() => handleDelete(user.id)}
-                      >
-                        Delete
-                      </button>
+                      />
                     </td>
                   </tr>
                 ))}
