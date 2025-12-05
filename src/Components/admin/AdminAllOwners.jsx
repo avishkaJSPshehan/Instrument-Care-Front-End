@@ -126,7 +126,8 @@ export default function AllOwnerTable({ usersData }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* LEFT */}
               <div className="flex flex-col gap-3">
-                <label className="font-medium">Full Name *
+                <label className="font-medium">
+                  Full Name *
                   <input
                     type="text"
                     name="fullName"
@@ -135,7 +136,8 @@ export default function AllOwnerTable({ usersData }) {
                     className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </label>
-                <label className="font-medium">Email *
+                <label className="font-medium">
+                  Email *
                   <input
                     type="email"
                     name="email"
@@ -144,7 +146,8 @@ export default function AllOwnerTable({ usersData }) {
                     className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </label>
-                <label className="font-medium">Contact Number *
+                <label className="font-medium">
+                  Contact Number *
                   <input
                     type="text"
                     name="contact"
@@ -167,7 +170,8 @@ export default function AllOwnerTable({ usersData }) {
 
               {/* RIGHT */}
               <div className="flex flex-col gap-3">
-                <label className="font-medium">Bio
+                <label className="font-medium">
+                  Bio
                   <textarea
                     name="bio"
                     value={editingUser.bio}
@@ -194,6 +198,64 @@ export default function AllOwnerTable({ usersData }) {
                 Save
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ---------------------- VIEW MODAL ----------------------- */}
+      {viewingUser && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+          <div className="relative bg-white rounded-2xl w-full max-w-5xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
+            
+            {/* Left Column */}
+            <div className="bg-gray-50 p-8 flex flex-col items-center w-full md:w-1/3">
+              <h2 className="text-2xl font-bold text-center mb-1">
+                {viewingUser.title} {viewingUser.first_name} {viewingUser.last_name}
+              </h2>
+              <p className="text-gray-500 text-sm text-center mb-2">
+                {viewingUser.designation || "-"}
+              </p>
+              <p className="text-gray-500 text-sm text-center mb-2">
+                {viewingUser.user_status === 1 ? "Active" : "Inactive"}
+              </p>
+            </div>
+
+            {/* Right Column */}
+            <div className="flex-1 p-8 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-auto">
+              {/* Contact Information */}
+              <div className="border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 pr-0 md:pr-4">
+                <h3 className="font-semibold text-gray-700 mb-2">Contact Information</h3>
+                <p><span className="font-medium">Email: </span>{viewingUser.email || "-"}</p>
+                <p><span className="font-medium">Mobile: </span>{viewingUser.mobile_number || "-"}</p>
+                <p><span className="font-medium">Phone: </span>{viewingUser.phone_number || "-"}</p>
+                <p><span className="font-medium">Address: </span>{viewingUser.address || "-"}</p>
+              </div>
+
+              {/* Basic Information */}
+              <div className="pb-4">
+                <h3 className="font-semibold text-gray-700 mb-2">Basic Information</h3>
+                <p><span className="font-medium">User Type ID: </span>{viewingUser.user_type_id || "-"}</p>
+                <p><span className="font-medium">Institute ID: </span>{viewingUser.institute_id || "-"}</p>
+                <p><span className="font-medium">Created: </span>{viewingUser.created || "-"}</p>
+                <p><span className="font-medium">Updated: </span>{viewingUser.updatedDtm || "-"}</p>
+              </div>
+
+              {/* Additional Info */}
+              <div className="pb-4">
+                <h3 className="font-semibold text-gray-700 mb-2">Other Information</h3>
+                <p><span className="font-medium">Username: </span>{viewingUser.username || "-"}</p>
+                <p><span className="font-medium">Gender: </span>{viewingUser.gender || "-"}</p>
+                <p><span className="font-medium">Other Institute: </span>{viewingUser.other_institute_name || "-"}</p>
+              </div>
+            </div>
+
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold transition-colors"
+              onClick={handleCloseViewModal}
+            >
+              ×
+            </button>
           </div>
         </div>
       )}
