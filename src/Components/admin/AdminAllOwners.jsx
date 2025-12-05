@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function AllOwnerTable({ usersData }) {
   const initialUsers = usersData || [];
@@ -6,12 +7,18 @@ export default function AllOwnerTable({ usersData }) {
   // Filter only "User" role
   const [users, setUsers] = useState(initialUsers.filter(u => u.role === "User"));
   const [editingUser, setEditingUser] = useState(null);
+  const [viewingUser, setViewingUser] = useState(null);
 
   const handleEditClick = (user) => {
     setEditingUser({ ...user });
   };
 
+  const handleViewClick = (user) => {
+    setViewingUser(user);
+  };
+
   const handleCloseModal = () => setEditingUser(null);
+  const handleCloseViewModal = () => setViewingUser(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,7 +35,6 @@ export default function AllOwnerTable({ usersData }) {
     handleCloseModal();
   };
 
-  // 🔥 DELETE USER WITH CONFIRMATION
   const handleDelete = (email) => {
     const confirmed = window.confirm("Are you sure you want to delete this user?");
     if (confirmed) {
@@ -62,18 +68,12 @@ export default function AllOwnerTable({ usersData }) {
 
               <tbody>
                 {users.map((user, i) => (
-                  <tr
-                    key={i}
-                    className="border-b hover:bg-orange-50 transition-colors"
-                  >
+                  <tr key={i} className="border-b hover:bg-orange-50 transition-colors">
                     <td className="p-3">{user.fullName}</td>
                     <td className="p-3">{user.email}</td>
                     <td className="p-3">{user.contact}</td>
-                    <td className="p-3 font-semibold text-green-600">
-                      {user.role}
-                    </td>
+                    <td className="p-3 font-semibold text-green-600">{user.role}</td>
                     <td className="p-3">{user.createdAt}</td>
-
                     <td className="p-3">
                       <input
                         type="checkbox"
@@ -82,20 +82,32 @@ export default function AllOwnerTable({ usersData }) {
                         className="w-5 h-5 accent-orange-600"
                       />
                     </td>
-
-                    <td className="p-3 flex gap-2">
+                    <td className="p-3 flex gap-3 text-lg">
+                      {/* VIEW BUTTON */}
                       <button
-                        className="bg-orange-600 text-white px-3 py-1 rounded-lg shadow hover:bg-orange-500 transition"
-                        onClick={() => handleEditClick(user)}
+                        onClick={() => handleViewClick(user)}
+                        className="text-blue-600 hover:text-blue-800"
+                        title="View"
                       >
-                        Edit
+                        <FaEye />
                       </button>
 
+                      {/* EDIT BUTTON */}
                       <button
-                        className="bg-red-600 text-white px-3 py-1 rounded-lg shadow hover:bg-red-500 transition"
-                        onClick={() => handleDelete(user.email)}
+                        onClick={() => handleEditClick(user)}
+                        className="text-orange-600 hover:text-orange-800"
+                        title="Edit"
                       >
-                        Delete
+                        <FaEdit />
+                      </button>
+
+                      {/* DELETE BUTTON */}
+                      <button
+                        onClick={() => handleDelete(user.email)}
+                        className="text-red-600 hover:text-red-800"
+                        title="Delete"
+                      >
+                        <FaTrash />
                       </button>
                     </td>
                   </tr>
@@ -106,20 +118,15 @@ export default function AllOwnerTable({ usersData }) {
         )}
       </div>
 
-      {/* ---------------------- MODAL ----------------------- */}
+      {/* ---------------------- EDIT MODAL ----------------------- */}
       {editingUser && (
         <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">
-              Edit User Profile
-            </h2>
-
+            <h2 className="text-xl font-bold mb-4">Edit User Profile</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* LEFT */}
               <div className="flex flex-col gap-3">
-
-                <label className="font-medium">
-                  Full Name *
+                <label className="font-medium">Full Name *
                   <input
                     type="text"
                     name="fullName"
@@ -128,9 +135,7 @@ export default function AllOwnerTable({ usersData }) {
                     className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </label>
-
-                <label className="font-medium">
-                  Email *
+                <label className="font-medium">Email *
                   <input
                     type="email"
                     name="email"
@@ -139,9 +144,7 @@ export default function AllOwnerTable({ usersData }) {
                     className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </label>
-
-                <label className="font-medium">
-                  Contact Number *
+                <label className="font-medium">Contact Number *
                   <input
                     type="text"
                     name="contact"
@@ -150,7 +153,6 @@ export default function AllOwnerTable({ usersData }) {
                     className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </label>
-
                 <label className="flex items-center gap-2 mt-3">
                   <input
                     type="checkbox"
@@ -165,8 +167,7 @@ export default function AllOwnerTable({ usersData }) {
 
               {/* RIGHT */}
               <div className="flex flex-col gap-3">
-                <label className="font-medium">
-                  Bio
+                <label className="font-medium">Bio
                   <textarea
                     name="bio"
                     value={editingUser.bio}
@@ -186,7 +187,6 @@ export default function AllOwnerTable({ usersData }) {
               >
                 Cancel
               </button>
-
               <button
                 className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500 transition"
                 onClick={handleSave}
@@ -194,7 +194,6 @@ export default function AllOwnerTable({ usersData }) {
                 Save
               </button>
             </div>
-
           </div>
         </div>
       )}
