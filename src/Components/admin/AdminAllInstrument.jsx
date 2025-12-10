@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function AllInstrument({ instrumentsData }) {
-  const initialInstruments = instrumentsData || [];
-
-  const [instruments, setInstruments] = useState(initialInstruments);
+  const [instruments, setInstruments] = useState([]);
   const [editingInstrument, setEditingInstrument] = useState(null);
+
+  useEffect(() => {
+    if (!instrumentsData) return;
+
+    // Map backend keys to frontend keys
+    const mappedData = instrumentsData.map((inst) => ({
+      id: inst.instrument_id,
+      name: inst.instrument_name,
+      category: inst.instrument_type_id || "N/A", // You can replace with actual category name if you have mapping
+      serialNo: inst.model || "-", // Serial number or model
+      active: inst.record_status === 0, // Assuming 0 = active
+      acquiredOn: inst.date_commencement_operation || "-", 
+      notes: inst.inst_description || "",
+    }));
+
+    setInstruments(mappedData);
+  }, [instrumentsData]);
 
   const handleEditClick = (instrument) => {
     setEditingInstrument({ ...instrument });
@@ -29,7 +44,6 @@ export default function AllInstrument({ instrumentsData }) {
     handleCloseModal();
   };
 
-  // 🔥 DELETE INSTRUMENT WITH CONFIRMATION
   const handleDelete = (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this instrument?"
@@ -111,7 +125,6 @@ export default function AllInstrument({ instrumentsData }) {
             <h2 className="text-xl font-bold mb-4">Edit Instrument</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* LEFT */}
               <div className="flex flex-col gap-3">
                 <label className="font-medium">
                   Instrument Name *
@@ -158,7 +171,6 @@ export default function AllInstrument({ instrumentsData }) {
                 </label>
               </div>
 
-              {/* RIGHT */}
               <div className="flex flex-col gap-3">
                 <label className="font-medium">
                   Notes
@@ -184,7 +196,6 @@ export default function AllInstrument({ instrumentsData }) {
               </div>
             </div>
 
-            {/* BUTTONS */}
             <div className="flex justify-end gap-3 mt-6">
               <button
                 className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 transition"
