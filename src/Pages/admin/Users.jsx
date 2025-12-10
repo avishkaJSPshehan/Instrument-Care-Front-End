@@ -24,11 +24,11 @@ export default function All_Users() {
 
         const data = await response.json();
 
-        // ✅ Convert API response to table-friendly format
+        // ✅ KEEP FULL RAW USER + ADD FORMATTED FIELDS
         const formattedUsers = data.map((user) => ({
-          id: user.id,
+          ...user, // ✅ VERY IMPORTANT
+
           fullName: `${user.first_name} ${user.last_name}`,
-          email: user.email,
           contact: user.mobile_number,
           role: user.user_type_id === 1 ? "Admin" : "User",
           createdAt: user.created || "N/A",
@@ -55,9 +55,7 @@ export default function All_Users() {
       {/* Background Image Wrapper */}
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${BG})`,
-        }}
+        style={{ backgroundImage: `url(${BG})` }}
       >
         {/* Sidebar */}
         <Admin_Sidebar />

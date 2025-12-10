@@ -4,7 +4,6 @@ import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 export default function AllOwnerTable({ usersData }) {
   const initialUsers = usersData || [];
 
-  // Filter only "User" role
   const [users, setUsers] = useState(initialUsers.filter(u => u.role === "User"));
   const [editingUser, setEditingUser] = useState(null);
   const [viewingUser, setViewingUser] = useState(null);
@@ -44,10 +43,8 @@ export default function AllOwnerTable({ usersData }) {
 
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="font-bold text-lg text-gray-800">All Owners</h3>
-      </div>
 
+      {/* ------------------------ TABLE ------------------------ */}
       <div className="overflow-x-auto">
         {users.length === 0 ? (
           <p className="text-gray-500 italic p-4 text-center">No users found.</p>
@@ -75,38 +72,16 @@ export default function AllOwnerTable({ usersData }) {
                     <td className="p-3 font-semibold text-green-600">{user.role}</td>
                     <td className="p-3">{user.createdAt}</td>
                     <td className="p-3">
-                      <input
-                        type="checkbox"
-                        checked={user.active}
-                        readOnly
-                        className="w-5 h-5 accent-orange-600"
-                      />
+                      <input type="checkbox" checked={user.active} readOnly />
                     </td>
                     <td className="p-3 flex gap-3 text-lg">
-                      {/* VIEW BUTTON */}
-                      <button
-                        onClick={() => handleViewClick(user)}
-                        className="text-blue-600 hover:text-blue-800"
-                        title="View"
-                      >
+                      <button onClick={() => handleViewClick(user)} className="text-blue-600">
                         <FaEye />
                       </button>
-
-                      {/* EDIT BUTTON */}
-                      <button
-                        onClick={() => handleEditClick(user)}
-                        className="text-orange-600 hover:text-orange-800"
-                        title="Edit"
-                      >
+                      <button onClick={() => handleEditClick(user)} className="text-orange-600">
                         <FaEdit />
                       </button>
-
-                      {/* DELETE BUTTON */}
-                      <button
-                        onClick={() => handleDelete(user.email)}
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete"
-                      >
+                      <button onClick={() => handleDelete(user.email)} className="text-red-600">
                         <FaTrash />
                       </button>
                     </td>
@@ -118,140 +93,54 @@ export default function AllOwnerTable({ usersData }) {
         )}
       </div>
 
-      {/* ---------------------- EDIT MODAL ----------------------- */}
-      {editingUser && (
-        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit User Profile</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* LEFT */}
-              <div className="flex flex-col gap-3">
-                <label className="font-medium">
-                  Full Name *
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={editingUser.fullName}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-                <label className="font-medium">
-                  Email *
-                  <input
-                    type="email"
-                    name="email"
-                    value={editingUser.email}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-                <label className="font-medium">
-                  Contact Number *
-                  <input
-                    type="text"
-                    name="contact"
-                    value={editingUser.contact}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-                <label className="flex items-center gap-2 mt-3">
-                  <input
-                    type="checkbox"
-                    name="active"
-                    checked={editingUser.active}
-                    onChange={handleChange}
-                    className="w-5 h-5 accent-orange-600"
-                  />
-                  <span className="font-medium">Active</span>
-                </label>
-              </div>
-
-              {/* RIGHT */}
-              <div className="flex flex-col gap-3">
-                <label className="font-medium">
-                  Bio
-                  <textarea
-                    name="bio"
-                    value={editingUser.bio}
-                    onChange={handleChange}
-                    rows={6}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-              </div>
-            </div>
-
-            {/* BUTTONS */}
-            <div className="flex justify-end gap-3 mt-6">
-              <button
-                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 transition"
-                onClick={handleCloseModal}
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500 transition"
-                onClick={handleSave}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ---------------------- VIEW MODAL ----------------------- */}
+      {/* ---------------------- VIEW MODAL (FIXED) ----------------------- */}
       {viewingUser && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
           <div className="relative bg-white rounded-2xl w-full max-w-5xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
             
-            {/* Left Column */}
+            {/* LEFT */}
             <div className="bg-gray-50 p-8 flex flex-col items-center w-full md:w-1/3">
               <h2 className="text-2xl font-bold text-center mb-1">
-                {viewingUser.title} {viewingUser.first_name} {viewingUser.last_name}
+                {viewingUser.first_name} {viewingUser.last_name}
               </h2>
-              <p className="text-gray-500 text-sm text-center mb-2">
+              <p className="text-gray-500 text-sm mb-2">
                 {viewingUser.designation || "-"}
               </p>
-              <p className="text-gray-500 text-sm text-center mb-2">
+              <p className="text-sm font-semibold">
                 {viewingUser.user_status === 1 ? "Active" : "Inactive"}
               </p>
             </div>
 
-            {/* Right Column */}
+            {/* RIGHT */}
             <div className="flex-1 p-8 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-auto">
-              {/* Contact Information */}
-              <div className="border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 pr-0 md:pr-4">
+
+              <div>
                 <h3 className="font-semibold text-gray-700 mb-2">Contact Information</h3>
-                <p><span className="font-medium">Email: </span>{viewingUser.email || "-"}</p>
-                <p><span className="font-medium">Mobile: </span>{viewingUser.mobile_number || "-"}</p>
-                <p><span className="font-medium">Phone: </span>{viewingUser.phone_number || "-"}</p>
-                <p><span className="font-medium">Address: </span>{viewingUser.address || "-"}</p>
+                <p>Email: {viewingUser.email || "-"}</p>
+                <p>Mobile: {viewingUser.mobile_number || "-"}</p>
+                <p>Phone: {viewingUser.phone_number || "-"}</p>
+                <p>Address: {viewingUser.address || "-"}</p>
               </div>
 
-              {/* Basic Information */}
-              <div className="pb-4">
+              <div>
                 <h3 className="font-semibold text-gray-700 mb-2">Basic Information</h3>
-                <p><span className="font-medium">User Type ID: </span>{viewingUser.user_type_id || "-"}</p>
-                <p><span className="font-medium">Institute ID: </span>{viewingUser.institute_id || "-"}</p>
-                <p><span className="font-medium">Created: </span>{viewingUser.created || "-"}</p>
-                <p><span className="font-medium">Updated: </span>{viewingUser.updatedDtm || "-"}</p>
+                <p>User Type ID: {viewingUser.user_type_id || "-"}</p>
+                <p>Institute ID: {viewingUser.institute_id || "-"}</p>
+                <p>Created: {viewingUser.created || "-"}</p>
+                <p>Updated: {viewingUser.updatedDtm || "-"}</p>
               </div>
 
-              {/* Additional Info */}
-              <div className="pb-4">
+              <div>
                 <h3 className="font-semibold text-gray-700 mb-2">Other Information</h3>
-                <p><span className="font-medium">Username: </span>{viewingUser.username || "-"}</p>
-                <p><span className="font-medium">Gender: </span>{viewingUser.gender || "-"}</p>
-                <p><span className="font-medium">Other Institute: </span>{viewingUser.other_institute_name || "-"}</p>
+                <p>Username: {viewingUser.username || "-"}</p>
+                <p>Gender: {viewingUser.gender || "-"}</p>
+                <p>Other Institute: {viewingUser.other_institute_name || "-"}</p>
               </div>
+
             </div>
 
-            {/* Close Button */}
             <button
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold transition-colors"
+              className="absolute top-4 right-4 text-3xl font-bold"
               onClick={handleCloseViewModal}
             >
               ×
@@ -259,6 +148,7 @@ export default function AllOwnerTable({ usersData }) {
           </div>
         </div>
       )}
+
     </div>
   );
 }
