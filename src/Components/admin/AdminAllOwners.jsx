@@ -51,7 +51,6 @@ export default function AllOwnerTable({ usersData }) {
       const result = await response.json();
 
       if (result.success) {
-        // Update local state
         setUsers((prev) =>
           prev.map((u) => (u.id === editingUser.id ? editingUser : u))
         );
@@ -66,10 +65,27 @@ export default function AllOwnerTable({ usersData }) {
     }
   };
 
-  const handleDelete = (email) => {
+  // ✅ Updated handleDelete to call backend DELETE endpoint
+  const handleDelete = async (userId) => {
     const confirmed = window.confirm("Are you sure you want to delete this user?");
-    if (confirmed) {
-      setUsers((prev) => prev.filter((u) => u.email !== email));
+    if (!confirmed) return;
+
+    try {
+      const response = await fetch(`http://localhost/instrument-care-back-end/public/admin/users/${userId}`, {
+        method: "DELETE",
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setUsers((prev) => prev.filter((u) => u.id !== userId));
+        alert("User deleted successfully");
+      } else {
+        alert("Delete failed: " + (result.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Error deleting user. Check console for details.");
     }
   };
 
@@ -113,7 +129,7 @@ export default function AllOwnerTable({ usersData }) {
                       <button onClick={() => handleEditClick(user)} className="text-orange-600">
                         <FaEdit />
                       </button>
-                      <button onClick={() => handleDelete(user.email)} className="text-red-600">
+                      <button onClick={() => handleDelete(user.id)} className="text-red-600">
                         <FaTrash />
                       </button>
                     </td>
