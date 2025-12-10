@@ -21,17 +21,49 @@ export default function AllOwnerTable({ usersData }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setEditingUser((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    if (name === "user_status") {
+      setEditingUser((prev) => ({
+        ...prev,
+        user_status: checked ? 1 : 0,
+      }));
+    } else {
+      setEditingUser((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
-  const handleSave = () => {
-    setUsers((prev) =>
-      prev.map((u) => (u.email === editingUser.email ? editingUser : u))
-    );
-    handleCloseModal();
+  // ✅ Updated handleSave to call backend API
+  const handleSave = async () => {
+    if (!editingUser || !editingUser.id) return;
+
+    try {
+      const response = await fetch(`http://localhost/instrument-care-back-end/public/admin/users/${editingUser.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editingUser),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Update local state
+        setUsers((prev) =>
+          prev.map((u) => (u.id === editingUser.id ? editingUser : u))
+        );
+        alert("User updated successfully");
+        handleCloseModal();
+      } else {
+        alert("Update failed: " + (result.error || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      alert("Error updating user. Check console for details.");
+    }
   };
 
   const handleDelete = (email) => {
@@ -66,13 +98,13 @@ export default function AllOwnerTable({ usersData }) {
               <tbody>
                 {users.map((user, i) => (
                   <tr key={i} className="border-b hover:bg-orange-50 transition-colors">
-                    <td className="p-3">{user.fullName}</td>
+                    <td className="p-3">{user.first_name} {user.last_name}</td>
                     <td className="p-3">{user.email}</td>
-                    <td className="p-3">{user.contact}</td>
+                    <td className="p-3">{user.mobile_number}</td>
                     <td className="p-3 font-semibold text-green-600">{user.role}</td>
-                    <td className="p-3">{user.createdAt}</td>
+                    <td className="p-3">{user.created}</td>
                     <td className="p-3">
-                      <input type="checkbox" checked={user.active} readOnly />
+                      <input type="checkbox" checked={user.user_status === 1} readOnly />
                     </td>
                     <td className="p-3 flex gap-3 text-lg">
                       <button onClick={() => handleViewClick(user)} className="text-blue-600">
@@ -93,12 +125,11 @@ export default function AllOwnerTable({ usersData }) {
         )}
       </div>
 
-      {/* ---------------------- VIEW MODAL (FIXED) ----------------------- */}
+      {/* ---------------------- VIEW MODAL ----------------------- */}
       {viewingUser && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
           <div className="relative bg-white rounded-2xl w-full max-w-5xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
             
-            {/* LEFT */}
             <div className="bg-gray-50 p-8 flex flex-col items-center w-full md:w-1/3">
               <h2 className="text-2xl font-bold text-center mb-1">
                 {viewingUser.first_name} {viewingUser.last_name}
@@ -111,9 +142,7 @@ export default function AllOwnerTable({ usersData }) {
               </p>
             </div>
 
-            {/* RIGHT */}
             <div className="flex-1 p-8 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-auto">
-
               <div>
                 <h3 className="font-semibold text-gray-700 mb-2">Contact Information</h3>
                 <p>Email: {viewingUser.email || "-"}</p>
@@ -136,7 +165,6 @@ export default function AllOwnerTable({ usersData }) {
                 <p>Gender: {viewingUser.gender || "-"}</p>
                 <p>Other Institute: {viewingUser.other_institute_name || "-"}</p>
               </div>
-
             </div>
 
             <button
@@ -145,6 +173,64 @@ export default function AllOwnerTable({ usersData }) {
             >
               ×
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* ---------------------- EDIT / UPDATE MODAL ----------------------- */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-5xl p-8 overflow-y-auto relative">
+
+            <h2 className="text-xl font-bold mb-6">Update User</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              {/* NAME */}
+              <input name="first_name" value={editingUser.first_name || ""} onChange={handleChange} placeholder="First Name" className="border p-2 rounded" />
+              <input name="last_name" value={editingUser.last_name || ""} onChange={handleChange} placeholder="Last Name" className="border p-2 rounded" />
+
+              {/* CONTACT */}
+              <input name="email" value={editingUser.email || ""} onChange={handleChange} placeholder="Email" className="border p-2 rounded" />
+              <input name="mobile_number" value={editingUser.mobile_number || ""} onChange={handleChange} placeholder="Mobile" className="border p-2 rounded" />
+              <input name="phone_number" value={editingUser.phone_number || ""} onChange={handleChange} placeholder="Phone" className="border p-2 rounded" />
+              <input name="address" value={editingUser.address || ""} onChange={handleChange} placeholder="Address" className="border p-2 rounded" />
+
+              {/* BASIC */}
+              <input name="user_type_id" value={editingUser.user_type_id || ""} onChange={handleChange} placeholder="User Type ID" className="border p-2 rounded" />
+              <input name="institute_id" value={editingUser.institute_id || ""} onChange={handleChange} placeholder="Institute ID" className="border p-2 rounded" />
+              <input name="designation" value={editingUser.designation || ""} onChange={handleChange} placeholder="Designation" className="border p-2 rounded" />
+
+              {/* OTHER */}
+              <input name="username" value={editingUser.username || ""} onChange={handleChange} placeholder="Username" className="border p-2 rounded" />
+              <input name="gender" value={editingUser.gender || ""} onChange={handleChange} placeholder="Gender" className="border p-2 rounded" />
+              <input name="other_institute_name" value={editingUser.other_institute_name || ""} onChange={handleChange} placeholder="Other Institute" className="border p-2 rounded" />
+
+              {/* ✅ ACTIVE / INACTIVE CHECKBOX */}
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  name="user_status"
+                  checked={editingUser.user_status === 1}
+                  onChange={handleChange}
+                  className="w-5 h-5"
+                />
+                <label className="font-medium">
+                  {editingUser.user_status === 1 ? "Active User" : "Inactive User"}
+                </label>
+              </div>
+
+            </div>
+
+            <div className="flex justify-end gap-4 mt-8">
+              <button onClick={handleCloseModal} className="px-6 py-2 bg-gray-300 rounded">
+                Cancel
+              </button>
+              <button onClick={handleSave} className="px-6 py-2 bg-orange-600 text-white rounded">
+                Update
+              </button>
+            </div>
+
           </div>
         </div>
       )}
