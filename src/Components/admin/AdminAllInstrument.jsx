@@ -11,7 +11,7 @@ export default function AllInstrument({ instrumentsData }) {
     const mappedData = instrumentsData.map((inst) => ({
       id: inst.instrument_id,
       name: inst.instrument_name,
-      category: inst.instrument_type_id || "N/A", // You can replace with actual category name if you have mapping
+      category: inst.instrument_type || "N/A", // You can replace with actual category name if you have mapping
       serialNo: inst.model || "-", // Serial number or model
       active: inst.record_status === 0, // Assuming 0 = active
       acquiredOn: inst.date_commencement_operation || "-", 
