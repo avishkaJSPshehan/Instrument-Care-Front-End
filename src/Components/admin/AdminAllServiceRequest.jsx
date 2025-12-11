@@ -1,16 +1,25 @@
 import React, { useState } from "react";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function AdminAllServiceRequest({ requestsData }) {
   const initialRequests = requestsData || [];
 
   const [requests, setRequests] = useState(initialRequests);
   const [editingRequest, setEditingRequest] = useState(null);
+  const [viewRequest, setViewRequest] = useState(null);
 
   const handleEditClick = (request) => {
     setEditingRequest({ ...request });
   };
 
-  const handleCloseModal = () => setEditingRequest(null);
+  const handleViewClick = (request) => {
+    setViewRequest(request);
+  };
+
+  const handleCloseModal = () => {
+    setEditingRequest(null);
+    setViewRequest(null);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,7 +38,6 @@ export default function AdminAllServiceRequest({ requestsData }) {
     handleCloseModal();
   };
 
-  // 🔥 DELETE REQUEST WITH CONFIRMATION
   const handleDelete = (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this service request?"
@@ -76,19 +84,26 @@ export default function AdminAllServiceRequest({ requestsData }) {
                     <td className="p-3">{req.status}</td>
                     <td className="p-3">{req.requestedOn}</td>
 
-                    <td className="p-3 flex gap-2">
+                    <td className="p-3 flex gap-2 text-lg">
                       <button
-                        className="bg-orange-600 text-white px-3 py-1 rounded-lg shadow hover:bg-orange-500 transition"
-                        onClick={() => handleEditClick(req)}
+                        className="text-blue-600 hover:text-blue-800"
+                        onClick={() => handleViewClick(req)}
                       >
-                        Edit
+                        <FaEye />
                       </button>
 
                       <button
-                        className="bg-red-600 text-white px-3 py-1 rounded-lg shadow hover:bg-red-500 transition"
+                        className="text-orange-600 hover:text-orange-800"
+                        onClick={() => handleEditClick(req)}
+                      >
+                        <FaEdit />
+                      </button>
+
+                      <button
+                        className="text-red-600 hover:text-red-800"
                         onClick={() => handleDelete(req.id)}
                       >
-                        Delete
+                        <FaTrash />
                       </button>
                     </td>
                   </tr>
@@ -99,7 +114,34 @@ export default function AdminAllServiceRequest({ requestsData }) {
         )}
       </div>
 
-      {/* ---------------------- MODAL ----------------------- */}
+      {/* ---------------------- VIEW MODAL ----------------------- */}
+      {viewRequest && (
+        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
+          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
+            <h2 className="text-xl font-bold mb-4">View Service Request</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Object.entries(viewRequest).map(([key, value]) => (
+                <div key={key}>
+                  <label className="font-medium capitalize">{key.replace(/_/g, " ")}</label>
+                  <p className="mt-1 p-2 border rounded bg-gray-100">{value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 transition"
+                onClick={handleCloseModal}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ---------------------- EDIT MODAL ----------------------- */}
       {editingRequest && (
         <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
           <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
@@ -190,7 +232,6 @@ export default function AdminAllServiceRequest({ requestsData }) {
               </div>
             </div>
 
-            {/* BUTTONS */}
             <div className="flex justify-end gap-3 mt-6">
               <button
                 className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 transition"
