@@ -1,31 +1,37 @@
 import React, { useState, useEffect } from "react";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function AllInstrument({ instrumentsData }) {
   const [instruments, setInstruments] = useState([]);
   const [editingInstrument, setEditingInstrument] = useState(null);
+  const [viewInstrument, setViewInstrument] = useState(null);
 
+  // ---------------- MAP BACKEND RESPONSE ---------------- //
   useEffect(() => {
     if (!instrumentsData) return;
 
-    // Map backend keys to frontend keys
     const mappedData = instrumentsData.map((inst) => ({
+      ...inst, // store everything for view/edit popup
+
       id: inst.instrument_id,
       name: inst.instrument_name,
-      category: inst.instrument_type || "N/A", // You can replace with actual category name if you have mapping
-      serialNo: inst.model || "-", // Serial number or model
-      active: inst.record_status === 0, // Assuming 0 = active
-      acquiredOn: inst.date_commencement_operation || "-", 
-      notes: inst.inst_description || "",
+      category: inst.instrument_type,
+      serialNo: inst.model || "-",
+      active: inst.record_status === 0,
+      acquiredOn: inst.date_commencement_operation,
+      notes: inst.inst_description,
     }));
 
     setInstruments(mappedData);
   }, [instrumentsData]);
 
-  const handleEditClick = (instrument) => {
-    setEditingInstrument({ ...instrument });
+  // ---------------- ACTION HANDLERS ---------------- //
+  const handleEditClick = (instrument) => setEditingInstrument({ ...instrument });
+  const handleViewClick = (instrument) => setViewInstrument(instrument);
+  const handleCloseModal = () => {
+    setEditingInstrument(null);
+    setViewInstrument(null);
   };
-
-  const handleCloseModal = () => setEditingInstrument(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -45,9 +51,7 @@ export default function AllInstrument({ instrumentsData }) {
   };
 
   const handleDelete = (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this instrument?"
-    );
+    const confirmed = window.confirm("Delete this instrument?");
     if (confirmed) {
       setInstruments((prev) => prev.filter((inst) => inst.id !== id));
     }
@@ -59,17 +63,20 @@ export default function AllInstrument({ instrumentsData }) {
         <h3 className="font-bold text-lg text-gray-800">All Instruments</h3>
       </div>
 
+      {/* ---------------- MAIN TABLE ---------------- */}
       <div className="overflow-x-auto">
         {instruments.length === 0 ? (
-          <p className="text-gray-500 italic p-4 text-center">No instruments found.</p>
+          <p className="text-gray-500 italic p-4 text-center">
+            No instruments found.
+          </p>
         ) : (
           <div className="max-h-[720px] overflow-y-auto">
             <table className="w-full text-left text-sm border-collapse">
               <thead>
                 <tr className="border-b bg-gray-100 text-gray-700">
-                  <th className="p-3">Instrument Name</th>
-                  <th className="p-3">Category</th>
-                  <th className="p-3">Serial No</th>
+                  <th className="p-3">Name</th>
+                  <th className="p-3">Type</th>
+                  <th className="p-3">Model</th>
                   <th className="p-3">Status</th>
                   <th className="p-3">Acquired On</th>
                   <th className="p-3">Action</th>
@@ -95,19 +102,26 @@ export default function AllInstrument({ instrumentsData }) {
                     </td>
                     <td className="p-3">{inst.acquiredOn}</td>
 
-                    <td className="p-3 flex gap-2">
+                    <td className="p-3 flex gap-4 text-lg">
                       <button
-                        className="bg-orange-600 text-white px-3 py-1 rounded-lg shadow hover:bg-orange-500 transition"
-                        onClick={() => handleEditClick(inst)}
+                        className="text-blue-600 hover:text-blue-800"
+                        onClick={() => handleViewClick(inst)}
                       >
-                        Edit
+                        <FaEye />
                       </button>
 
                       <button
-                        className="bg-red-600 text-white px-3 py-1 rounded-lg shadow hover:bg-red-500 transition"
+                        className="text-orange-600 hover:text-orange-800"
+                        onClick={() => handleEditClick(inst)}
+                      >
+                        <FaEdit />
+                      </button>
+
+                      <button
+                        className="text-red-600 hover:text-red-800"
                         onClick={() => handleDelete(inst.id)}
                       >
-                        Delete
+                        <FaTrash />
                       </button>
                     </td>
                   </tr>
@@ -118,94 +132,155 @@ export default function AllInstrument({ instrumentsData }) {
         )}
       </div>
 
-      {/* ---------------------- MODAL ----------------------- */}
+      {/* ---------------------- VIEW POPUP (OPTION A) ---------------------- */}
+      {viewInstrument && (
+        <div className="fixed inset-0 bg-[#00000070] flex justify-center items-center z-50 p-4">
+          <div className="bg-white p-6 rounded-lg w-full max-w-4xl shadow-lg max-h-[95vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Instrument Details</h2>
+
+            {/* SECTION: BASIC INFO */}
+            <h3 className="font-bold text-lg mt-4 mb-2 text-orange-600">
+              Basic Information
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><strong>Name:</strong> {viewInstrument.instrument_name}</p>
+              <p><strong>Type:</strong> {viewInstrument.instrument_type}</p>
+              <p><strong>Manufacturer:</strong> {viewInstrument.manufacturer}</p>
+              <p><strong>Model:</strong> {viewInstrument.model}</p>
+              <p><strong>Year:</strong> {viewInstrument.year_of_manufacture}</p>
+              <p className="col-span-2">
+                <strong>Description:</strong> <br />
+                <div
+                  className="p-2 border rounded"
+                  dangerouslySetInnerHTML={{
+                    __html: viewInstrument.inst_description || "",
+                  }}
+                />
+              </p>
+            </div>
+
+            {/* SECTION: LOCATION */}
+            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
+              Location
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><strong>Institute:</strong> {viewInstrument.institute_id}</p>
+              <p><strong>Faculty:</strong> {viewInstrument.faculty_id}</p>
+              <p><strong>Department:</strong> {viewInstrument.department_id}</p>
+              <p><strong>Laboratory:</strong> {viewInstrument.laboratory_id}</p>
+            </div>
+
+            {/* SECTION: VENDOR */}
+            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
+              Vendor / Supplier
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><strong>Vendor Name:</strong> {viewInstrument.vendor_name}</p>
+              <p><strong>Contact:</strong> {viewInstrument.vendor_contact}</p>
+              <p><strong>URL:</strong> {viewInstrument.vendor_url}</p>
+              <p><strong>Price:</strong> {viewInstrument.price}</p>
+              <p><strong>Service Charge:</strong> {viewInstrument.service_charge}</p>
+            </div>
+
+            {/* SECTION: OPERATION */}
+            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
+              Operational Details
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><strong>Samples/Cycle:</strong> {viewInstrument.no_of_samples_per_cycle}</p>
+              <p><strong>Samples/Day:</strong> {viewInstrument.no_of_samples_per_day}</p>
+              <p><strong>Usage Hours/Day:</strong> {viewInstrument.total_usage_hour_per_day}</p>
+              <p><strong>Commencement Operation:</strong> {viewInstrument.date_commencement_operation}</p>
+            </div>
+
+            {/* SECTION: CONTACT PERSON */}
+            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
+              Contact Person
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><strong>Name:</strong> {viewInstrument.contact_person_name}</p>
+              <p><strong>Email:</strong> {viewInstrument.contact_person_email}</p>
+              <p><strong>Phone:</strong> {viewInstrument.contact_person_phone_number}</p>
+              <p><strong>Mobile:</strong> {viewInstrument.contact_person_mobile_number}</p>
+            </div>
+
+            {/* SECTION: OTHER */}
+            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
+              Other Information
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <p><strong>Accessories:</strong> {viewInstrument.accessories}</p>
+              <p><strong>Specification:</strong> {viewInstrument.specification}</p>
+              <p><strong>Funding Source:</strong> {viewInstrument.funding_source}</p>
+              <p><strong>Keywords:</strong> {viewInstrument.inst_keywords}</p>
+              <p><strong>External Researchers:</strong> {viewInstrument.external_researchers}</p>
+              <p><strong>Staff Availability:</strong> {viewInstrument.availabiltiy_of_staff}</p>
+            </div>
+
+            <div className="text-right mt-6">
+              <button
+                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-200"
+                onClick={handleCloseModal}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ---------------------- EDIT POPUP (ALL FIELDS) ---------------------- */}
       {editingInstrument && (
         <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
+          <div className="bg-white p-6 rounded-lg w-full max-w-6xl max-h-[95vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">Edit Instrument</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex flex-col gap-3">
-                <label className="font-medium">
-                  Instrument Name *
-                  <input
-                    type="text"
-                    name="name"
-                    value={editingInstrument.name}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
+            {/* FULL DYNAMIC FORM */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {Object.entries(editingInstrument).map(([key, value]) => {
+                if (key === "inst_description") {
+                  return (
+                    <div key={key} className="col-span-3">
+                      <label className="font-medium capitalize">
+                        {key.replace(/_/g, " ")}
+                      </label>
+                      <textarea
+                        name={key}
+                        value={value || ""}
+                        onChange={handleChange}
+                        className="mt-1 border rounded p-2 w-full bg-gray-100"
+                        rows={5}
+                      />
+                    </div>
+                  );
+                }
 
-                <label className="font-medium">
-                  Category *
-                  <input
-                    type="text"
-                    name="category"
-                    value={editingInstrument.category}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="font-medium">
-                  Serial No *
-                  <input
-                    type="text"
-                    name="serialNo"
-                    value={editingInstrument.serialNo}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="flex items-center gap-2 mt-3">
-                  <input
-                    type="checkbox"
-                    name="active"
-                    checked={editingInstrument.active}
-                    onChange={handleChange}
-                    className="w-5 h-5 accent-orange-600"
-                  />
-                  <span className="font-medium">Active</span>
-                </label>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <label className="font-medium">
-                  Notes
-                  <textarea
-                    name="notes"
-                    value={editingInstrument.notes}
-                    onChange={handleChange}
-                    rows={6}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="font-medium">
-                  Acquired On
-                  <input
-                    type="date"
-                    name="acquiredOn"
-                    value={editingInstrument.acquiredOn}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-              </div>
+                return (
+                  <div key={key}>
+                    <label className="font-medium capitalize">
+                      {key.replace(/_/g, " ")}
+                    </label>
+                    <input
+                      type="text"
+                      name={key}
+                      value={value || ""}
+                      onChange={handleChange}
+                      className="mt-1 border rounded p-2 w-full bg-gray-100"
+                    />
+                  </div>
+                );
+              })}
             </div>
 
             <div className="flex justify-end gap-3 mt-6">
               <button
-                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 transition"
+                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-200"
                 onClick={handleCloseModal}
               >
                 Cancel
               </button>
-
               <button
-                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500 transition"
+                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500"
                 onClick={handleSave}
               >
                 Save
