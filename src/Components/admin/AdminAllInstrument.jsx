@@ -11,8 +11,7 @@ export default function AllInstrument({ instrumentsData }) {
     if (!instrumentsData) return;
 
     const mappedData = instrumentsData.map((inst) => ({
-      ...inst, // store everything for view/edit popup
-
+      ...inst,
       id: inst.instrument_id,
       name: inst.instrument_name,
       category: inst.instrument_type,
@@ -132,95 +131,95 @@ export default function AllInstrument({ instrumentsData }) {
         )}
       </div>
 
-      {/* ---------------------- VIEW POPUP (OPTION A) ---------------------- */}
+      {/* ---------------------- VIEW POPUP (Wide Modern Glass Card) ---------------------- */}
       {viewInstrument && (
-        <div className="fixed inset-0 bg-[#00000070] flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-4xl shadow-lg max-h-[95vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">Instrument Details</h2>
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4 backdrop-blur-sm">
+          <div className="bg-white/80 backdrop-blur-lg p-8 rounded-2xl w-full max-w-[1400px] max-h-[80vh] overflow-y-auto shadow-xl border border-white/20">
+            <h2 className="text-3xl font-bold mb-6 border-b pb-2 text-orange-600">
+              Instrument Details
+            </h2>
 
             {/* SECTION: BASIC INFO */}
-            <h3 className="font-bold text-lg mt-4 mb-2 text-orange-600">
-              Basic Information
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <p><strong>Name:</strong> {viewInstrument.instrument_name}</p>
-              <p><strong>Type:</strong> {viewInstrument.instrument_type}</p>
-              <p><strong>Manufacturer:</strong> {viewInstrument.manufacturer}</p>
-              <p><strong>Model:</strong> {viewInstrument.model}</p>
-              <p><strong>Year:</strong> {viewInstrument.year_of_manufacture}</p>
-              <p className="col-span-2">
-                <strong>Description:</strong> <br />
-                <div
-                  className="p-2 border rounded"
-                  dangerouslySetInnerHTML={{
-                    __html: viewInstrument.inst_description || "",
-                  }}
-                />
-              </p>
+            <div className="mb-6">
+              <h3 className="font-semibold text-xl mb-2">Basic Information</h3>
+              <div className="grid grid-cols-2 gap-6">
+                <p><strong>Name:</strong> {viewInstrument.instrument_name}</p>
+                <p><strong>Type:</strong> {viewInstrument.instrument_type}</p>
+                <p><strong>Manufacturer:</strong> {viewInstrument.manufacturer}</p>
+                <p><strong>Model:</strong> {viewInstrument.model}</p>
+                <p><strong>Year:</strong> {viewInstrument.year_of_manufacture}</p>
+                <p className="col-span-2">
+                  <strong>Description:</strong>
+                  <div
+                    className="p-2 border rounded mt-1"
+                    dangerouslySetInnerHTML={{ __html: viewInstrument.inst_description || "" }}
+                  />
+                </p>
+              </div>
             </div>
 
             {/* SECTION: LOCATION */}
-            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
-              Location
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <p><strong>Institute:</strong> {viewInstrument.institute_id}</p>
-              <p><strong>Faculty:</strong> {viewInstrument.faculty_id}</p>
-              <p><strong>Department:</strong> {viewInstrument.department_id}</p>
-              <p><strong>Laboratory:</strong> {viewInstrument.laboratory_id}</p>
+            <div className="mb-6">
+              <h3 className="font-semibold text-xl mb-2">Location</h3>
+              <div className="grid grid-cols-2 gap-6">
+                <p><strong>Institute:</strong> {viewInstrument.institute_id}</p>
+                <p><strong>Faculty:</strong> {viewInstrument.faculty_id}</p>
+                <p><strong>Department:</strong> {viewInstrument.department_id}</p>
+                <p><strong>Laboratory:</strong> {viewInstrument.laboratory_id}</p>
+              </div>
             </div>
 
             {/* SECTION: VENDOR */}
-            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
-              Vendor / Supplier
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <p><strong>Vendor Name:</strong> {viewInstrument.vendor_name}</p>
-              <p><strong>Contact:</strong> {viewInstrument.vendor_contact}</p>
-              <p><strong>URL:</strong> {viewInstrument.vendor_url}</p>
-              <p><strong>Price:</strong> {viewInstrument.price}</p>
-              <p><strong>Service Charge:</strong> {viewInstrument.service_charge}</p>
+            <div className="mb-6">
+              <h3 className="font-semibold text-xl mb-2">Vendor / Supplier</h3>
+              <div className="grid grid-cols-2 gap-6">
+                <p><strong>Vendor Name:</strong> {viewInstrument.vendor_name}</p>
+                <p><strong>Contact:</strong> {viewInstrument.vendor_contact}</p>
+                <p><strong>URL:</strong> {viewInstrument.vendor_url}</p>
+                <p><strong>Price:</strong> {viewInstrument.price}</p>
+                <p><strong>Service Charge:</strong> {viewInstrument.service_charge}</p>
+              </div>
             </div>
 
             {/* SECTION: OPERATION */}
-            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
-              Operational Details
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <p><strong>Samples/Cycle:</strong> {viewInstrument.no_of_samples_per_cycle}</p>
-              <p><strong>Samples/Day:</strong> {viewInstrument.no_of_samples_per_day}</p>
-              <p><strong>Usage Hours/Day:</strong> {viewInstrument.total_usage_hour_per_day}</p>
-              <p><strong>Commencement Operation:</strong> {viewInstrument.date_commencement_operation}</p>
+            <div className="mb-6">
+              <h3 className="font-semibold text-xl mb-2">Operational Details</h3>
+              <div className="grid grid-cols-2 gap-6">
+                <p><strong>Samples/Cycle:</strong> {viewInstrument.no_of_samples_per_cycle}</p>
+                <p><strong>Samples/Day:</strong> {viewInstrument.no_of_samples_per_day}</p>
+                <p><strong>Usage Hours/Day:</strong> {viewInstrument.total_usage_hour_per_day}</p>
+                <p><strong>Commencement Operation:</strong> {viewInstrument.date_commencement_operation}</p>
+              </div>
             </div>
 
             {/* SECTION: CONTACT PERSON */}
-            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
-              Contact Person
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <p><strong>Name:</strong> {viewInstrument.contact_person_name}</p>
-              <p><strong>Email:</strong> {viewInstrument.contact_person_email}</p>
-              <p><strong>Phone:</strong> {viewInstrument.contact_person_phone_number}</p>
-              <p><strong>Mobile:</strong> {viewInstrument.contact_person_mobile_number}</p>
+            <div className="mb-6">
+              <h3 className="font-semibold text-xl mb-2">Contact Person</h3>
+              <div className="grid grid-cols-2 gap-6">
+                <p><strong>Name:</strong> {viewInstrument.contact_person_name}</p>
+                <p><strong>Email:</strong> {viewInstrument.contact_person_email}</p>
+                <p><strong>Phone:</strong> {viewInstrument.contact_person_phone_number}</p>
+                <p><strong>Mobile:</strong> {viewInstrument.contact_person_mobile_number}</p>
+              </div>
             </div>
 
             {/* SECTION: OTHER */}
-            <h3 className="font-bold text-lg mt-6 mb-2 text-orange-600">
-              Other Information
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <p><strong>Accessories:</strong> {viewInstrument.accessories}</p>
-              <p><strong>Specification:</strong> {viewInstrument.specification}</p>
-              <p><strong>Funding Source:</strong> {viewInstrument.funding_source}</p>
-              <p><strong>Keywords:</strong> {viewInstrument.inst_keywords}</p>
-              <p><strong>External Researchers:</strong> {viewInstrument.external_researchers}</p>
-              <p><strong>Staff Availability:</strong> {viewInstrument.availabiltiy_of_staff}</p>
+            <div className="mb-6">
+              <h3 className="font-semibold text-xl mb-2">Other Information</h3>
+              <div className="grid grid-cols-2 gap-6">
+                <p><strong>Accessories:</strong> {viewInstrument.accessories}</p>
+                <p><strong>Specification:</strong> {viewInstrument.specification}</p>
+                <p><strong>Funding Source:</strong> {viewInstrument.funding_source}</p>
+                <p><strong>Keywords:</strong> {viewInstrument.inst_keywords}</p>
+                <p><strong>External Researchers:</strong> {viewInstrument.external_researchers}</p>
+                <p><strong>Staff Availability:</strong> {viewInstrument.availabiltiy_of_staff}</p>
+              </div>
             </div>
 
-            <div className="text-right mt-6">
+            <div className="flex justify-end mt-6">
               <button
-                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-200"
                 onClick={handleCloseModal}
+                className="bg-gray-200 px-6 py-2 rounded-lg hover:bg-gray-300 transition font-medium"
               >
                 Close
               </button>
@@ -229,21 +228,21 @@ export default function AllInstrument({ instrumentsData }) {
         </div>
       )}
 
-      {/* ---------------------- EDIT POPUP (ALL FIELDS) ---------------------- */}
+      {/* ---------------------- EDIT POPUP (Wide Modern Glass Card) ---------------------- */}
       {editingInstrument && (
-        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-6xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit Instrument</h2>
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4 backdrop-blur-sm">
+          <div className="bg-white/90 backdrop-blur-lg p-8 rounded-2xl w-full max-w-[1400px] max-h-[80vh] overflow-y-auto shadow-xl border border-white/20">
+            <h2 className="text-3xl font-bold mb-6 border-b pb-2 text-orange-600">
+              Edit Instrument
+            </h2>
 
             {/* FULL DYNAMIC FORM */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
               {Object.entries(editingInstrument).map(([key, value]) => {
                 if (key === "inst_description") {
                   return (
                     <div key={key} className="col-span-3">
-                      <label className="font-medium capitalize">
-                        {key.replace(/_/g, " ")}
-                      </label>
+                      <label className="font-medium capitalize">{key.replace(/_/g, " ")}</label>
                       <textarea
                         name={key}
                         value={value || ""}
@@ -257,9 +256,7 @@ export default function AllInstrument({ instrumentsData }) {
 
                 return (
                   <div key={key}>
-                    <label className="font-medium capitalize">
-                      {key.replace(/_/g, " ")}
-                    </label>
+                    <label className="font-medium capitalize">{key.replace(/_/g, " ")}</label>
                     <input
                       type="text"
                       name={key}
@@ -272,16 +269,16 @@ export default function AllInstrument({ instrumentsData }) {
               })}
             </div>
 
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="flex justify-end gap-4 mt-6">
               <button
-                className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-200"
                 onClick={handleCloseModal}
+                className="bg-gray-200 px-6 py-2 rounded-lg hover:bg-gray-300 transition font-medium"
               >
                 Cancel
               </button>
               <button
-                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500"
                 onClick={handleSave}
+                className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition font-medium"
               >
                 Save
               </button>
