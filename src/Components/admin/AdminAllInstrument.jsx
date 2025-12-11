@@ -40,21 +40,68 @@ export default function AllInstrument({ instrumentsData }) {
     }));
   };
 
-  const handleSave = () => {
-    setInstruments((prev) =>
-      prev.map((inst) =>
-        inst.id === editingInstrument.id ? editingInstrument : inst
-      )
+  const handleSave = async () => {
+  try {
+    // ✅ Call the backend PUT endpoint
+    const response = await fetch(
+      `http://localhost/instrument-care-back-end/public/admin/instrument${editingInstrument.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editingInstrument),
+      }
     );
-    handleCloseModal();
-  };
 
-  const handleDelete = (id) => {
-    const confirmed = window.confirm("Delete this instrument?");
-    if (confirmed) {
-      setInstruments((prev) => prev.filter((inst) => inst.id !== id));
+    const result = await response.json();
+
+    if (response.ok) {
+      // ✅ Update frontend state
+      setInstruments((prev) =>
+        prev.map((inst) =>
+          inst.id === editingInstrument.id ? editingInstrument : inst
+        )
+      );
+      alert(result.message || "Instrument updated successfully");
+      handleCloseModal();
+    } else {
+      alert(result.error || "Failed to update instrument");
     }
-  };
+  } catch (error) {
+    console.error("Error updating instrument:", error);
+    alert("Something went wrong while updating instrument");
+  }
+};
+
+
+  const handleDelete = async (id) => {
+  const confirmed = window.confirm("Delete this instrument?");
+  if (!confirmed) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost/instrument-care-back-end/public/admin/instrument/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    const result = await response.json();
+
+    if (response.ok) {
+      // ✅ Remove the instrument from frontend state
+      setInstruments((prev) => prev.filter((inst) => inst.id !== id));
+      alert(result.message || "Instrument deleted successfully");
+    } else {
+      alert(result.message || "Failed to delete instrument");
+    }
+  } catch (error) {
+    console.error("Error deleting instrument:", error);
+    alert("Something went wrong while deleting instrument");
+  }
+};
+
 
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
