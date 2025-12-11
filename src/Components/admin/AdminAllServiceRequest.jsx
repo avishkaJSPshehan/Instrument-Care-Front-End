@@ -47,6 +47,23 @@ export default function AdminAllServiceRequest({ requestsData }) {
     }
   };
 
+  // 🔥 Function to get status color
+  const getStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return "text-orange-600";
+      case "in progress":
+        return "text-blue-600";
+      case "cancelled":
+      case "canceled":
+        return "text-red-600";
+      case "completed":
+        return "text-green-600";
+      default:
+        return "text-gray-600";
+    }
+  };
+
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
       <div className="flex justify-between items-center mb-4">
@@ -81,7 +98,9 @@ export default function AdminAllServiceRequest({ requestsData }) {
                     <td className="p-3">{req.requesterName}</td>
                     <td className="p-3">{req.email}</td>
                     <td className="p-3">{req.instrument}</td>
-                    <td className="p-3">{req.status}</td>
+                    <td className={`p-3 font-semibold ${getStatusColor(req.status)}`}>
+                      {req.status}
+                    </td>
                     <td className="p-3">{req.requestedOn}</td>
 
                     <td className="p-3 flex gap-2 text-lg">

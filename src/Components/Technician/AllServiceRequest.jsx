@@ -209,37 +209,3 @@ export default function AllServiceRequestTable() {
     </div>
   );
 }
-
-
-
-// [
-//     // Empty array will show "No service requests found"
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-//     ["Spectrometer", "Sophia Martinez", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-//     ["Spectrometer", "Sophia Martinez", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-//     ["Spectrometer", "Sophia Martinez", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-//     ["Spectrometer", "Sophia Martinez", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Centrifuge", "James Anderson", "2024/07/25", "+94 71 23 45 678"],
-//     ["X-ray Equipment", "Isabella Brown", "2024/07/25", "+94 71 23 45 678"],
-//     ["Microscope", "Ava Thompson", "2024/07/25", "+94 71 23 45 678"],
-// ];
