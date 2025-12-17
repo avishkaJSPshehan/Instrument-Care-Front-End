@@ -29,13 +29,40 @@ export default function AdminAllServiceRequest({ requestsData }) {
     }));
   };
 
-  const handleSave = () => {
-    setRequests((prev) =>
-      prev.map((req) =>
-        req.id === editingRequest.id ? editingRequest : req
-      )
-    );
-    handleCloseModal();
+  // ✅ CONNECTED PUT ENDPOINT
+  const handleSave = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost/instrument-care-back-end/public/admin/service-request/${editingRequest.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editingRequest),
+        }
+      );
+
+      const result = await response.json();
+      console.log(result);
+
+      if (!response.ok) {
+        alert(result.error || "Failed to update service request");
+        return;
+      }
+
+      // ✅ Update table row after success
+      setRequests((prev) =>
+        prev.map((req) =>
+          req.id === editingRequest.id ? editingRequest : req
+        )
+      );
+
+      handleCloseModal();
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("Something went wrong while updating");
+    }
   };
 
   const handleDelete = (id) => {
@@ -66,7 +93,9 @@ export default function AdminAllServiceRequest({ requestsData }) {
   return (
     <div className="bg-[#ffffff80] rounded-lg shadow-sm p-4 font-poppins min-h-[720px]">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-bold text-lg text-gray-800">All Service Requests</h3>
+        <h3 className="font-bold text-lg text-gray-800">
+          All Service Requests
+        </h3>
       </div>
 
       <div className="overflow-x-auto">
@@ -99,7 +128,11 @@ export default function AdminAllServiceRequest({ requestsData }) {
                     <td className="p-3">{req.requesterName}</td>
                     <td className="p-3">{req.email}</td>
                     <td className="p-3">{req.instrument}</td>
-                    <td className={`p-3 font-semibold ${getStatusColor(req.status)}`}>
+                    <td
+                      className={`p-3 font-semibold ${getStatusColor(
+                        req.status
+                      )}`}
+                    >
                       {req.status}
                     </td>
                     <td className="p-3">{req.requestedOn}</td>
@@ -136,48 +169,47 @@ export default function AdminAllServiceRequest({ requestsData }) {
 
       {/* ====================== VIEW MODAL ====================== */}
       {viewRequest && (
-  <div
-    className="fixed inset-0 bg-black/70 backdrop-blur flex items-center justify-center z-50 p-4"
-    onClick={handleCloseModal}
-  >
-    <div
-      className="bg-white w-full max-w-[95vw] max-h-[85vh] rounded-3xl shadow-2xl overflow-hidden"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-400 text-white">
-        <h2 className="text-xl font-semibold">
-          Service Request Details
-        </h2>
-      </div>
-
-      <div className="p-6 overflow-y-auto h-[calc(85vh-140px)] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {Object.entries(viewRequest).map(([key, value]) => (
-          <div
-            key={key}
-            className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm"
-          >
-            <p className="text-xs text-gray-500 uppercase tracking-wide">
-              {key.replace(/_/g, " ")}
-            </p>
-            <p className="mt-1 text-sm font-semibold text-gray-800 break-words">
-              {String(value)}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div className="px-6 py-4 border-t flex justify-end">
-        <button
-          className="px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur flex items-center justify-center z-50 p-4"
           onClick={handleCloseModal}
         >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+          <div
+            className="bg-white w-full max-w-[95vw] max-h-[85vh] rounded-3xl shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-400 text-white">
+              <h2 className="text-xl font-semibold">
+                Service Request Details
+              </h2>
+            </div>
 
+            <div className="p-6 overflow-y-auto h-[calc(85vh-140px)] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {Object.entries(viewRequest).map(([key, value]) => (
+                <div
+                  key={key}
+                  className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm"
+                >
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">
+                    {key.replace(/_/g, " ")}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-gray-800 break-words">
+                    {String(value)}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="px-6 py-4 border-t flex justify-end">
+              <button
+                className="px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+                onClick={handleCloseModal}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ====================== EDIT MODAL ====================== */}
       {editingRequest && (
@@ -201,34 +233,6 @@ export default function AdminAllServiceRequest({ requestsData }) {
             key === "id" ||
             key === "created_at" ||
             key === "updated_at";
-
-          // ✅ SPECIAL CASE: ACTIVE DROPDOWN
-          if (key === "active") {
-            return (
-              <label key={key} className="flex flex-col text-sm">
-                <span className="mb-1 font-medium capitalize text-gray-700">
-                  Active Status
-                </span>
-                <select
-                  name="active"
-                  value={String(value)}
-                  onChange={(e) =>
-                    handleChange({
-                      target: {
-                        name: "active",
-                        value: e.target.value === "true",
-                        type: "select",
-                      },
-                    })
-                  }
-                  className="rounded-xl px-3 py-2 border bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                >
-                  <option value="true">Active</option>
-                  <option value="false">Inactive</option>
-                </select>
-              </label>
-            );
-          }
 
           return (
             <label key={key} className="flex flex-col text-sm">
