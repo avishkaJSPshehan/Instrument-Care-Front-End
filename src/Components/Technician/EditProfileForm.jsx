@@ -32,6 +32,7 @@ export default function EditProfileForm() {
     additional_comment: "",
     profileImage: null,
     profileImagePreview: null,
+    instrument: "",
   });
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export default function EditProfileForm() {
           guarantee_for_service: data.guarantee_for_service || "",
           additional_comment: data.additional_comment || "",
           profileImagePreview: data.profile_image_url || null,
+          instrument: data.caring_instruments || "",
         }));
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -109,6 +111,7 @@ export default function EditProfileForm() {
       additional_comment: "",
       profileImage: null,
       profileImagePreview: null,
+      instrument: "",
     });
   };
 
