@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ProfileFormLeft({ formData, handleChange }) {
+  const [instruments, setInstruments] = useState([]);
+
+  // ✅ Fetch instrument names from backend on component mount
+  useEffect(() => {
+    const fetchInstruments = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/instrument-care-back-end/public/tech/instruments"
+        );
+        const result = await response.json();
+        if (result.success && result.data) {
+          setInstruments(result.data);
+        } else {
+          console.error("Failed to fetch instruments:", result);
+        }
+      } catch (error) {
+        console.error("Error fetching instruments:", error);
+      }
+    };
+
+    fetchInstruments();
+  }, []);
+
   return (
     <div className="flex flex-col gap-3">
       <h5 className="font-bold">Affiliation</h5>
@@ -60,18 +83,7 @@ export default function ProfileFormLeft({ formData, handleChange }) {
         />
       </label>
 
-      <label className="pl-4">
-        Contract No 
-        <input
-          type="text"
-          name="supervisor_Contract_No"
-          value={formData.supervisor_Contract_No}
-          onChange={handleChange}
-          className="border rounded p-1 w-full bg-gray-200 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-        />
-      </label>
-
-    <h5 className="font-bold">Techinical Expertise</h5>
+      <h5 className="font-bold">Techinical Expertise</h5>
 
       <label className="pl-4">
         Laboratory Category
@@ -141,7 +153,22 @@ export default function ProfileFormLeft({ formData, handleChange }) {
         </select>
       </label>
 
-
+      <label className="pl-4">
+        Instrument
+        <select
+          name="instrument"
+          value={formData.instrument}
+          onChange={handleChange}
+          className="border rounded p-2 w-full bg-gray-200 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+        >
+          <option value="">Select Instrument</option>
+          {instruments.map((inst, index) => (
+            <option key={index} value={inst.instrument_name.trim()}>
+              {inst.instrument_name.trim()}
+            </option>
+          ))}
+        </select>
+      </label>
     </div>
   );
 }
