@@ -136,100 +136,113 @@ export default function AdminAllServiceRequest({ requestsData }) {
 
       {/* ====================== VIEW MODAL ====================== */}
       {viewRequest && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-y-auto">
-            <div className="border-b px-6 py-4">
-              <h2 className="text-xl font-bold text-gray-800">
-                Service Request Details
-              </h2>
-            </div>
+  <div
+    className="fixed inset-0 bg-black/70 backdrop-blur flex items-center justify-center z-50 p-4"
+    onClick={handleCloseModal}
+  >
+    <div
+      className="bg-white w-full max-w-[95vw] max-h-[85vh] rounded-3xl shadow-2xl overflow-hidden"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-400 text-white">
+        <h2 className="text-xl font-semibold">
+          Service Request Details
+        </h2>
+      </div>
 
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {Object.entries(viewRequest).map(([key, value]) => (
-                <div
-                  key={key}
-                  className="bg-gray-50 border rounded-lg p-4"
-                >
-                  <p className="text-xs text-gray-500 uppercase tracking-wide">
-                    {key.replace(/_/g, " ")}
-                  </p>
-                  <p className="mt-1 font-medium text-gray-800 break-words">
-                    {String(value)}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-end gap-3 px-6 py-4 border-t">
-              <button
-                className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={handleCloseModal}
-              >
-                Close
-              </button>
-            </div>
+      <div className="p-6 overflow-y-auto h-[calc(85vh-140px)] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {Object.entries(viewRequest).map(([key, value]) => (
+          <div
+            key={key}
+            className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm"
+          >
+            <p className="text-xs text-gray-500 uppercase tracking-wide">
+              {key.replace(/_/g, " ")}
+            </p>
+            <p className="mt-1 text-sm font-semibold text-gray-800 break-words">
+              {String(value)}
+            </p>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+
+      <div className="px-6 py-4 border-t flex justify-end">
+        <button
+          className="px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+          onClick={handleCloseModal}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* ====================== EDIT MODAL ====================== */}
       {editingRequest && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-y-auto">
-            <div className="border-b px-6 py-4">
-              <h2 className="text-xl font-bold text-gray-800">
-                Edit Service Request
-              </h2>
-            </div>
+  <div
+    className="fixed inset-0 bg-black/70 backdrop-blur flex items-center justify-center z-50 p-4"
+    onClick={handleCloseModal}
+  >
+    <div
+      className="bg-white w-full max-w-[95vw] max-h-[85vh] rounded-3xl shadow-2xl overflow-hidden"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="px-6 py-4 bg-gradient-to-r from-orange-500 to-orange-400 text-white">
+        <h2 className="text-xl font-semibold">
+          Edit Service Request
+        </h2>
+      </div>
 
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-              {Object.entries(editingRequest).map(([key, value]) => {
-                const isReadOnly =
-                  key === "id" ||
-                  key === "created_at" ||
-                  key === "updated_at";
+      <div className="p-6 overflow-y-auto h-[calc(85vh-140px)] grid grid-cols-1 md:grid-cols-2 gap-5">
+        {Object.entries(editingRequest).map(([key, value]) => {
+          const isReadOnly =
+            key === "id" ||
+            key === "created_at" ||
+            key === "updated_at";
 
-                return (
-                  <label key={key} className="flex flex-col text-sm">
-                    <span className="font-medium mb-1 capitalize">
-                      {key.replace(/_/g, " ")}
-                    </span>
+          return (
+            <label key={key} className="flex flex-col text-sm">
+              <span className="mb-1 font-medium capitalize text-gray-700">
+                {key.replace(/_/g, " ")}
+              </span>
+              <input
+                type="text"
+                name={key}
+                value={value ?? ""}
+                readOnly={isReadOnly}
+                onChange={handleChange}
+                className={`rounded-xl px-3 py-2 border ${
+                  isReadOnly
+                    ? "bg-gray-200 cursor-not-allowed"
+                    : "bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                }`}
+              />
+            </label>
+          );
+        })}
+      </div>
 
-                    <input
-                      type="text"
-                      name={key}
-                      value={value ?? ""}
-                      readOnly={isReadOnly}
-                      onChange={handleChange}
-                      className={`border rounded-lg p-2 ${
-                        isReadOnly
-                          ? "bg-gray-200 cursor-not-allowed"
-                          : "bg-gray-100 focus:ring-2 focus:ring-orange-500"
-                      }`}
-                    />
-                  </label>
-                );
-              })}
-            </div>
+      <div className="px-6 py-4 border-t flex justify-end gap-3">
+        <button
+          className="px-6 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+          onClick={handleCloseModal}
+        >
+          Cancel
+        </button>
 
-            <div className="flex justify-end gap-3 px-6 py-4 border-t">
-              <button
-                className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
-                onClick={handleCloseModal}
-              >
-                Cancel
-              </button>
+        <button
+          className="px-6 py-2 rounded-full bg-orange-600 text-white hover:bg-orange-500 transition"
+          onClick={handleSave}
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-              <button
-                className="px-5 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-500 transition"
-                onClick={handleSave}
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
