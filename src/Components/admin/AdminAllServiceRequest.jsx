@@ -47,9 +47,8 @@ export default function AdminAllServiceRequest({ requestsData }) {
     }
   };
 
-  // 🔥 Function to get status color
   const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case "pending":
         return "text-orange-600";
       case "in progress":
@@ -72,7 +71,9 @@ export default function AdminAllServiceRequest({ requestsData }) {
 
       <div className="overflow-x-auto">
         {requests.length === 0 ? (
-          <p className="text-gray-500 italic p-4 text-center">No service requests found.</p>
+          <p className="text-gray-500 italic p-4 text-center">
+            No service requests found.
+          </p>
         ) : (
           <div className="max-h-[720px] overflow-y-auto">
             <table className="w-full text-left text-sm border-collapse">
@@ -133,24 +134,35 @@ export default function AdminAllServiceRequest({ requestsData }) {
         )}
       </div>
 
-      {/* ---------------------- VIEW MODAL ----------------------- */}
+      {/* ====================== VIEW MODAL ====================== */}
       {viewRequest && (
-        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">View Service Request</h2>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-y-auto">
+            <div className="border-b px-6 py-4">
+              <h2 className="text-xl font-bold text-gray-800">
+                Service Request Details
+              </h2>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {Object.entries(viewRequest).map(([key, value]) => (
-                <div key={key}>
-                  <label className="font-medium capitalize">{key.replace(/_/g, " ")}</label>
-                  <p className="mt-1 p-2 border rounded bg-gray-100">{value}</p>
+                <div
+                  key={key}
+                  className="bg-gray-50 border rounded-lg p-4"
+                >
+                  <p className="text-xs text-gray-500 uppercase tracking-wide">
+                    {key.replace(/_/g, " ")}
+                  </p>
+                  <p className="mt-1 font-medium text-gray-800 break-words">
+                    {String(value)}
+                  </p>
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="flex justify-end gap-3 px-6 py-4 border-t">
               <button
-                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 transition"
+                className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
                 onClick={handleCloseModal}
               >
                 Close
@@ -160,110 +172,59 @@ export default function AdminAllServiceRequest({ requestsData }) {
         </div>
       )}
 
-      {/* ---------------------- EDIT MODAL ----------------------- */}
+      {/* ====================== EDIT MODAL ====================== */}
       {editingRequest && (
-        <div className="fixed inset-0 bg-[#1a191790] flex justify-center items-center z-50 p-4">
-          <div className="bg-white p-6 rounded-lg w-full max-w-5xl max-h-[95vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Edit Service Request</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* LEFT */}
-              <div className="flex flex-col gap-3">
-                <label className="font-medium">
-                  Requester Name *
-                  <input
-                    type="text"
-                    name="requesterName"
-                    value={editingRequest.requesterName}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="font-medium">
-                  Email *
-                  <input
-                    type="email"
-                    name="email"
-                    value={editingRequest.email}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="font-medium">
-                  Instrument *
-                  <input
-                    type="text"
-                    name="instrument"
-                    value={editingRequest.instrument}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="flex items-center gap-2 mt-3">
-                  <input
-                    type="checkbox"
-                    name="active"
-                    checked={editingRequest.active}
-                    onChange={handleChange}
-                    className="w-5 h-5 accent-orange-600"
-                  />
-                  <span className="font-medium">Active</span>
-                </label>
-              </div>
-
-              {/* RIGHT */}
-              <div className="flex flex-col gap-3">
-                <label className="font-medium">
-                  Status *
-                  <input
-                    type="text"
-                    name="status"
-                    value={editingRequest.status}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="font-medium">
-                  Requested On
-                  <input
-                    type="date"
-                    name="requestedOn"
-                    value={editingRequest.requestedOn}
-                    onChange={handleChange}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-
-                <label className="font-medium">
-                  Notes
-                  <textarea
-                    name="notes"
-                    value={editingRequest.notes}
-                    onChange={handleChange}
-                    rows={6}
-                    className="mt-1 border rounded p-2 w-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  />
-                </label>
-              </div>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-y-auto">
+            <div className="border-b px-6 py-4">
+              <h2 className="text-xl font-bold text-gray-800">
+                Edit Service Request
+              </h2>
             </div>
 
-            <div className="flex justify-end gap-3 mt-6">
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+              {Object.entries(editingRequest).map(([key, value]) => {
+                const isReadOnly =
+                  key === "id" ||
+                  key === "created_at" ||
+                  key === "updated_at";
+
+                return (
+                  <label key={key} className="flex flex-col text-sm">
+                    <span className="font-medium mb-1 capitalize">
+                      {key.replace(/_/g, " ")}
+                    </span>
+
+                    <input
+                      type="text"
+                      name={key}
+                      value={value ?? ""}
+                      readOnly={isReadOnly}
+                      onChange={handleChange}
+                      className={`border rounded-lg p-2 ${
+                        isReadOnly
+                          ? "bg-gray-200 cursor-not-allowed"
+                          : "bg-gray-100 focus:ring-2 focus:ring-orange-500"
+                      }`}
+                    />
+                  </label>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-end gap-3 px-6 py-4 border-t">
               <button
-                className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 transition"
+                className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
                 onClick={handleCloseModal}
               >
                 Cancel
               </button>
 
               <button
-                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-500 transition"
+                className="px-5 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-500 transition"
                 onClick={handleSave}
               >
-                Save
+                Save Changes
               </button>
             </div>
           </div>

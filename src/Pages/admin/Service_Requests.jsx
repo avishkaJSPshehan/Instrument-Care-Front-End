@@ -9,7 +9,6 @@ export default function All_Service_Requests() {
   const [requestsData, setRequestsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ---------------- FETCH SERVICE REQUESTS ---------------- //
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -23,16 +22,16 @@ export default function All_Service_Requests() {
 
         const data = await response.json();
 
-        // Optional: map backend response to frontend-friendly fields
+        // ✅ KEEP EVERYTHING — ADD NOTHING REMOVED
         const mappedData = data.map((req) => ({
-          id: req.id,
+          ...req, // 🔥 THIS IS THE FIX — FULL RESPONSE OBJECT
+
+          // existing UI fields (unchanged)
           requesterName: req.full_name,
-          email: req.email,
           instrument: req.instrument_name,
-          status: req.status,
-          requestedOn: req.created_at.split(' ')[0], // Only date part
+          requestedOn: req.created_at?.split(' ')[0],
           notes: req.issue_description,
-          active: req.status.toLowerCase() !== 'cancelled',
+          active: req.status?.toLowerCase() !== 'cancelled',
         }));
 
         setRequestsData(mappedData);
@@ -50,19 +49,15 @@ export default function All_Service_Requests() {
     <>
       <Navbar />
 
-      {/* Background Image Wrapper */}
       <div
         className="flex flex-col md:flex-row h-full w-full p-2 md:p-4 gap-4 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${BG})`,
-        }}
+        style={{ backgroundImage: `url(${BG})` }}
       >
-        {/* Sidebar */}
         <Admin_Sidebar />
 
-        {/* Main Content */}
         <main className="flex-1 bg-[#ffffff80] rounded-lg p-4">
           <h2 className="text-xl font-bold mb-4">All Service Requests</h2>
+
           {loading ? (
             <p className="text-gray-500 italic p-4 text-center">
               Loading service requests...
