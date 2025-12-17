@@ -30,7 +30,7 @@ export default function All_Service_Requests() {
           requesterName: req.full_name,
           instrument: req.instrument_name,
           requestedOn: req.created_at?.split(' ')[0],
-          notes: req.issue_description,
+          // notes: req.issue_description,
         }));
 
         setRequestsData(mappedData);
