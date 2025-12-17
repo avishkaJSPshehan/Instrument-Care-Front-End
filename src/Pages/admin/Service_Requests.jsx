@@ -31,7 +31,6 @@ export default function All_Service_Requests() {
           instrument: req.instrument_name,
           requestedOn: req.created_at?.split(' ')[0],
           notes: req.issue_description,
-          active: req.status?.toLowerCase() !== 'cancelled',
         }));
 
         setRequestsData(mappedData);
