@@ -202,6 +202,34 @@ export default function AdminAllServiceRequest({ requestsData }) {
             key === "created_at" ||
             key === "updated_at";
 
+          // ✅ SPECIAL CASE: ACTIVE DROPDOWN
+          if (key === "active") {
+            return (
+              <label key={key} className="flex flex-col text-sm">
+                <span className="mb-1 font-medium capitalize text-gray-700">
+                  Active Status
+                </span>
+                <select
+                  name="active"
+                  value={String(value)}
+                  onChange={(e) =>
+                    handleChange({
+                      target: {
+                        name: "active",
+                        value: e.target.value === "true",
+                        type: "select",
+                      },
+                    })
+                  }
+                  className="rounded-xl px-3 py-2 border bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </label>
+            );
+          }
+
           return (
             <label key={key} className="flex flex-col text-sm">
               <span className="mb-1 font-medium capitalize text-gray-700">
