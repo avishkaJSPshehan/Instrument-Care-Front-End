@@ -4,6 +4,7 @@ import {
   Home,
   ArrowUpRight,
   SquareArrowOutUpRight,
+  Microscope, 
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -47,7 +48,8 @@ export default function TechniciansCard({ searchTerm }) {
       (tech.company_designation || "").toLowerCase().includes(term) ||
       (tech.bio || "").toLowerCase().includes(term) ||
       (tech.certificate_name || "").toLowerCase().includes(term) ||
-      (tech.institute_name || "").toLowerCase().includes(term)
+      (tech.institute_name || "").toLowerCase().includes(term) ||
+      (tech.caring_instruments || "").toLowerCase().includes(term)
     );
   });
 
@@ -95,6 +97,9 @@ export default function TechniciansCard({ searchTerm }) {
                       </div>
                       <div className="flex items-center gap-1">
                         <Home className="w-4 h-4" /> {tech.institute_name || "-"}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Microscope className="w-4 h-4" /> {tech.caring_instruments || "-"}
                       </div>
                     </div>
                   </div>
