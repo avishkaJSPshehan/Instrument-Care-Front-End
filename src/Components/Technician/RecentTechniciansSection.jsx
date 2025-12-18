@@ -7,6 +7,7 @@ import {
   SquareArrowOutUpRight,
   Microscope,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import ProfileImage from "../../assets/images/profile-image.jpeg";
 
 export default function RecentTechniciansSection() {
@@ -100,12 +101,16 @@ export default function RecentTechniciansSection() {
 
               {/* Buttons */}
               <div className="mt-5 flex gap-2">
-                <button className="flex-1 bg-orange-300 text-black font-semibold text-sm py-2 rounded-full flex items-center justify-center gap-1 hover:bg-gray-100 transition">
-                  Viwe Profile <SquareArrowOutUpRight className="w-3 h-3" />
-                </button>
-                <button className="flex-1 bg-gray-800 text-white font-semibold text-sm py-2 rounded-full flex items-center justify-center gap-1 hover:bg-gray-700 transition">
-                  Service Request <ArrowUpRight className="w-4 h-4" />
-                </button>
+                <Link to={'/auth/login'}>
+                  <button className="flex-1 bg-orange-300 text-black font-semibold text-sm py-2 p-3 rounded-full flex items-center justify-center gap-1 hover:bg-gray-100 transition">
+                    Viwe Profile <SquareArrowOutUpRight className="w-3 h-3" />
+                  </button>
+                </Link>
+                <Link to={'/auth/login'}>
+                  <button className="flex-1 bg-gray-800 text-white font-semibold text-sm py-2 p-2 rounded-full flex items-center justify-center gap-1 hover:bg-gray-700 transition">
+                    Service Request <ArrowUpRight className="w-4 h-4" />
+                  </button>
+                </Link>
               </div>
             </div>
           ))}
