@@ -1,67 +1,56 @@
-import { CheckCircle, Plus, Info,Award, Home, ArrowUpRight,SquareArrowOutUpRight} from "lucide-react";
-import ProfileImage from '../../assets/images/profile-image.jpeg';
-
-const technicians = [
-  {
-    name: "Nuwan Perera",
-    position: "Electrical Technician",
-    title: "With over 12 years in automotive electrical systems, I specialize in creating flawless lighting solutions and wiring layouts for custom builds.",
-    followers: 312,
-    institute: "NSF",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Malsha Fernando",
-    position: "Mechanical Technician",
-    title: "Passionate about improving ride comfort, I design and install custom suspension systems that balance performance with durability.",
-    followers: 420,
-    institute: "NRC",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Dilan Gunasekara",
-    position: "Mechanical Technician",
-    title: "From leather stitching to ambient lighting, I transform vehicle interiors into luxurious, personalized spaces for every driver.",
-    followers: 287,
-    institute: "IIT",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Thilina Jayawardena",
-    position: "Electrical Technician",
-    title: "Bringing colors to life with custom paints and flawless restoration work that turn ordinary vehicles into head-turning masterpieces.",
-    followers: 368,
-    institute: "UOC",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Pramod Abeywickrama",
-    position: "Electrical Technician",
-    title: "Equipped with the latest diagnostic tools, I pinpoint engine and ECU issues to ensure optimal vehicle performance and reliability.",
-    followers: 241,
-    institute: "USJP",
-    img: `${ProfileImage}`,
-  },
-  {
-    name: "Pubudu Shehan",
-    position: "Electrical Technician",
-    title: "From leather stitching to ambient lighting, I transform vehicle interiors into luxurious, personalized spaces for every driver.",
-    followers: 395,
-    institute: "NSF",
-    img: `${ProfileImage}`,
-  },
-];
+import { useEffect, useState } from "react";
+import {
+  CheckCircle,
+  Award,
+  Home,
+  ArrowUpRight,
+  SquareArrowOutUpRight,
+} from "lucide-react";
+import ProfileImage from "../../assets/images/profile-image.jpeg";
 
 export default function RecentTechniciansSection() {
+  const [technicians, setTechnicians] = useState([]);
+
+  useEffect(() => {
+    const fetchTechnicians = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost/instrument-care-back-end/public/user/dashboard"
+        );
+        const data = await response.json();
+
+        // 🔀 Shuffle and pick only 6 random items
+        const shuffled = data.sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 6);
+
+        // 🧩 Map backend data to UI structure
+        const formattedData = selected.map((item) => ({
+          name: item.full_name,
+          position: item.current_designation || "Technician",
+          title: item.bio || "Experienced technician available for service.",
+          followers: item.years_of_experience || 0,
+          institute: item.institute_name || item.company_name || "N/A",
+          img: item.profile_image_url || ProfileImage,
+        }));
+
+        setTechnicians(formattedData);
+      } catch (error) {
+        console.error("Failed to fetch technicians:", error);
+      }
+    };
+
+    fetchTechnicians();
+  }, []);
+
   return (
     <section className="bg-[#1a1a1a] py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-white text-3xl font-semibold mb-8 text-center">
           <span className="text-sm font-semibold font-poppins uppercase text-amber-600 bg-orange-200 rounded-full px-4 py-1 inline-block mb-4 tracking-wide">
-                ── Recent Available Technicians ──
-        </span>
+            ── Recent Available Technicians ──
+          </span>
         </h2>
-        
+
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {technicians.map((tech, index) => (
             <div
@@ -88,8 +77,6 @@ export default function RecentTechniciansSection() {
                     {tech.position}
                   </div>
                 </div>
-                
-                
 
                 {/* Title */}
                 <p className="text-gray-400 text-sm mt-1">{tech.title}</p>
