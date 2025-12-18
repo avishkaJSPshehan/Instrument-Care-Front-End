@@ -5,6 +5,7 @@ import {
   Home,
   ArrowUpRight,
   SquareArrowOutUpRight,
+  Microscope,
 } from "lucide-react";
 import ProfileImage from "../../assets/images/profile-image.jpeg";
 
@@ -29,8 +30,10 @@ export default function RecentTechniciansSection() {
           position: item.current_designation || "Technician",
           title: item.bio || "Experienced technician available for service.",
           followers: item.years_of_experience || 0,
-          institute: item.institute_name || item.company_name || "N/A",
+          institute: item.institute_name || "N/A",
           img: item.profile_image_url || ProfileImage,
+          caring_instruments: item.caring_instruments,
+          certificate_name: item.certificate_name,
         }));
 
         setTechnicians(formattedData);
@@ -82,16 +85,17 @@ export default function RecentTechniciansSection() {
                 <p className="text-gray-400 text-sm mt-1">{tech.title}</p>
 
                 {/* Stats */}
-                <div className="flex items-center justify-between mt-4 text-sm text-gray-400">
-                  <div className="flex items-center gap-1">
-                    <Award className="w-4 h-4" />
-                    {tech.followers}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Home className="w-4 h-4" />
-                    {tech.institute}
-                  </div>
-                </div>
+                <div className="flex flex-col mt-4 text-sm text-gray-400 gap-2">
+                      <div className="flex items-center gap-1">
+                        <Award className="w-4 h-4" /> {tech.certificate_name || "-"}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Home className="w-4 h-4" /> {tech.institute || "-"}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Microscope className="w-4 h-4" /> {tech.caring_instruments || "-"}
+                      </div>
+                    </div>
               </div>
 
               {/* Buttons */}
