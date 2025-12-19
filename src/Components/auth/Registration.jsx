@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Bg from '../../assets/images/hero-bg-5.jpg';
 
-export default function LoginPage() {
+export default function NewUserRegistration() {
   const [loginData, setLoginData] = useState({
     username: "", 
     password: "",
@@ -72,11 +72,11 @@ export default function LoginPage() {
         {/* Left Panel - Sign In */}
         <div className="w-full md:w-1/2 flex flex-col justify-center px-6 py-6 sm:px-10 md:px-16 md:py-12">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-center md:text-left">
-            Sign In
+            Registrer Here
           </h2>
 
           {/* Important Notice */}
-          <div className="bg-yellow/70 border-2 border-red-500 rounded-xl p-3 sm:p-4 flex flex-col items-center text-center mb-5">
+          {/* <div className="bg-yellow/70 border-2 border-red-500 rounded-xl p-3 sm:p-4 flex flex-col items-center text-center mb-5">
             <h4 className="text-lg sm:text-xl font-bold text-gray-900">
               Important
             </h4>
@@ -90,7 +90,7 @@ export default function LoginPage() {
 
           <p className="text-sm sm:text-md text-gray-500 mb-4 text-center">
             Please log in to access the Instrument Care System.
-          </p>
+          </p> */}
 
           {/* 🔹 Error Notification */}
           {error && (
@@ -119,17 +119,13 @@ export default function LoginPage() {
           />
 
           <div className="w-full flex justify-between items-center mb-5">
-            <Link to="/auth/user-registration">
+            <Link to="/auth/login">
               <button className="text-sm text-blue-600 cursor-pointer">
-                If you don't have account? SIGN UP
+                If you have account? SIGN IN
               </button>
             </Link>
 
-            <Link to="/auth/email-entry-forgot-password">
-              <button className="text-sm text-blue-600 cursor-pointer">
-                Forget Your Password?
-              </button>
-            </Link>
+            
           </div>
 
 
@@ -137,12 +133,12 @@ export default function LoginPage() {
             className="w-full bg-orange-400 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-500"
             onClick={handleLogin}
           >
-            SIGN IN
+            Register
           </button>
         </div>
 
         {/* Right Panel - Technician Join */}
-        <div
+        {/* <div
           className="hidden md:flex w-1/2 flex-col justify-center items-center px-12 text-white"
           style={{
             background: "linear-gradient(135deg, #e78f0c, #e78f0c)",
@@ -162,7 +158,7 @@ export default function LoginPage() {
               I'M TECHNICIAN
             </button>
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );
