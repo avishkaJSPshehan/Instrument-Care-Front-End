@@ -29,6 +29,7 @@ import All_Instruments from './Pages/admin/Instruments';
 import All_Service_Requests from './Pages/admin/Service_Requests';
 import All_Technicians from './Pages/admin/Technicians';
 import All_Users from './Pages/admin/Users';
+import UserRegistration from './Pages/Auth/User-Registration'
 
 // 🔹 import ProtectedRoute
 import ProtectedRoute from './Components/auth/ProtectedRoute';
@@ -46,6 +47,7 @@ export default function App() {
 
         {/* ===== Auth Routes ===== */}
         <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/user-registration" element={<UserRegistration />} />
         <Route path="/auth/tech-registration" element={<Technician_Registration />} />
         <Route path="/auth/verify-email" element={<VerifyEmail/>}/>
         <Route path="/auth/email-entry-forgot-password" element={<EmailEntryForgotPassword/>}/>
