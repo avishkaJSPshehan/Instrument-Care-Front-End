@@ -49,7 +49,7 @@ export default function Navbar() {
                 </Link>
                 <Link to="/auth/tech-registration">
                   <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
-                    Become a Technician
+                    Register as a Technician
                   </button>
                 </Link>
               </>
