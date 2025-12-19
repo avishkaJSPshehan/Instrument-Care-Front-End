@@ -78,19 +78,9 @@ export default function NewUserRegistration() {
               Register Here
             </h2>
 
-            {error && (
-              <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded-md text-center">
-                {error}
-              </div>
-            )}
-
-            {/* Title + Gender SAME ROW */}
+            {/* Title + Gender */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <select
-                name="title"
-                className="input"
-                onChange={handleChange}
-              >
+              <select name="title" className="input" onChange={handleChange}>
                 <option value="">Title</option>
                 <option>Mr</option>
                 <option>Ms</option>
@@ -98,11 +88,7 @@ export default function NewUserRegistration() {
                 <option>Dr</option>
               </select>
 
-              <select
-                name="gender"
-                className="input"
-                onChange={handleChange}
-              >
+              <select name="gender" className="input" onChange={handleChange}>
                 <option value="">Gender</option>
                 <option>Male</option>
                 <option>Female</option>
@@ -110,90 +96,40 @@ export default function NewUserRegistration() {
               </select>
             </div>
 
-            <input
-              name="first_name"
-              placeholder="First Name"
-              className="input"
-              onChange={handleChange}
-            />
-            <input
-              name="last_name"
-              placeholder="Last Name"
-              className="input"
-              onChange={handleChange}
-            />
-            <input
-              name="address"
-              placeholder="Address"
-              className="input"
-              onChange={handleChange}
-            />
-            <input
-              name="email"
-              type="email"
-              placeholder="E-mail"
-              className="input"
-              onChange={handleChange}
-            />
-            <input
-              name="password"
-              type="password"
-              placeholder="Password"
-              className="input"
-              onChange={handleChange}
-            />
-            <input
-              name="confirm_password"
-              type="password"
-              placeholder="Confirm Password"
-              className="input"
-              onChange={handleChange}
-            />
+            <input name="first_name" placeholder="First Name" className="input" onChange={handleChange} />
+            <input name="last_name" placeholder="Last Name" className="input" onChange={handleChange} />
+            <input name="address" placeholder="Address" className="input" onChange={handleChange} />
+            <input name="email" type="email" placeholder="E-mail" className="input" onChange={handleChange} />
+            <input name="password" type="password" placeholder="Password" className="input" onChange={handleChange} />
+            <input name="confirm_password" type="password" placeholder="Confirm Password" className="input" onChange={handleChange} />
           </div>
 
           {/* RIGHT PANEL */}
           <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 bg-gray-50">
-            <select
-              name="participated_institute"
-              className="input"
-              onChange={handleChange}
-            >
+            {/* Invisible heading for perfect symmetry */}
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 invisible">
+              Register Here
+            </h2>
+
+            <select name="participated_institute" className="input" onChange={handleChange}>
               <option value="">Participated Institute</option>
               <option>University of Colombo</option>
               <option>University of Peradeniya</option>
               <option>Other</option>
             </select>
 
-            <input
-              name="other_institute"
-              placeholder="Other Institute"
-              className="input"
-              onChange={handleChange}
-            />
+            <input name="other_institute" placeholder="Other Institute" className="input" onChange={handleChange} />
 
-            <select
-              name="faculty"
-              className="input"
-              onChange={handleChange}
-            >
+            <select name="faculty" className="input" onChange={handleChange}>
               <option value="">Faculty (Universities only)</option>
               <option>Science</option>
               <option>Engineering</option>
               <option>Medicine</option>
             </select>
 
-            <input
-              name="department"
-              placeholder="Department / Division"
-              className="input"
-              onChange={handleChange}
-            />
+            <input name="department" placeholder="Department / Division" className="input" onChange={handleChange} />
 
-            <select
-              name="designation"
-              className="input"
-              onChange={handleChange}
-            >
+            <select name="designation" className="input" onChange={handleChange}>
               <option value="">Designation</option>
               <option>Student</option>
               <option>Lecturer</option>
@@ -201,23 +137,21 @@ export default function NewUserRegistration() {
               <option>Officer</option>
             </select>
 
-            <input
-              name="phone_number"
-              placeholder="Phone Number"
-              className="input"
-              onChange={handleChange}
-            />
-            <input
-              name="mobile_number"
-              placeholder="Mobile Number"
-              className="input"
-              onChange={handleChange}
-            />
+            <input name="phone_number" placeholder="Phone Number" className="input" onChange={handleChange} />
+            <input name="mobile_number" placeholder="Mobile Number" className="input" onChange={handleChange} />
           </div>
         </div>
 
-        {/* COMMON ACTION BUTTONS (NO HORIZONTAL LINE) */}
+        {/* COMMON ACTION SECTION */}
         <div className="w-full px-5 sm:px-8 md:px-12 py-6 bg-gray-50 flex flex-col items-center gap-3">
+
+          {/* ERROR MESSAGE MOVED HERE */}
+          {error && (
+            <div className="w-full sm:w-1/2 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded-md text-center">
+              {error}
+            </div>
+          )}
+
           <button
             className="w-full sm:w-1/2 bg-orange-400 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-500 transition"
             onClick={handleRegister}
@@ -225,16 +159,13 @@ export default function NewUserRegistration() {
             Register
           </button>
 
-          <Link
-            to="/auth/login"
-            className="text-sm text-blue-600 hover:underline"
-          >
+          <Link to="/auth/login" className="text-sm text-blue-600 hover:underline">
             Already have an account? Sign In
           </Link>
         </div>
       </div>
 
-      {/* Reusable input style */}
+      {/* Input style */}
       <style>
         {`
           .input {
