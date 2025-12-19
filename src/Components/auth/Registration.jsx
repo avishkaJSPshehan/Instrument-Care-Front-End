@@ -1,165 +1,252 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Bg from '../../assets/images/hero-bg-5.jpg';
+import Bg from "../../assets/images/hero-bg-5.jpg";
 
 export default function NewUserRegistration() {
-  const [loginData, setLoginData] = useState({
-    username: "", 
+  const [formData, setFormData] = useState({
+    title: "",
+    gender: "",
+    first_name: "",
+    last_name: "",
+    address: "",
+    participated_institute: "",
+    other_institute: "",
+    faculty: "",
+    department: "",
+    designation: "",
+    phone_number: "",
+    mobile_number: "",
+    email: "",
     password: "",
+    confirm_password: "",
   });
-  const [error, setError] = useState(""); // 🔹 error state
 
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
+    document.body.style.overflow = "auto";
   }, []);
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("http://localhost/instrument-care-back-end/public/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
-      });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-      console.log("Login data:", loginData);
+  const handleRegister = async () => {
+    if (formData.password !== formData.confirm_password) {
+      setError("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost/instrument-care-back-end/public/api/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
+
       const result = await response.json();
-      console.log("Login Response:", result);
 
       if (result.message === "Login successful") {
-        
-        setError(""); // clear error if success
-
-        localStorage.setItem("isLoggedIn", "true");     //  mark logged-in
-        localStorage.setItem("role", String(result.role));
-        localStorage.setItem("user_id", String(result.id));
-        localStorage.setItem("technician_id",String(result.technician_id))
-        
-        if (result.role === 8) {
-          navigate("/user/dashboard");
-        } else if (result.role === 10) {
-          navigate("/tech/dashboard");
-        } else if (result.role === 1){
-          navigate("/admin/dashboard");
-        } else {
-          setError("Unauthorized role!");
-        }
+        navigate("/user/dashboard");
       } else {
-        setError("Invalid username or password!"); //  show error
+        setError("Registration failed. Please check your details.");
       }
-
     } catch (err) {
-      console.error("Login failed:", err);
-      setError("Something went wrong. Please try again!"); //  network/server error
+      setError("Something went wrong. Please try again!");
     }
   };
 
   return (
-    <div className="relative w-screen h-screen flex items-center justify-center m-0 p-0">
-      {/* Background Image */}
+    <div className="relative min-h-screen w-full flex items-center justify-center px-2 sm:px-4">
+      {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ backgroundImage: `url(${Bg})` }}
       ></div>
 
-      {/* Main Login Container */}
-      <div className="relative z-10 w-full max-w-6xl flex flex-col md:flex-row bg-gray-50 bg-opacity-90 shadow-2xl rounded-none md:rounded-2xl overflow-hidden transform -translate-y-[5vh]">
-        
-        {/* Left Panel - Sign In */}
-        <div className="w-full md:w-1/2 flex flex-col justify-center px-6 py-6 sm:px-10 md:px-16 md:py-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-center md:text-left">
-            Registrer Here
-          </h2>
+      {/* Main Container */}
+      <div className="relative z-10 w-full max-w-6xl bg-gray-50 bg-opacity-95 shadow-2xl rounded-xl overflow-hidden">
+        <div className="flex flex-col md:flex-row">
 
-          {/* Important Notice */}
-          {/* <div className="bg-yellow/70 border-2 border-red-500 rounded-xl p-3 sm:p-4 flex flex-col items-center text-center mb-5">
-            <h4 className="text-lg sm:text-xl font-bold text-gray-900">
-              Important
-            </h4>
-            <p className="text-sm text-gray-700 leading-relaxed mt-2">
-              This system is integrated with the{" "}
-              <b>National Instrument Database (NID)</b>. Use your existing{" "}
-              <b>NID username</b> and <b>password</b> to sign in. No need to
-              create a new account.
-            </p>
-          </div>
+          {/* LEFT PANEL */}
+          <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center md:text-left">
+              Register Here
+            </h2>
 
-          <p className="text-sm sm:text-md text-gray-500 mb-4 text-center">
-            Please log in to access the Instrument Care System.
-          </p> */}
+            {error && (
+              <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded-md text-center">
+                {error}
+              </div>
+            )}
 
-          {/* 🔹 Error Notification */}
-          {error && (
-            <div className="mb-4 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded-md text-center">
-              {error}
+            {/* Title + Gender SAME ROW */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <select
+                name="title"
+                className="input"
+                onChange={handleChange}
+              >
+                <option value="">Title</option>
+                <option>Mr</option>
+                <option>Ms</option>
+                <option>Mrs</option>
+                <option>Dr</option>
+              </select>
+
+              <select
+                name="gender"
+                className="input"
+                onChange={handleChange}
+              >
+                <option value="">Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
             </div>
-          )}
 
-          <input
-            type="username"
-            placeholder="username"
-            className="w-full mb-4 p-3 sm:p-4 border rounded-md text-md"
-            value={loginData.username}
-            onChange={(e) =>
-              setLoginData({ ...loginData, username: e.target.value })
-            }
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full mb-4 p-3 sm:p-4 border rounded-md text-md"
-            value={loginData.password}
-            onChange={(e) =>
-              setLoginData({ ...loginData, password: e.target.value })
-            }
-          />
-
-          <div className="w-full flex justify-between items-center mb-5">
-            <Link to="/auth/login">
-              <button className="text-sm text-blue-600 cursor-pointer">
-                If you have account? SIGN IN
-              </button>
-            </Link>
-
-            
+            <input
+              name="first_name"
+              placeholder="First Name"
+              className="input"
+              onChange={handleChange}
+            />
+            <input
+              name="last_name"
+              placeholder="Last Name"
+              className="input"
+              onChange={handleChange}
+            />
+            <input
+              name="address"
+              placeholder="Address"
+              className="input"
+              onChange={handleChange}
+            />
+            <input
+              name="email"
+              type="email"
+              placeholder="E-mail"
+              className="input"
+              onChange={handleChange}
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              className="input"
+              onChange={handleChange}
+            />
+            <input
+              name="confirm_password"
+              type="password"
+              placeholder="Confirm Password"
+              className="input"
+              onChange={handleChange}
+            />
           </div>
 
+          {/* RIGHT PANEL */}
+          <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 bg-gray-50">
+            <select
+              name="participated_institute"
+              className="input"
+              onChange={handleChange}
+            >
+              <option value="">Participated Institute</option>
+              <option>University of Colombo</option>
+              <option>University of Peradeniya</option>
+              <option>Other</option>
+            </select>
 
+            <input
+              name="other_institute"
+              placeholder="Other Institute"
+              className="input"
+              onChange={handleChange}
+            />
+
+            <select
+              name="faculty"
+              className="input"
+              onChange={handleChange}
+            >
+              <option value="">Faculty (Universities only)</option>
+              <option>Science</option>
+              <option>Engineering</option>
+              <option>Medicine</option>
+            </select>
+
+            <input
+              name="department"
+              placeholder="Department / Division"
+              className="input"
+              onChange={handleChange}
+            />
+
+            <select
+              name="designation"
+              className="input"
+              onChange={handleChange}
+            >
+              <option value="">Designation</option>
+              <option>Student</option>
+              <option>Lecturer</option>
+              <option>Researcher</option>
+              <option>Officer</option>
+            </select>
+
+            <input
+              name="phone_number"
+              placeholder="Phone Number"
+              className="input"
+              onChange={handleChange}
+            />
+            <input
+              name="mobile_number"
+              placeholder="Mobile Number"
+              className="input"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        {/* COMMON ACTION BUTTONS (NO HORIZONTAL LINE) */}
+        <div className="w-full px-5 sm:px-8 md:px-12 py-6 bg-gray-50 flex flex-col items-center gap-3">
           <button
-            className="w-full bg-orange-400 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-500"
-            onClick={handleLogin}
+            className="w-full sm:w-1/2 bg-orange-400 text-white py-3 rounded-md text-lg font-semibold hover:bg-orange-500 transition"
+            onClick={handleRegister}
           >
             Register
           </button>
-        </div>
 
-        {/* Right Panel - Technician Join */}
-        {/* <div
-          className="hidden md:flex w-1/2 flex-col justify-center items-center px-12 text-white"
-          style={{
-            background: "linear-gradient(135deg, #e78f0c, #e78f0c)",
-            borderTopLeftRadius: "120px",
-            borderBottomLeftRadius: "120px",
-          }}
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-3">
-            Join as a Technician
-          </h2>
-          <p className="text-lg text-center mb-8">
-            Ready to help others and grow your career? Set up your technician
-            profile and start accepting service requests!
-          </p>
-          <Link to="/auth/tech-registration">
-            <button className="border border-white px-8 py-2 rounded-md hover:bg-white hover:text-orange-600 transition text-lg font-semibold">
-              I'M TECHNICIAN
-            </button>
+          <Link
+            to="/auth/login"
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Already have an account? Sign In
           </Link>
-        </div> */}
+        </div>
       </div>
+
+      {/* Reusable input style */}
+      <style>
+        {`
+          .input {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.95rem;
+          }
+        `}
+      </style>
     </div>
   );
 }
