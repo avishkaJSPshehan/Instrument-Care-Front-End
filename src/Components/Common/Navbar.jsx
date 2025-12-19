@@ -16,17 +16,25 @@ export default function Navbar() {
   const navLinks = ["Home", "About", "Technician", "Contact"];
 
   return (
-    <nav className="w-full bg-white sticky top-0 z-50 h-18">
+    <nav className="w-full bg-white sticky top-0 z-50">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-0">
+        <div className="flex justify-between items-center py-2 md:py-0">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src={NationalLogo} alt="National Logo" className="h-18 w-18" />
-            <img src={NsfLogo} alt="NSF Logo" className="h-13 w-25" />
+            <img
+              src={NationalLogo}
+              alt="National Logo"
+              className="h-12 w-12 sm:h-16 sm:w-16 md:h-18 md:w-18 object-contain"
+            />
+            <img
+              src={NsfLogo}
+              alt="NSF Logo"
+              className="h-8 w-16 sm:h-10 sm:w-20 md:h-13 md:w-25 object-contain"
+            />
           </div>
 
           {/* Desktop nav links */}
-          <div className="hidden md:flex space-x-25">
+          <div className="hidden md:flex space-x-6 lg:space-x-25">
             {navLinks.map((link) => (
               <Link
                 key={link}
@@ -39,16 +47,16 @@ export default function Navbar() {
           </div>
 
           {/* Right side buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
             {!isLoggedIn && (
               <>
                 <Link to="/auth/login">
-                  <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins">
+                  <button className="bg-orange-200 text-orange-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins text-sm sm:text-base">
                     Log In
                   </button>
                 </Link>
                 <Link to="/auth/tech-registration">
-                  <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
+                  <button className="bg-orange-400 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins text-sm sm:text-base">
                     Register as a Technician
                   </button>
                 </Link>
@@ -69,7 +77,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="md:hidden flex flex-col space-y-4 pb-4">
+          <div className="md:hidden flex flex-col space-y-2 sm:space-y-4 pb-4 border-t border-gray-200 mt-2">
             {navLinks.map((link) => (
               <Link
                 key={link}
@@ -82,12 +90,12 @@ export default function Navbar() {
             {!isLoggedIn && (
               <>
                 <Link to="/auth/login">
-                  <button className="bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins">
+                  <button className="w-full bg-orange-200 text-orange-600 px-4 py-2 rounded-md font-medium hover:bg-orange-100 transition font-poppins">
                     Log In
                   </button>
                 </Link>
                 <Link to="/auth/tech-registration">
-                  <button className="bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
+                  <button className="w-full bg-orange-400 text-white px-4 py-2 rounded-md font-medium hover:bg-orange-500 transition font-poppins">
                     Become a Technician
                   </button>
                 </Link>
