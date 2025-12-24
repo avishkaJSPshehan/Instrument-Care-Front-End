@@ -21,11 +21,22 @@ export default function NewUserRegistration() {
     confirm_password: "",
   });
 
+  const [institutes, setInstitutes] = useState([]); // ✅ NEW
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflow = "auto";
+
+    // ✅ FETCH INSTITUTES
+    fetch("http://localhost/instrument-care-back-end/public/api/instutes")
+      .then((res) => res.json())
+      .then((data) => {
+        setInstitutes(data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch institutes", err);
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -78,21 +89,22 @@ export default function NewUserRegistration() {
               Register Here
             </h2>
 
-            {/* Title + Gender */}
             <div className="flex flex-col sm:flex-row gap-4">
               <select name="title" className="input" onChange={handleChange}>
                 <option value="">Title</option>
                 <option>Mr</option>
                 <option>Ms</option>
                 <option>Mrs</option>
+                <option>Miss</option>
+                <option>Eng</option>
                 <option>Dr</option>
+                <option>Prof</option>
               </select>
 
               <select name="gender" className="input" onChange={handleChange}>
                 <option value="">Gender</option>
                 <option>Male</option>
                 <option>Female</option>
-                <option>Other</option>
               </select>
             </div>
 
@@ -106,16 +118,23 @@ export default function NewUserRegistration() {
 
           {/* RIGHT PANEL */}
           <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 bg-gray-50">
-            {/* Invisible heading for perfect symmetry */}
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 invisible">
               Register Here
             </h2>
 
-            <select name="participated_institute" className="input" onChange={handleChange}>
+            {/* ✅ DYNAMIC INSTITUTE DROPDOWN */}
+            <select
+              name="participated_institute"
+              className="input"
+              onChange={handleChange}
+            >
               <option value="">Participated Institute</option>
-              <option>University of Colombo</option>
-              <option>University of Peradeniya</option>
-              <option>Other</option>
+              {institutes.map((inst) => (
+                <option key={inst.institute_id} value={inst.institute_id}>
+                  {inst.name}
+                </option>
+              ))}
+              <option value="other">Other</option>
             </select>
 
             <input name="other_institute" placeholder="Other Institute" className="input" onChange={handleChange} />
@@ -142,10 +161,8 @@ export default function NewUserRegistration() {
           </div>
         </div>
 
-        {/* COMMON ACTION SECTION */}
+        {/* ACTION SECTION */}
         <div className="w-full px-5 sm:px-8 md:px-12 py-6 bg-gray-50 flex flex-col items-center gap-3">
-
-          {/* ERROR MESSAGE MOVED HERE */}
           {error && (
             <div className="w-full sm:w-1/2 p-3 text-sm text-red-700 bg-red-100 border border-red-400 rounded-md text-center">
               {error}
@@ -165,7 +182,6 @@ export default function NewUserRegistration() {
         </div>
       </div>
 
-      {/* Input style */}
       <style>
         {`
           .input {
