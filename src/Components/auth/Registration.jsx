@@ -21,7 +21,8 @@ export default function NewUserRegistration() {
     confirm_password: "",
   });
 
-  const [institutes, setInstitutes] = useState([]); // ✅ NEW
+  const [institutes, setInstitutes] = useState([]); // ✅ existing
+  const [designations, setDesignations] = useState([]); // ✅ NEW
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -36,6 +37,16 @@ export default function NewUserRegistration() {
       })
       .catch((err) => {
         console.error("Failed to fetch institutes", err);
+      });
+
+    // ✅ FETCH DESIGNATIONS
+    fetch("http://localhost/instrument-care-back-end/public/api/designations")
+      .then((res) => res.json())
+      .then((data) => {
+        setDesignations(data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch designations", err);
       });
   }, []);
 
@@ -148,12 +159,14 @@ export default function NewUserRegistration() {
 
             <input name="department" placeholder="Department / Division" className="input" onChange={handleChange} />
 
+            {/* ✅ DYNAMIC DESIGNATION DROPDOWN */}
             <select name="designation" className="input" onChange={handleChange}>
               <option value="">Designation</option>
-              <option>Student</option>
-              <option>Lecturer</option>
-              <option>Researcher</option>
-              <option>Officer</option>
+              {designations.map((des) => (
+                <option key={des.designation_id} value={des.name}>
+                  {des.name}
+                </option>
+              ))}
             </select>
 
             <input name="phone_number" placeholder="Phone Number" className="input" onChange={handleChange} />
