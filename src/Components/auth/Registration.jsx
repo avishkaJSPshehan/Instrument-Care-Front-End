@@ -9,7 +9,7 @@ export default function NewUserRegistration() {
     first_name: "",
     last_name: "",
     address: "",
-    participated_institute: "",
+    institute_id: "",
     other_institute: "",
     faculty: "",
     department: "",
@@ -59,10 +59,10 @@ export default function NewUserRegistration() {
       setError("Passwords do not match!");
       return;
     }
-
+    console.log("Request Body:", formData);
     try {
       const response = await fetch(
-        "http://localhost/instrument-care-back-end/public/api/login",
+        "http://localhost/instrument-care-back-end/public/api/register-user",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -71,8 +71,9 @@ export default function NewUserRegistration() {
       );
 
       const result = await response.json();
+      console.log(result);
 
-      if (result.message === "Login successful") {
+      if (result.status === "success") {
         navigate("/user/dashboard");
       } else {
         setError("Registration failed. Please check your details.");
@@ -135,7 +136,7 @@ export default function NewUserRegistration() {
 
             {/* ✅ DYNAMIC INSTITUTE DROPDOWN */}
             <select
-              name="participated_institute"
+              name="institute_id"
               className="input"
               onChange={handleChange}
             >
